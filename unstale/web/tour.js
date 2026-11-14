@@ -40,6 +40,14 @@ const TOUR_STEPS = [
   { target: "#slot-dialog", dialog: true, title: "Why it needs a graph",
     run: async () => { const c = document.querySelector("#corr-list .card .linkish"); if (c) await openSlot(c.dataset.open, S.viewer); await tick(200); },
     text: () => `Left to right: who saw which message, and which version of the fact each message states. Maya has <b>no SAW edge</b> to the message that changed the date, so the newest version she can hold is the old one. A vector store returns the same messages but can't say who read which.` },
+  { target: "#fix-dialog", dialog: true, title: "Then close the gap",
+    run: async () => {
+      closeDlgs();
+      const c = document.querySelector("#corr-list .card [data-fix]");
+      if (c) await openFix(c.dataset.fix);
+      await tick(200);
+    },
+    text: () => `Unstale doesn't stop at detecting. From the same graph and the learned read rates it says who still needs to hear it, which channel reaches them, who needs an @mention because they rarely read that channel, and a draft. "Simulate" shows the corrections that would be left, without writing anything.` },
   { target: "#compose", pos: "tl", title: "Check before sending",
     run: async () => {
       closeDlgs();
@@ -56,7 +64,7 @@ const TOUR_STEPS = [
     text: () => `Every figure is read from a result file in the repo: labelled team, ${"20"} generated orgs with hidden reading habits, a learning curve on unseen orgs with confidence intervals, and the agent eval, with the limits written out.` },
   { target: ".clock", title: "Your turn",
     run: async () => { closeDlgs(); await useViewer("person:tom", "2026-07-01T08:00:00Z"); },
-    text: () => `Click <b>News to me</b> on a correction and watch the graph write it down. Click a fact chip for its graph. Try the <b>Pitch</b> button for who we think pays for this.` },
+    text: () => `Click <b>News to me</b> on a correction and watch the graph write it down, then <b>Fix it</b> to see the plan change. Click a fact chip for its graph.${S.meta.mcp ? " Use <b>Connect your agent</b> to point your own agent at this graph." : ""} <b>Pitch</b> has who we think pays, with a calculator.` },
 ];
 
 async function tourGo(i) {
@@ -76,7 +84,7 @@ async function tourGo(i) {
   $("tour-prev").disabled = i === 0;
   $("tour-next").textContent = i === TOUR_STEPS.length - 1 ? "Finish" : "Next";
   const el = document.querySelector(st.target);
-  if (el && el.id !== "proof-dialog" && el.id !== "slot-dialog") { el.classList.add("tour-hl"); el.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
+  if (el && el.tagName !== "DIALOG") { el.classList.add("tour-hl"); el.scrollIntoView({ block: "nearest", behavior: "smooth" }); }
 }
 function tourStart() { tourGo(0); }
 $("tour-next").onclick = () => (TOUR.i >= TOUR_STEPS.length - 1 ? tourEnd() : tourGo(TOUR.i + 1));

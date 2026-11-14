@@ -90,6 +90,22 @@ function graphSvg(g, focus) {
   return `<svg class="fgraph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Graph of who saw which version of ${esc(g.title)}">${defs}${parts.join("")}</svg>`;
 }
 
+function vectorBlock(g, who) {
+  const v = g.vector;
+  if (!v || !v.results.length) return `<div class="gvs"><strong>On a vector store</strong> a search returns the messages about this topic and nothing about who read which. Measured on our labelled team: F1 0.13.</div>`;
+  const seenBy = (mid) => (who ? g.saw.find((x) => x.person === who.id && x.message === mid) : null);
+  const rows = v.results.map((r) => {
+    const saw = seenBy(r.message);
+    const last = !who ? "" : r.states == null ? `<span class="muted">states no value</span>`
+      : saw ? `<b class="ok">${esc(who.name.split(" ")[0])} saw it${saw.strength === "weak" ? " (assumed)" : ""}</b>` : `<b class="bad">${esc(who.name.split(" ")[0])} never saw it</b>`;
+    return `<tr><td class="num">${r.score.toFixed(2)}</td><td><b>${esc(r.author)}</b> ${esc(r.where)} <span class="muted">${esc(fmtDay(r.ts))}</span><div class="muted">${esc(r.text)}</div></td>
+      <td>${r.states == null ? `<span class="muted">no value</span>` : `<span class="vtag ${r.current ? "cur" : "old"}">${esc(fmtVal(r.states))}${r.current ? " (current)" : " (old)"}</span>`}</td><td>${last}</td></tr>`;
+  }).join("");
+  return `<div class="gvs"><strong>What a vector store returns.</strong> Query <i>"${esc(v.query)}"</i>, embedded with ${esc(v.model)}. It finds the right messages, old and new, ranked by similarity.
+    <table class="vtable"><thead><tr><th>Score</th><th>Message</th><th>States</th><th>${who ? "Did " + esc(who.name.split(" ")[0]) + " see it?" : ""}</th></tr></thead><tbody>${rows}</tbody></table>
+    The last column is the one that decides who is out of date, and nothing in the store can fill it in. It comes from the SAW edges. Measured on our labelled team: vector RAG F1 0.13 against 0.96.</div>`;
+}
+
 function graphBlock(g, focus) {
   const label = S.meta.store === "hydradb" ? "HydraDB" : "the embedded Kuzu store";
   const who = focus ? g.people.find((p) => p.id === focus) : null;
@@ -104,7 +120,7 @@ function graphBlock(g, focus) {
     </div>
     ${who ? `<p class="gnote">${miss && who.stale ? `<strong>${esc(who.name)}</strong> has no edge to the message that changed this fact, so the latest version they hold is <strong>${esc(fmtVal(who.believes))}</strong>. That absence is the signal.`
       : who.in_sync ? `<strong>${esc(who.name)}</strong> saw the change, so they hold the current value.` : `<strong>${esc(who.name)}</strong> has not seen anything about this fact.`}</p>` : `<p class="gnote small muted">Click a person to follow their edges.</p>`}
-    <div class="gvs"><strong>On a vector store</strong> a search for this topic returns the same ${g.messages.length} messages, ranked by similarity. Nothing in them says who read which one, so it can't tell ${who ? esc(who.name) : "the people who missed it"} from the person who made the change. Measured on our labelled team: F1 0.13.</div>
+    ${vectorBlock(g, who)}
     <details class="gcy"><summary>The query behind it · ${g.graph_queries + g.cached_reads} graph reads${g.cached_reads ? ` (${g.cached_reads} already in memory)` : ""}, ${g.ms} ms on ${label}</summary><pre>${esc(g.cypher)}</pre>
       <p class="small muted">Run once per person. SAW edges are written when a message is ingested; fact versions are SelfGraph relations with <code>max_count: 1</code>, so a new value supersedes the old one and keeps it readable.</p></details>`;
 }

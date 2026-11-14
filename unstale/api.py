@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import json
 import time
 from contextlib import asynccontextmanager
@@ -21,10 +22,13 @@ from pydantic import BaseModel
 from . import rules
 from .config import ROOT as ROOT_DIR, Settings, dataset_path, setting
 from .engine import EXPOSURES_CYPHER, Engine, agent_context, check_draft
+from .exposure import THRESHOLD, stale_probability
 from .extract import extract_message
+from .fixit import apply_sim, effects as plan_effects, parse_sim, plan as make_plan
 from .llm import USAGE, LLMError
 from .timeline import checkpoints
 
+MAYBE_FROM = 0.3      # below the alert threshold but worth a look: shown as "worth a check", never as a correction
 WEB = Path(__file__).parent / "web"
 STATE: dict[str, Any] = {}
 
@@ -68,11 +72,15 @@ async def prewarm() -> None:
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    await init_state()
-    try:
-        yield
-    finally:
-        await STATE["eng"].close()
+    mcp_app = STATE.get("mcp_app")
+    async with contextlib.AsyncExitStack() as stack:
+        if mcp_app is not None:
+            await stack.enter_async_context(mcp_app.router.lifespan_context(mcp_app))
+        await init_state()
+        try:
+            yield
+        finally:
+            await STATE["eng"].close()
 
 
 app = FastAPI(title="Unstale", lifespan=lifespan)
@@ -109,6 +117,16 @@ def show(attribute: str, value: str) -> str:
     if attribute == "OWNED_BY":
         return name(value)
     return value
+
+
+def pretty(v: str) -> str:
+    """2026-07-03 -> Fri 3 Jul, for text a person will read."""
+    import re  # noqa: PLC0415
+    from datetime import datetime  # noqa: PLC0415
+    if re.fullmatch("[0-9]{4}-[0-9]{2}-[0-9]{2}", v or ""):
+        d = datetime.strptime(v, "%Y-%m-%d")
+        return f"{d:%a} {d.day} {d:%b}"
+    return v
 
 
 def label(attribute: str) -> str:
@@ -169,7 +187,7 @@ async def warm(as_of: str) -> None:
 @app.get("/api/meta")
 async def meta() -> dict:
     d = ds()
-    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store, "hosted": eng().settings.hosted, "real_url": setting("UNSTALE_REAL_URL"),
+    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store, "hosted": eng().settings.hosted, "real_url": setting("UNSTALE_REAL_URL"), "mcp": "mcp_app" in STATE,
             "people": d["people"], "channels": d["channels"], "subjects": d["subjects"],
             "attributes": {k: v.get("label", k) for k, v in d["attributes"].items()},
             "checkpoints": checkpoints(d), "drafts": d["drafts"],
@@ -192,14 +210,30 @@ async def feed(viewer: str, as_of: str, channel: str | None = None) -> dict:
     return {"messages": out}
 
 
+def sim_from(raw: str | None) -> list[dict]:
+    """The what-if exposures a client sends along with a request (see unstale/fixit.py)."""
+    if not raw:
+        return []
+    try:
+        return parse_sim(json.loads(raw))
+    except ValueError as e:
+        raise HTTPException(400, "sim must be JSON") from e
+
+
 @app.get("/api/brief/{pid}")
-async def brief(pid: str, as_of: str) -> dict:
+async def brief(pid: str, as_of: str, sim: str | None = None) -> dict:
     if pid not in people():
         raise HTTPException(404, "unknown person")
     t0 = time.perf_counter()
     q0, c0 = eng().stats.queries, eng().stats.cached
     model = await eng().read_model(as_of)
-    items = await eng().diff(pid, as_of, model=model)
+    simmed = sim_from(sim)
+    exps = apply_sim(await eng().exposures(pid, as_of), pid, simmed, as_of) if simmed else None
+    every = await eng().diff(pid, as_of, model=model, threshold=MAYBE_FROM, exps=exps)
+    items = [i for i in every if i.confidence >= THRESHOLD]
+    maybe = [{"slot": i.slot, "subject": i.subject_name, "label": label(i.attribute), "believed": show(i.attribute, i.believed),
+              "current": show(i.attribute, i.current), "confidence": i.confidence}
+             for i in every if i.confidence < THRESHOLD]
     ms = (time.perf_counter() - t0) * 1000
     msgs = eng()._messages
     out = []
@@ -221,15 +255,97 @@ async def brief(pid: str, as_of: str) -> dict:
                              "read_rate": round(model.rate(pid, it.believed_channel), 2)
                              if it.believed_strength == "weak" else 1.0},
         })
-    return {"person": pid, "as_of": as_of, "items": out, "ms": round(ms, 1),
+    return {"person": pid, "as_of": as_of, "items": out, "maybe": maybe, "ms": round(ms, 1),
             "graph_queries": eng().stats.queries - q0, "cached_reads": eng().stats.cached - c0, "llm_tokens": 0}
 
 
-@app.get("/api/team")
-async def team(as_of: str) -> dict:
-    rows = []
+@app.get("/api/fix")
+async def fix(slot: str, as_of: str) -> dict:
+    """Who to tell about a changed fact, where, and what the corrections look like afterwards (a what-if, nothing written)."""
+    subject, attribute = slot.split("|", 1)
+    cur = await eng().truth_at(subject, attribute, as_of)
+    if cur is None:
+        raise HTTPException(404, "no such fact at that time")
+    model = await eng().read_model(as_of)
+    stale = []
     for p in ds()["people"]:
-        items = await eng().diff(p["id"], as_of)
+        for it in await eng().diff(p["id"], as_of, model=model):
+            if it.slot == slot:
+                stale.append({"person": p["id"], "name": p["name"], "kind": p["kind"], "confidence": it.confidence,
+                              "believed": show(attribute, it.believed)})
+    stale.sort(key=lambda x: -x["confidence"])
+    agents = {p["id"] for p in ds()["people"] if p["kind"] == "agent"}
+    steps = make_plan([x["person"] for x in stale], ds()["channels"], agents, model)
+    eff = plan_effects(steps, slot, cur.value, as_of)
+    after = []
+    for x in stale:
+        exps = apply_sim(await eng().exposures(x["person"], as_of), x["person"], eff, as_of).get(slot, [])
+        p_after, _ = stale_probability(exps, cur.value, x["person"], model)
+        after.append({"person": x["person"], "name": x["name"], "before": x["confidence"], "after": round(p_after, 3)})
+    m = eng()._messages.get(cur.message or "", {})
+    subj = next((x["name"] for x in ds()["subjects"] if x["id"] == subject), subject)
+    old = sorted({x["believed"] for x in stale})
+    first = lambda pid: name(pid).split(" ")[0]  # noqa: E731
+    mentions = sorted({q for st in steps if st["kind"] == "post" for q in st["mention"]})
+    draft = (f"Heads up: {subj} {label(attribute)} is now {pretty(show(attribute, cur.value))}"
+             f"{' (it was ' + ', '.join(pretty(o) for o in old) + ')' if old else ''}. Changed {pretty(cur.since[:10])}"
+             f"{' in ' + where(m) if m else ''}{' by ' + name(m['author']) if m else ''}. "
+             f"If you were working from the old value, please update."
+             f"{' ' + ' '.join('@' + first(q) for q in mentions) if mentions else ''}")
+    for st in steps:
+        if st["kind"] == "post":
+            st["reach_names"] = [name(q) for q in st["reach"]]
+            st["mention_names"] = [name(q) for q in st["mention"]]
+        else:
+            st["name"] = name(st["person"])
+    return {"slot": slot, "as_of": as_of, "title": f"{subj}: {label(attribute)}", "current": show(attribute, cur.value),
+            "changed_at": cur.since, "changed_where": where(m) if m else None, "changed_by": name(m["author"]) if m else None,
+            "stale": stale, "plan": steps, "draft": draft, "effects": eff, "outcome": after,
+            "expected_remaining": round(sum(a["after"] for a in after), 2)}
+
+
+@app.get("/api/assumed")
+async def assumed(person: str, as_of: str) -> dict:
+    """Facts in the person's scope that Unstale assumes they have read (channel members who weren't flagged).
+
+    These are where the graph can learn the most: "I missed this" lowers their read rate for that channel, and
+    from then on Unstale flags people like them, which is how recall improves.
+    """
+    if person not in people():
+        raise HTTPException(404, "unknown person")
+    model = await eng().read_model(as_of)
+    sc = await eng().scope(person)
+    out = []
+    for slot, es in (await eng().exposures(person, as_of)).items():
+        subject, attribute = slot.split("|", 1)
+        if subject not in sc:
+            continue
+        cur = Engine.pick(await eng().versions(subject, attribute), as_of)
+        if cur is None:
+            continue
+        weak = [e for e in es if e.strength == rules.WEAK and e.channel and rules.same(e.value, cur.value)]
+        strong_current = any(e.strength == rules.STRONG and rules.same(e.value, cur.value) for e in es)
+        if not weak or strong_current:
+            continue
+        p_stale, _ = stale_probability(es, cur.value, person, model)
+        if p_stale >= 0.5:
+            continue
+        ch = weak[0].channel
+        names = {x["id"]: x["name"] for x in ds()["subjects"]}
+        out.append({"slot": slot, "title": f"{names.get(subject, subject)}: {label(attribute)}", "current": show(attribute, cur.value),
+                    "channel": ch, "rate": round(model.rate(person, ch), 2), "since": cur.since})
+    out.sort(key=lambda x: x["since"], reverse=True)
+    return {"person": person, "items": out[:6]}
+
+
+@app.get("/api/team")
+async def team(as_of: str, sim: str | None = None) -> dict:
+    rows = []
+    simmed = sim_from(sim)
+    model = await eng().read_model(as_of)
+    for p in ds()["people"]:
+        exps = apply_sim(await eng().exposures(p["id"], as_of), p["id"], simmed, as_of) if simmed else None
+        items = await eng().diff(p["id"], as_of, model=model, exps=exps)
         rows.append({"person": p["id"], "name": p["name"], "role": p["role"], "kind": p["kind"],
                      "stale": [{"slot": it.slot, "subject": it.subject_name, "label": label(it.attribute),
                                 "believed": show(it.attribute, it.believed), "current": show(it.attribute, it.current),
@@ -388,6 +504,20 @@ async def fact_graph(slot: str, as_of: str) -> dict:
         if target:
             asserts.append({"message": mid, "version": target, "kind": cl["kind"]})
     cur_msg = cur.message if cur else None
+    vec, vector = _load("vector-demo.json").get(slot), None
+    if vec:
+        vector = {"query": vec["query"], "model": vec["model"], "results": []}
+        for r in vec["ranking"]:
+            vm = eng()._messages.get(r["message"])
+            if not vm or rules.parse_ts(vm["ts"]) > t:
+                continue
+            cl = claim_of.get(r["message"])
+            vector["results"].append({"message": r["message"], "score": r["score"], "author": name(vm["author"]),
+                                      "where": where(vm), "ts": vm["ts"], "text": vm["text"][:200],
+                                      "states": show(attribute, cl["value"]) if cl else None,
+                                      "current": bool(cl and cur and rules.same(cl["value"], cur.value))})
+            if len(vector["results"]) == 5:
+                break
     people_out, saw, missing = [], [], []
     for p in ds()["people"]:
         pid = p["id"]
@@ -411,7 +541,7 @@ async def fact_graph(slot: str, as_of: str) -> dict:
     return {"slot": slot, "subject": subject, "attribute": attribute, "as_of": as_of,
             "title": f"{next((x['name'] for x in ds()['subjects'] if x['id'] == subject), subject)}: {label(attribute)}",
             "versions": version_nodes, "messages": msg_nodes, "people": people_out, "asserts": asserts, "saw": saw,
-            "missing": missing, "cypher": as_hydradb(EXPOSURES_CYPHER), "store": eng().settings.store,
+            "missing": missing, "vector": vector, "cypher": as_hydradb(EXPOSURES_CYPHER), "store": eng().settings.store,
             "graph_queries": eng().stats.queries - q0, "cached_reads": eng().stats.cached - c0,
             "ms": round((time.perf_counter() - t0) * 1000, 1)}
 
@@ -449,3 +579,22 @@ async def index() -> FileResponse:
 
 
 app.mount("/static", StaticFiles(directory=WEB), name="static")
+
+
+def mount_mcp() -> None:
+    """Serve the MCP tools at /mcp (streamable HTTP, stateless) when UNSTALE_MCP=1, so any agent can connect to the demo."""
+    if setting("UNSTALE_MCP") != "1":
+        return
+    from mcp.server.mcpserver import MCPServer  # noqa: PLC0415
+    from mcp.server.transport_security import TransportSecuritySettings  # noqa: PLC0415
+
+    from .mcp_server import INSTRUCTIONS, asgi_call, register  # noqa: PLC0415
+
+    server = register(MCPServer(name="unstale", instructions=INSTRUCTIONS), asgi_call(app))
+    sub = server.streamable_http_app(streamable_http_path="/mcp", stateless_http=True, json_response=True,
+                                     transport_security=TransportSecuritySettings(enable_dns_rebinding_protection=False))
+    app.mount("", sub)
+    STATE["mcp_app"] = sub
+
+
+mount_mcp()

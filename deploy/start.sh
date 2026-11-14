@@ -18,6 +18,6 @@ env CLOUD_PROVIDER=local LOCAL_PATH="$DATA/store" \
 # Wait for the Bolt port, then let the API ingest the dataset into a fresh namespace and serve it.
 until /opt/venv/bin/python -c "import socket;socket.create_connection(('127.0.0.1',7687),1).close()" 2> /dev/null; do sleep 1; done
 export UNSTALE_STORE=hydradb UNSTALE_HYDRA_URI=bolt://127.0.0.1:7687 UNSTALE_HYDRA_TOKEN="$TOKEN" \
-       UNSTALE_BUILD_ON_START=1 UNSTALE_HOSTED=1 PYTHONPATH=/app
+       UNSTALE_BUILD_ON_START=1 UNSTALE_HOSTED=1 UNSTALE_MCP=1 PYTHONPATH=/app
 cd /app
 exec /opt/venv/bin/uvicorn unstale.api:app --host 0.0.0.0 --port "${PORT:-7860}"

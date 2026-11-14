@@ -138,7 +138,7 @@ async function loadFeed() {
 /* ---------------- corrections ---------------- */
 async function loadBrief() {
   const p = person(S.viewer);
-  const b = await api(`/api/brief/${encodeURIComponent(S.viewer)}?as_of=${encodeURIComponent(S.asOf)}`);
+  const b = await api(`/api/brief/${encodeURIComponent(S.viewer)}?as_of=${encodeURIComponent(S.asOf)}${simQS()}`);
   const n = b.items.length;
   const who = p.kind === "agent" ? "this agent" : p.name.split(" ")[0];
   $("corr-kicker").textContent = p.kind === "agent" ? "Corrections for an agent" : "Corrections";
@@ -169,13 +169,24 @@ async function loadBrief() {
             <button class="btn small" data-v="news">News to me</button>
             <button class="btn small ghost" data-v="knew">I knew this</button>
             <button class="btn small ghost" data-v="neither">Never heard of it</button></span>`}
+          <button class="btn small ghost" data-fix="${esc(it.slot)}">Fix it</button>
           <button class="linkish" data-open="${esc(it.slot)}">See it in the graph</button>
           <div class="fb-note small muted"></div>
         </div>
       </div>`).join("");
     $("corr-list").querySelectorAll("[data-open]").forEach((el) => el.onclick = () => openSlot(el.dataset.open, S.viewer));
     $("corr-list").querySelectorAll(".fb button").forEach((el) => el.onclick = () => sendFeedback(el));
+    $("corr-list").querySelectorAll("[data-fix]").forEach((el) => el.onclick = () => openFix(el.dataset.fix));
   }
+  const mb = $("maybe");
+  if (b.maybe && b.maybe.length) {
+    mb.classList.remove("hidden");
+    mb.innerHTML = `<div class="kicker">Worth a check</div>
+      <p class="small muted" style="margin:6px 0">Below the alert threshold, so not counted as corrections. The graph is less sure.</p>
+      ${b.maybe.map((m) => `<div class="maybe-row"><span><b>${esc(m.subject)}</b> ${esc(m.label)}: <s>${esc(fmtVal(m.believed))}</s> now <b>${esc(fmtVal(m.current))}</b></span>
+        <span class="conf lo">${Math.round(m.confidence * 100)}%</span></div>`).join("")}`;
+  } else { mb.classList.add("hidden"); }
+  loadAssumed(p).catch(() => {});
   if (p.kind === "agent") {
     const c = await api(`/api/agent/${encodeURIComponent(S.viewer)}/context?as_of=${encodeURIComponent(S.asOf)}`);
     $("agent-context").textContent = c.context;
@@ -183,6 +194,29 @@ async function loadBrief() {
   } else {
     $("agent-block").classList.add("hidden");
   }
+}
+
+async function loadAssumed(p) {
+  const box = $("assumed");
+  if (p.kind === "agent") { box.classList.add("hidden"); return; }
+  const a = await api(`/api/assumed?person=${encodeURIComponent(S.viewer)}&as_of=${encodeURIComponent(S.asOf)}`);
+  if (!a.items.length) { box.classList.add("hidden"); return; }
+  box.classList.remove("hidden");
+  box.innerHTML = `<div class="kicker">Assumed, not observed</div>
+    <p class="small muted" style="margin:6px 0 8px">Unstale assumes ${esc(firstName(S.viewer))} read these because they're in the channel. Tell it which is true; it learns who really reads what, and flags people like them next time.</p>
+    ${a.items.map((it) => `<div class="assumed" data-slot="${esc(it.slot)}">
+      <div><b>${esc(it.title)}</b> is <b>${esc(fmtVal(it.current))}</b> <span class="muted">(posted in #${esc(it.channel)}, which they're assumed to read ${Math.round(it.rate * 100)}% of)</span></div>
+      <div class="acts"><button class="btn small ghost" data-v="knew">I saw it</button> <button class="btn small" data-v="news">I missed it</button> <span class="small muted fb-out"></span></div></div>`).join("")}`;
+  box.querySelectorAll(".assumed button").forEach((b) => b.onclick = async () => {
+    const row = b.closest(".assumed"), out = row.querySelector(".fb-out");
+    row.querySelectorAll("button").forEach((x) => { x.disabled = true; });
+    try {
+      const r = await api("/api/feedback", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ person: S.viewer, slot: row.dataset.slot, verdict: b.dataset.v, as_of: S.asOf }) });
+      out.textContent = r.evidence ? `Written to the graph. ${r.rates.map((x) => `#${x.channel} read rate now ${Math.round(x.rate * 100)}%`).join(", ")}.` : "Nothing new to learn here.";
+      setTimeout(() => refresh(), 1100);
+    } catch (e) { out.textContent = `Couldn't save: ${e.message}`; row.querySelectorAll("button").forEach((x) => { x.disabled = false; }); }
+  });
 }
 
 async function sendFeedback(btn) {
@@ -205,7 +239,7 @@ async function sendFeedback(btn) {
 
 /* ---------------- team ---------------- */
 async function loadTeam() {
-  S.team = await api(`/api/team?as_of=${encodeURIComponent(S.asOf)}`);
+  S.team = await api(`/api/team?as_of=${encodeURIComponent(S.asOf)}${simQS()}`);
   renderViewers();
   const total = S.team.people.reduce((a, r) => a + r.stale.length, 0);
   $("team").innerHTML = `
@@ -255,6 +289,7 @@ async function openSlot(slot, focus) {
   }).join("");
   $("slot-body").innerHTML = `
     <h3 class="slot-title">${esc(v.title)}</h3>
+    <p style="margin:0 0 10px"><button type="button" class="btn small" id="graph-fix">Close the gap: who to tell</button></p>
     ${g ? `<div id="graph-box"></div>` : ""}
     <div class="kicker" style="margin:18px 0 8px">Versions, from the graph's history</div>
     <ul class="versions">${v.versions.map((x) => `
@@ -265,6 +300,7 @@ async function openSlot(slot, focus) {
     <div class="kicker" style="margin-bottom:8px">Who believes what</div>
     <div class="groups">${groupHtml}</div>`;
   if (g) renderGraphInto($("graph-box"), g, g.people.some((p) => p.id === focus) ? focus : null);
+  $("graph-fix").onclick = () => { $("slot-dialog").close(); openFix(slot); };
   openDlg($("slot-dialog"));
 }
 
@@ -332,6 +368,7 @@ async function runSend() {
 /* ---------------- wiring ---------------- */
 async function refresh() {
   renderClock();
+  if (typeof renderSimBanner === "function") renderSimBanner();
   const jobs = [loadBrief(), loadTeam()];
   if (S.tab === "feed") jobs.push(loadFeed());
   await Promise.all(jobs).catch((e) => console.error(e));
@@ -354,6 +391,7 @@ function engineBadge() {
   $("engine-badge").innerHTML = hydra
     ? `<b>Graph:</b> open-source HydraDB 0.4.0`
     : `<b>Graph:</b> SelfGraph on embedded Kuzu <span class="muted">(instant copy; the full build runs on HydraDB: ${real})</span>`;
+  $("btn-mcp").classList.toggle("hidden", !S.meta.mcp);
   $("graph-note").textContent = (hydra ? `HydraDB namespace ${S.meta.namespace}.` : "Instant copy on SelfGraph's embedded Kuzu store; the full build runs on HydraDB.") +
     " Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.";
 }
@@ -361,6 +399,7 @@ function engineBadge() {
 $("btn-tour").onclick = () => tourStart();
 $("btn-proof").onclick = () => openProof();
 $("btn-pitch").onclick = () => openPitch();
+$("btn-mcp").onclick = () => openMcp();
 $("scrim").onclick = closeDlgs;
 document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDlgs(); });
 document.querySelectorAll("dialog").forEach((dl) => dl.addEventListener("close", () => {

@@ -112,7 +112,7 @@ async function openProof() {
   }
 }
 
-function openPitch() {
+async function openPitch() {
   const body = $("pitch-body");
   if (!body.dataset.ready) {
     body.dataset.ready = "1";
@@ -128,7 +128,7 @@ function openPitch() {
         <section><h3>Why now, and why not what exists</h3>
           <p>Enterprise search, channel recaps, verified-knowledge tools and temporal agent memory all answer <i>what is true now</i>. None keep the other half of the record, <b>who saw which version</b>. On our labelled team that is the difference between F1 0.96 and 0.13, and between 7 and 105 false alarms per 100 briefs.</p></section>
         <section><h3>Wedge → product</h3>
-          <ol><li><b>Check before sending</b> for customer-facing people.</li><li><b>Morning corrections</b> with a "news to me" button that teaches the graph.</li><li><b>A correction block for agents</b> over MCP, about 100 extra tokens per answer.</li></ol>
+          <ol><li><b>Close the gap</b>: who still needs to hear a change, where to post, who needs an @mention, and a draft.</li><li><b>Check before sending</b> for customer-facing people.</li><li><b>Morning corrections</b> with a "news to me" button that teaches the graph.</li><li><b>A correction block for agents</b> over MCP, about 100 extra tokens per answer.</li></ol>
           <p class="small muted">Trial: run the Slack-export importer on last quarter and read "these 11 people were working from an old price on these dates". That report is the sales call.</p></section>
         <section><h3>Pricing hypothesis, to test with design partners</h3>
           <table class="ptable price"><tbody>
@@ -141,9 +141,58 @@ function openPitch() {
           <li><b>It improves with use.</b> Every "news to me", echo and restatement teaches it who reads what; on unseen orgs, false alarms fall about 28% after four sprints.</li>
           <li><b>Self-hostable.</b> Runs on open-source HydraDB inside the customer's own infrastructure; the graph can keep claims and edges without message text.</li></ul></section>
       </div>
+      <h3>What it could be worth to you</h3>
+      <div class="calc" id="calc">
+        <label>People <input type="number" id="c-people" min="1" value="60"></label>
+        <label>AI agents <input type="number" id="c-agents" min="0" value="2"></label>
+        <label>Out-of-date beliefs that matter, per person per month <input type="number" id="c-stale" min="0" step="0.5" value="2"></label>
+        <label>Share that reach a customer or a system (%) <input type="number" id="c-share" min="0" max="100" value="10"></label>
+        <label>Cost of one wrong statement ($) <input type="number" id="c-cost" min="0" value="300"></label>
+        <div class="calc-out" id="calc-out"></div>
+      </div>
+      <p class="small muted">Illustrative. The inputs are yours; the one number we measured is the share Unstale catches (recall <span id="c-recall">0.66</span> on the generated orgs; precision 0.87). Our simulated orgs are far denser in changes than a real team, so we don't claim a rate for you. Prices are the hypothesis above.</p>
       <div class="cta"><b>Next 90 days:</b> Slack app (morning DM, message-action check) → three design partners running a four-week pilot measured in <i>outdated statements caught before they reached a customer</i> → publish the benchmark as an open dataset.
         <a class="btn" href="https://github.com/YashasviThakur/unstale/issues/new?title=Design%20partner%3A%20&body=Team%20size%3A%0AWhere%20decisions%20are%20made%20(Slack%2FTeams%2Femail)%3A%0AWhat%20goes%20stale%20for%20you%3A" target="_blank" rel="noopener">Be a design partner</a>
         <a class="btn ghost" href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">Repo</a></div>`;
   }
   openDlg($("pitch-dialog"));
+  wireCalc();
+}
+
+async function wireCalc() {
+  let recall = 0.66;
+  try { recall = (await api("/api/proof")).bench.total.learned.recall; } catch (e) { /* keep the default */ }
+  $("c-recall").textContent = recall.toFixed(2);
+  const run = () => {
+    const v = (id) => Math.max(0, parseFloat($(id).value) || 0);
+    const people = v("c-people"), agents = v("c-agents"), stale = v("c-stale"), share = Math.min(100, v("c-share")) / 100, cost = v("c-cost");
+    const wrong = people * stale * share, caught = wrong * recall, saved = caught * cost, price = people * 6 + agents * 20;
+    const money = (x) => "$" + Math.round(x).toLocaleString();
+    $("calc-out").innerHTML = `<div><b>${wrong.toFixed(1)}</b><span>wrong statements or actions a month</span></div>
+      <div><b>${caught.toFixed(1)}</b><span>caught before they land</span></div>
+      <div><b>${money(saved)}</b><span>avoided a month, at ${money(cost)} each</span></div>
+      <div><b>${money(price)}</b><span>Unstale a month at the hypothesis prices</span></div>
+      <div class="net"><b>${price ? (saved / price).toFixed(1) + "x" : "n/a"}</b><span>return on the subscription</span></div>`;
+  };
+  document.querySelectorAll("#calc input").forEach((el) => { el.oninput = run; });
+  run();
+}
+
+function openMcp() {
+  const url = `${location.origin}/mcp`;
+  const cfg = JSON.stringify({ mcpServers: { unstale: { url } } }, null, 2);
+  $("mcp-body").innerHTML = `
+    <p class="lede">The demo team's graph is live as an MCP server. Connect any agent and it can ask what in its context is out of date, who to tell, and whether a draft repeats an old fact. It is read-only here.</p>
+    <h3>Claude Code</h3>
+    <pre class="code" id="mcp-cmd">claude mcp add --transport http unstale ${esc(url)}</pre>
+    <h3>Cursor, Claude Desktop and other clients</h3>
+    <pre class="code">${esc(cfg)}</pre>
+    <h3>Then ask it</h3>
+    <ul class="limits">
+      <li><code>What does agent:support-bot believe that is no longer true?</code> → <b>corrections</b></li>
+      <li><code>Team plan price changed. Who still has the old one, and who should I tell?</code> → <b>who_to_notify</b> (subject <code>plan:team</code>, attribute <code>PRICED_AT</code>)</li>
+      <li><code>Who holds which version of the 2.4 ship date?</code> → <b>who_believes</b></li>
+    </ul>
+    <p class="small muted">People are ids like <code>person:maya</code> and <code>agent:support-bot</code>; times run 22 Jun to 1 Jul 2026 and default to the end. Tools: corrections, who_to_notify, who_believes, check_before_sending (preset drafts only on the public demo), give_feedback (capped). Source: <code>unstale/mcp_server.py</code>.</p>`;
+  openDlg($("mcp-dialog"));
 }

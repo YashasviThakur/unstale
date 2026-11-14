@@ -64,6 +64,9 @@ one AI support agent sit downstream of them.
 
 Start where a wrong statement has a customer on the other end:
 
+0. **Close the gap**, the part that makes it more than an alert: for any changed fact, who still needs to hear it, where to
+   post, who needs an @mention, and a draft. This is what a RevOps lead does by hand today. A what-if shows the corrections
+   that would be left.
 1. **Check before sending** for customer-facing people: one click on a draft, and the two outdated
    facts in it are flagged with the message that changed them.
 2. **Morning corrections** for the same people: the three things you believe that stopped being true,

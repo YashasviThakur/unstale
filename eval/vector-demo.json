@@ -1,0 +1,572 @@
+{
+ "api:payments-v1|STATUS": {
+  "query": "What is the Payments API v1 status?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m030",
+    "score": 0.852
+   },
+   {
+    "message": "m014",
+    "score": 0.758
+   },
+   {
+    "message": "m002",
+    "score": 0.75
+   },
+   {
+    "message": "m005",
+    "score": 0.69
+   },
+   {
+    "message": "m035",
+    "score": 0.679
+   },
+   {
+    "message": "m033",
+    "score": 0.662
+   },
+   {
+    "message": "m013",
+    "score": 0.658
+   },
+   {
+    "message": "m009",
+    "score": 0.652
+   }
+  ]
+ },
+ "customer:brightline|CONTRACT_START": {
+  "query": "What is the Brightline contract start?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m007",
+    "score": 0.848
+   },
+   {
+    "message": "m043",
+    "score": 0.702
+   },
+   {
+    "message": "m032",
+    "score": 0.696
+   },
+   {
+    "message": "m013",
+    "score": 0.641
+   },
+   {
+    "message": "m020",
+    "score": 0.64
+   },
+   {
+    "message": "m022",
+    "score": 0.617
+   },
+   {
+    "message": "m012",
+    "score": 0.609
+   },
+   {
+    "message": "m009",
+    "score": 0.609
+   }
+  ]
+ },
+ "customer:kestrel|OWNED_BY": {
+  "query": "What is the Kestrel Foods owner?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m038",
+    "score": 0.637
+   },
+   {
+    "message": "m014",
+    "score": 0.625
+   },
+   {
+    "message": "m023",
+    "score": 0.614
+   },
+   {
+    "message": "m008",
+    "score": 0.485
+   },
+   {
+    "message": "m035",
+    "score": 0.473
+   },
+   {
+    "message": "m001",
+    "score": 0.467
+   },
+   {
+    "message": "m024",
+    "score": 0.465
+   },
+   {
+    "message": "m007",
+    "score": 0.462
+   }
+  ]
+ },
+ "customer:kestrel|RENEWAL_DATE": {
+  "query": "What is the Kestrel Foods renewal date?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m023",
+    "score": 0.704
+   },
+   {
+    "message": "m014",
+    "score": 0.642
+   },
+   {
+    "message": "m038",
+    "score": 0.641
+   },
+   {
+    "message": "m025",
+    "score": 0.626
+   },
+   {
+    "message": "m001",
+    "score": 0.612
+   },
+   {
+    "message": "m027",
+    "score": 0.606
+   },
+   {
+    "message": "m039",
+    "score": 0.604
+   },
+   {
+    "message": "m033",
+    "score": 0.601
+   }
+  ]
+ },
+ "feature:sso|AVAILABLE_IN": {
+  "query": "What is the SSO target release?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m018",
+    "score": 0.742
+   },
+   {
+    "message": "m043",
+    "score": 0.735
+   },
+   {
+    "message": "m029",
+    "score": 0.725
+   },
+   {
+    "message": "m032",
+    "score": 0.696
+   },
+   {
+    "message": "m007",
+    "score": 0.676
+   },
+   {
+    "message": "m001",
+    "score": 0.65
+   },
+   {
+    "message": "m012",
+    "score": 0.631
+   },
+   {
+    "message": "m003",
+    "score": 0.631
+   }
+  ]
+ },
+ "meeting:kestrel-qbr|SCHEDULED_FOR": {
+  "query": "What is the Kestrel QBR meeting time?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m009",
+    "score": 0.715
+   },
+   {
+    "message": "m031",
+    "score": 0.704
+   },
+   {
+    "message": "m023",
+    "score": 0.687
+   },
+   {
+    "message": "m014",
+    "score": 0.655
+   },
+   {
+    "message": "m033",
+    "score": 0.636
+   },
+   {
+    "message": "m013",
+    "score": 0.632
+   },
+   {
+    "message": "m038",
+    "score": 0.617
+   },
+   {
+    "message": "m012",
+    "score": 0.617
+   }
+  ]
+ },
+ "plan:business|PRICED_AT": {
+  "query": "What is the Business plan price?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m004",
+    "score": 0.713
+   },
+   {
+    "message": "m020",
+    "score": 0.674
+   },
+   {
+    "message": "m005",
+    "score": 0.662
+   },
+   {
+    "message": "m044",
+    "score": 0.651
+   },
+   {
+    "message": "m021",
+    "score": 0.598
+   },
+   {
+    "message": "m022",
+    "score": 0.584
+   },
+   {
+    "message": "m039",
+    "score": 0.581
+   },
+   {
+    "message": "m041",
+    "score": 0.579
+   }
+  ]
+ },
+ "plan:team|PRICED_AT": {
+  "query": "What is the Team plan price?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m044",
+    "score": 0.795
+   },
+   {
+    "message": "m004",
+    "score": 0.788
+   },
+   {
+    "message": "m020",
+    "score": 0.778
+   },
+   {
+    "message": "m005",
+    "score": 0.776
+   },
+   {
+    "message": "m007",
+    "score": 0.607
+   },
+   {
+    "message": "m022",
+    "score": 0.605
+   },
+   {
+    "message": "m021",
+    "score": 0.599
+   },
+   {
+    "message": "m018",
+    "score": 0.597
+   }
+  ]
+ },
+ "policy:annual-refunds|WINDOW": {
+  "query": "What is the Annual plan refunds refund window?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m041",
+    "score": 0.752
+   },
+   {
+    "message": "m039",
+    "score": 0.741
+   },
+   {
+    "message": "m005",
+    "score": 0.689
+   },
+   {
+    "message": "m002",
+    "score": 0.626
+   },
+   {
+    "message": "m004",
+    "score": 0.618
+   },
+   {
+    "message": "m013",
+    "score": 0.61
+   },
+   {
+    "message": "m012",
+    "score": 0.595
+   },
+   {
+    "message": "m022",
+    "score": 0.584
+   }
+  ]
+ },
+ "policy:monthly-refunds|WINDOW": {
+  "query": "What is the Monthly plan refunds refund window?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m039",
+    "score": 0.818
+   },
+   {
+    "message": "m041",
+    "score": 0.783
+   },
+   {
+    "message": "m005",
+    "score": 0.738
+   },
+   {
+    "message": "m004",
+    "score": 0.663
+   },
+   {
+    "message": "m013",
+    "score": 0.642
+   },
+   {
+    "message": "m002",
+    "score": 0.642
+   },
+   {
+    "message": "m012",
+    "score": 0.631
+   },
+   {
+    "message": "m003",
+    "score": 0.625
+   }
+  ]
+ },
+ "release:2.4|CODE_FREEZE": {
+  "query": "What is the Release 2.4 code freeze?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m003",
+    "score": 0.826
+   },
+   {
+    "message": "m034",
+    "score": 0.734
+   },
+   {
+    "message": "m042",
+    "score": 0.706
+   },
+   {
+    "message": "m012",
+    "score": 0.674
+   },
+   {
+    "message": "m015",
+    "score": 0.666
+   },
+   {
+    "message": "m011",
+    "score": 0.659
+   },
+   {
+    "message": "m026",
+    "score": 0.656
+   },
+   {
+    "message": "m017",
+    "score": 0.653
+   }
+  ]
+ },
+ "release:2.4|DEPLOY_WINDOW": {
+  "query": "What is the Release 2.4 deploy window?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m012",
+    "score": 0.809
+   },
+   {
+    "message": "m003",
+    "score": 0.796
+   },
+   {
+    "message": "m034",
+    "score": 0.775
+   },
+   {
+    "message": "m011",
+    "score": 0.758
+   },
+   {
+    "message": "m017",
+    "score": 0.738
+   },
+   {
+    "message": "m026",
+    "score": 0.71
+   },
+   {
+    "message": "m029",
+    "score": 0.656
+   },
+   {
+    "message": "m025",
+    "score": 0.647
+   }
+  ]
+ },
+ "release:2.4|SHIPS_ON": {
+  "query": "What is the Release 2.4 ship date?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m003",
+    "score": 0.768
+   },
+   {
+    "message": "m001",
+    "score": 0.766
+   },
+   {
+    "message": "m034",
+    "score": 0.736
+   },
+   {
+    "message": "m017",
+    "score": 0.727
+   },
+   {
+    "message": "m029",
+    "score": 0.712
+   },
+   {
+    "message": "m018",
+    "score": 0.711
+   },
+   {
+    "message": "m025",
+    "score": 0.696
+   },
+   {
+    "message": "m012",
+    "score": 0.694
+   }
+  ]
+ },
+ "service:payments|OWNED_BY": {
+  "query": "What is the Payments service owner?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m014",
+    "score": 0.69
+   },
+   {
+    "message": "m002",
+    "score": 0.676
+   },
+   {
+    "message": "m030",
+    "score": 0.662
+   },
+   {
+    "message": "m038",
+    "score": 0.627
+   },
+   {
+    "message": "m024",
+    "score": 0.611
+   },
+   {
+    "message": "m007",
+    "score": 0.592
+   },
+   {
+    "message": "m005",
+    "score": 0.587
+   },
+   {
+    "message": "m006",
+    "score": 0.577
+   }
+  ]
+ },
+ "service:payments|WEBHOOK_RETRIES": {
+  "query": "What is the Payments service webhook retries?",
+  "model": "BAAI/bge-small-en-v1.5",
+  "ranking": [
+   {
+    "message": "m006",
+    "score": 0.816
+   },
+   {
+    "message": "m014",
+    "score": 0.772
+   },
+   {
+    "message": "m035",
+    "score": 0.737
+   },
+   {
+    "message": "m002",
+    "score": 0.728
+   },
+   {
+    "message": "m036",
+    "score": 0.683
+   },
+   {
+    "message": "m030",
+    "score": 0.678
+   },
+   {
+    "message": "m005",
+    "score": 0.631
+   },
+   {
+    "message": "m043",
+    "score": 0.589
+   }
+  ]
+ }
+}

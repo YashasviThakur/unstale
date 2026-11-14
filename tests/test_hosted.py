@@ -17,16 +17,19 @@ def test_kuzu_dialect_renames_labels_and_ids():
     assert "s.etype" in out          # relationship properties keep their names
 
 
-@pytest.fixture()
-def client(tmp_path, monkeypatch):
-    monkeypatch.setenv("UNSTALE_STORE", "kuzu")
-    monkeypatch.setenv("UNSTALE_KUZU_PATH", str(tmp_path / "g.kuzu"))
-    monkeypatch.setenv("UNSTALE_HOSTED", "1")
+@pytest.fixture(scope="module")
+def client(tmp_path_factory):
+    """One app for the module: the MCP session manager can only be started once per process."""
+    mp = pytest.MonkeyPatch()
+    mp.setenv("UNSTALE_STORE", "kuzu")
+    mp.setenv("UNSTALE_KUZU_PATH", str(tmp_path_factory.mktemp("kuzu") / "g.kuzu"))
+    mp.setenv("UNSTALE_HOSTED", "1")
+    mp.setenv("UNSTALE_MCP", "1")
     from unstale import api
-    api.STATE.clear()
+    api.STATE.pop("eng", None)
     with TestClient(api.app) as c:
         yield c
-    api.STATE.clear()
+    mp.undo()
 
 
 def test_hosted_demo_matches_the_labelled_team(client):
@@ -58,3 +61,71 @@ def test_public_demo_does_not_let_visitors_post(client):
     r = client.post("/api/send", json={"author": "person:maya", "text": "hi", "as_of": "2026-07-01T17:00:00Z",
                                        "channel": "sales"})
     assert r.status_code == 403
+
+
+END = "2026-07-01T17:00:00Z"
+
+
+def test_fix_plan_reaches_everyone_and_the_what_if_removes_the_corrections(client):
+    import json
+    f = client.get("/api/fix", params={"slot": "plan:team|PRICED_AT", "as_of": END}).json()
+    stale = {x["person"] for x in f["stale"]}
+    assert stale == {"person:tom", "person:maya", "agent:support-bot"}
+    reached = {p for st in f["plan"] if st["kind"] == "post" for p in st["reach"]}
+    assert reached == stale                      # every stale person is covered by some channel
+    assert all(o["after"] < o["before"] for o in f["outcome"])
+    assert "Team plan" in f["draft"] and "$49/seat/month" in f["draft"]
+
+    before = client.get("/api/brief/person:tom", params={"as_of": END}).json()["items"]
+    sim = json.dumps(f["effects"])
+    after = client.get("/api/brief/person:tom", params={"as_of": END, "sim": sim}).json()["items"]
+    assert len(after) == len(before) - 1
+    assert all(i["slot"] != "plan:team|PRICED_AT" for i in after)
+
+
+def test_fix_what_if_is_stateless(client):
+    import json
+    f = client.get("/api/fix", params={"slot": "plan:team|PRICED_AT", "as_of": END}).json()
+    client.get("/api/team", params={"as_of": END, "sim": json.dumps(f["effects"])})
+    plain = client.get("/api/team", params={"as_of": END}).json()
+    assert sum(len(p["stale"]) for p in plain["people"]) == 13      # the simulation changed nothing in the graph
+
+
+def test_a_simulation_is_ignored_before_it_happens(client):
+    import json
+    f = client.get("/api/fix", params={"slot": "plan:team|PRICED_AT", "as_of": END}).json()
+    early = client.get("/api/brief/person:tom", params={"as_of": "2026-06-30T08:00:00Z", "sim": json.dumps(f["effects"])}).json()
+    plain = client.get("/api/brief/person:tom", params={"as_of": "2026-06-30T08:00:00Z"}).json()
+    assert [i["slot"] for i in early["items"]] == [i["slot"] for i in plain["items"]]
+
+
+def test_remote_mcp_serves_the_tools(client):
+    h = {"content-type": "application/json", "accept": "application/json, text/event-stream"}
+
+    def rpc(i, method, params=None):
+        return client.post("/mcp", headers=h, json={"jsonrpc": "2.0", "id": i, "method": method, "params": params or {}}).json()
+
+    tools = {t["name"] for t in rpc(1, "tools/list")["result"]["tools"]}
+    assert {"corrections", "who_to_notify", "who_believes", "check_before_sending", "give_feedback"} <= tools
+    out = rpc(2, "tools/call", {"name": "who_to_notify", "arguments": {"subject": "plan:team", "attribute": "PRICED_AT"}})
+    text = out["result"]["content"][0]["text"]
+    assert "Post in #general" in text and "Support agent" in text
+    assert client.get("/api/meta").json()["mcp"] is True
+
+
+def test_vector_results_sit_next_to_the_graph(client):
+    g = client.get("/api/graph", params={"slot": "plan:team|PRICED_AT", "as_of": END}).json()
+    v = g["vector"]
+    assert v["model"].startswith("BAAI/") and 1 <= len(v["results"]) <= 5
+    assert any(r["states"] and not r["current"] for r in v["results"])      # it retrieves the old value too
+
+
+def test_a_reported_miss_teaches_the_graph_and_the_suspicion_shows(client):
+    """Last, because it writes evidence: Dev says he missed the payments hand-off, his read rate drops, and he is now worth a check."""
+    a = client.get("/api/assumed", params={"person": "person:dev", "as_of": END}).json()["items"]
+    assert [i["slot"] for i in a] == ["service:payments|OWNED_BY"]
+    assert client.get("/api/brief/person:dev", params={"as_of": END}).json()["maybe"] == []
+    r = client.post("/api/feedback", json={"person": "person:dev", "slot": "service:payments|OWNED_BY", "verdict": "news", "as_of": END}).json()
+    assert r["evidence"] == 1 and r["rates"][0]["rate"] < 0.5
+    b = client.get("/api/brief/person:dev", params={"as_of": END}).json()
+    assert [m["slot"] for m in b["maybe"]] == ["service:payments|OWNED_BY"] and b["items"] == []

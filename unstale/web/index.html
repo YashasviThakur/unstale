@@ -23,6 +23,7 @@
     <span id="engine-badge" class="engine">Starting the graph...</span>
     <span class="spacer"></span>
     <button type="button" id="btn-tour" class="tb primary">60-second tour</button>
+    <button type="button" id="btn-mcp" class="tb hidden">Connect your agent</button>
     <button type="button" id="btn-proof" class="tb">Proof</button>
     <button type="button" id="btn-pitch" class="tb">Pitch</button>
     <a class="tb" href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
@@ -87,7 +88,10 @@
         <h2 id="corr-title">Starting the graph...</h2>
         <p id="corr-meta" class="small muted">The hosted demo rebuilds its graph after a quiet spell; this can take a few seconds.</p>
       </div>
+      <div id="sim-banner" class="sim-banner hidden"></div>
       <div id="corr-list"></div>
+      <div id="maybe" class="assumed-box hidden"></div>
+      <div id="assumed" class="assumed-box hidden"></div>
       <div id="agent-block" class="agent-block hidden">
         <div class="kicker">Prompt block for this agent</div>
         <pre id="agent-context"></pre>
@@ -103,10 +107,21 @@
     <div id="slot-body"></div>
   </dialog>
 
+  <dialog id="fix-dialog" class="sheet" aria-label="Close the gap">
+    <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
+    <div id="fix-body"></div>
+  </dialog>
+
   <dialog id="proof-dialog" class="sheet" aria-label="Proof">
     <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
     <h2 class="sheet-title">Proof</h2>
     <div id="proof-body"></div>
+  </dialog>
+
+  <dialog id="mcp-dialog" class="sheet" aria-label="Connect your agent">
+    <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
+    <h2 class="sheet-title">Connect your own agent</h2>
+    <div id="mcp-body"></div>
   </dialog>
 
   <dialog id="pitch-dialog" class="sheet" aria-label="Pitch">
@@ -124,6 +139,7 @@
 
   <script src="/static/app.js"></script>
   <script src="/static/graph.js"></script>
+  <script src="/static/fix.js"></script>
   <script src="/static/panels.js"></script>
   <script src="/static/tour.js"></script>
 </body>

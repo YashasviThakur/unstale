@@ -16,8 +16,12 @@ Slack doesn't say who read a message, so Unstale learns it: every "news to me / 
 correction, and every echo or restatement people post, is written back to the graph as read evidence,
 and turns "channel member" into a learned read rate. The graph gets sharper every run.
 
-It ships as a corrections brief, a check-before-sending for drafts, a correction block for agents
-over MCP, and a Slack export importer.
+It ships as a corrections brief, a **Fix it** plan (who still needs to hear a change, which channel reaches them, who needs an
+@mention, a draft, and a what-if of the corrections that would be left), a check-before-sending for drafts, a correction block for
+agents, a **live MCP server** any agent can connect to (`claude mcp add --transport http unstale https://unstale.onrender.com/mcp`),
+and a Slack export importer. Each fact's **Graph view** sits next to what a real vector search returns for the same question: the store
+finds the right messages and cannot say who read which. People can also tell Unstale about facts it only *assumed* they had read, which
+is how recall improves.
 
 ## Results
 

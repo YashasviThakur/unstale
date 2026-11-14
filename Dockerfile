@@ -13,7 +13,7 @@ RUN apt-get update \
 WORKDIR /app
 COPY pyproject.toml ./
 RUN python3 -m venv /opt/venv \
- && /opt/venv/bin/python -c "import tomllib;print(chr(10).join(tomllib.load(open('pyproject.toml','rb'))['project']['dependencies']))" > /tmp/req.txt \
+ && /opt/venv/bin/python -c "import tomllib;p=tomllib.load(open('pyproject.toml','rb'))['project'];print(chr(10).join(p['dependencies']+p['optional-dependencies']['mcp']))" > /tmp/req.txt \
  && /opt/venv/bin/pip install --no-cache-dir -r /tmp/req.txt \
  && rm -rf /root/.cache
 

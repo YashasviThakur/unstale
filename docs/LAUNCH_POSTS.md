@@ -54,6 +54,11 @@ For agents: a support bot answering 31 customer questions got 29% right from its
 and repeated an already-changed value 10 times. With Unstale's correction block (+116 tokens): 94%,
 zero outdated answers. Works over MCP.
 
+**5b/**
+It doesn't stop at alerts. "Fix it" says who still needs to hear a change, which channel reaches them, who needs an @mention because they rarely read it, and drafts the message. Then it shows the corrections that would be left.
+
+And the whole graph is a live MCP server: `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`
+
 **6/**
 Runs on the open-source HydraDB engine in Docker, SelfGraph for versioned facts, Cypher for the
 traversals. Slack export importer included.
@@ -103,3 +108,14 @@ Unstale: who in your org still believes the old version of a fact? A versioned g
 HydraDB (facts with history + who-saw-which-version). Beats a daily changelog 6.8 vs 105 false alarms
 per 100 briefs; a support bot goes from 29% to 94% correct with its correction block. Repo:
 https://github.com/YashasviThakur/unstale
+
+
+---
+
+## Message for design partners (DM, email, community post)
+
+Subject: do your reps and support bot work from last month's price?
+
+Hi <name>, I built a tool that tells you who on your team (and which AI agents) are still working from an old version of a fact: a price, a ship date, a refund window. It reads who saw which message, not just what changed, so it doesn't send the "PSA" to people who were in the room. On a simulated company it cuts false alarms from 105 to 7 per 100 briefs against a daily changelog.
+
+Could I run it on one exported Slack channel set of yours (or you try the demo, https://unstale.onrender.com) and tell you which three people were out of date last quarter? 15 minutes, and I'd like your honest read on whether you'd pay for it.

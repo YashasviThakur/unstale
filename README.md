@@ -46,6 +46,16 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
   value, the message she got the old one from, the message that changed it, why she missed it
   ("You're not in #release"), and **how sure Unstale is** (100% when she wrote it herself, lower when
   it only assumes she read a channel). Zero LLM tokens: it is a graph traversal.
+- **Fix it.** Detecting is half of it. From the same graph and the learned read rates, Unstale says who still
+  needs to hear a change, which channel reaches them, who needs an @mention because they rarely read it, and drafts
+  the message. "Simulate sending this plan" re-runs the briefs over each person's real exposures plus the ones the plan
+  would create, so you see the corrections that would be left. Nothing is written, so it is safe on a public demo.
+- **Teach it what it missed.** Under the corrections: facts Unstale only *assumes* you read because you're in the
+  channel. "I missed it" lowers your read rate for that channel (and, a little, everyone's) and Unstale starts
+  suspecting people like you; "worth a check" shows candidates just under the alert threshold. This is how recall improves.
+- **Connect your own agent.** The demo graph is a live MCP server at `/mcp` (streamable HTTP, read-only):
+  `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`. Tools: `corrections`, `who_to_notify`,
+  `who_believes`, `check_before_sending`, `give_feedback`.
 - **Check before sending.** Paste a draft. Unstale flags any fact in it that has since changed
   ("ship date is Fri 3 Jul, not Mon 29 Jun; changed 26 Jun by Priya in #release; you never saw
   that change") and warns which readers still hold the old value.
@@ -64,6 +74,10 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
   timeline and watch who falls out of the loop and when.
 
 ## Why a graph and not a vector store
+
+Click any fact chip and the Graph view puts the two side by side: the graph of who saw which version, and the five
+messages a real vector search returns for the same question (bge-small embeddings, `scripts/vector_demo.py`). The store
+finds the right messages, old values included, and has no way to fill in "did Maya see it?"
 
 A vector store can find messages that look related to "pricing". It cannot represent "Tom saw
 version 1 of the price in #sales on 22 Jun and never saw version 2 in #pricing on 25 Jun", so it

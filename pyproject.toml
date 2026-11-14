@@ -16,7 +16,8 @@ dependencies = [
 
 [project.optional-dependencies]
 baselines = ["fastembed>=0.4"]
-dev = ["pytest>=8"]
+mcp = ["mcp>=2.3"]               # the remote /mcp endpoint and unstale.mcp_server
+dev = ["pytest>=8", "mcp>=2.3"]
 
 [build-system]
 requires = ["hatchling"]
