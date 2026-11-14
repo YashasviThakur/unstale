@@ -3,11 +3,11 @@
 Ready to paste. Fill the two `<...>` links after the app is hosted and the walkthrough is recorded.
 HydraDB's account is **@hydra_db** (X) and HydraDB on LinkedIn.
 
-- Live app: `https://unstale.vercel.app`
+- Live app: `https://unstale.onrender.com`
 - Walkthrough: `<VIDEO_LINK>`
 - Repo: https://github.com/YashasviThakur/unstale
 
-Screenshots are in docs/media (recapture from the HydraDB Space once it is live, so the badge reads HydraDB). Worth attaching: the graph view of a stale fact (click a fact chip, then the missing red edge) and the learning curve in the Proof panel.
+Screenshots are in docs/media (captured from the HydraDB build). Worth attaching: the graph view of a stale fact (click a fact chip, then the missing red edge) and the learning curve in the Proof panel.
 Attach the 45 s ink-wash film or the 99 s features film to the first post (video gets more reach than
 a link). Post the thread, then reply to a few teams who build agents or run RevOps.
 
@@ -59,7 +59,7 @@ Runs on the open-source HydraDB engine in Docker, SelfGraph for versioned facts,
 traversals. Slack export importer included.
 
 Repo: https://github.com/YashasviThakur/unstale
-Demo: `https://unstale.vercel.app`
+Demo: `https://unstale.onrender.com`
 Walkthrough: `<VIDEO_LINK>`
 
 Built for the @hydra_db hackathon.
@@ -90,7 +90,7 @@ revenue team and a support agent sit downstream of product and pricing decisions
 I'd like 15 minutes.
 
 Repo: https://github.com/YashasviThakur/unstale
-Live demo: `https://unstale.vercel.app`
+Live demo: `https://unstale.onrender.com`
 Walkthrough: `<VIDEO_LINK>`
 
 @HydraDB #HydraDB #AIAgents #RevOps

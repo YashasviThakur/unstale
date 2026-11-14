@@ -33,7 +33,7 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
 
 ## Try it
 
-- **Live:** the link is in [docs/SUBMISSION.md](docs/SUBMISSION.md). Click **60-second tour** in the top bar, or open **Proof**
+- **Live:** https://unstale.onrender.com (real HydraDB; a free instance, so the first visit after a quiet spell can take a minute) or https://unstale.vercel.app (instant copy). Click **60-second tour** in the top bar, or open **Proof**
   (every number, read from the result files) and **Pitch**. Click any fact chip to see **the graph behind it**: people, the messages
   they saw, the fact's versions, and the missing edge that makes someone stale.
 - **One command, real HydraDB:** `docker build -t unstale . && docker run --rm -p 7860:7860 unstale`, then open
