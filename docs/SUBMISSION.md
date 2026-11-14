@@ -49,6 +49,6 @@ our labelled team, vector RAG scores F1 0.13.
 
 ## Links
 
-- Repo: (add after publishing)
+- Repo: https://github.com/YashasviThakur/unstale
 - Demo video: (add after recording)
 - Go-to-market: docs/GTM.md
