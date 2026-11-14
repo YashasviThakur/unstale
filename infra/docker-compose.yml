@@ -35,10 +35,10 @@ services:
       HYDRA_TOKEN: ${HYDRA_TOKEN}
     entrypoint: /bin/sh
     command: >
-      -c "mkdir -p /data/cache && printf '%s\n' \"$$HYDRA_TOKEN\" > /data/auth-token"
+      -c "mkdir -p /data/cache && printf '%s\n' \"$$HYDRA_TOKEN\" > /data/auth-token && chown -R 10001:10001 /data"
 
   hydradb:
-    image: ghcr.io/hydra-db/hydradb:latest
+    image: ghcr.io/hydra-db/hydradb:0.4.0
     depends_on:
       minio-init:
         condition: service_completed_successfully

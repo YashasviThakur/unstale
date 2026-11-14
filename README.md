@@ -29,7 +29,7 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
 | 20 generated orgs, 5,210 messages, reading the engine can't see | F1 **0.75** against 0.67 for the original engine; false alarms down **68%** (6.8 per 100 briefs vs 21.4; a daily changelog sends 105.5) |
 | Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint |
 | Support agent answering customers | 29% correct from its own knowledge base; **94%** with Unstale's correction block added (+116 tokens), with **0** outdated answers. It fixes all 22 questions the knowledge base got wrong |
-| HydraDB vs the Python twin | 168 of 168 briefs identical in the parity check; two full benchmark orgs (516 messages, three sprints each, feedback written to the graph) run on HydraDB reproduce the twin's numbers exactly |
+| HydraDB vs the Python twin | 168 of 168 briefs identical in the parity check on 0.3.0, and 308 of 308 on 0.4.0 (one org, seed 1); two full benchmark orgs (516 messages, three sprints each, feedback written to the graph) run on HydraDB reproduce the twin's numbers exactly |
 
 ## What it does
 
@@ -302,7 +302,7 @@ Tools: `corrections(person)`, `check_before_sending(author, text, channel?)`,
 
 ## Built on HydraDB
 
-- **HydraDB open-source engine v0.3.0** (Docker, MinIO for object storage) holds the whole graph:
+- **HydraDB open-source engine v0.4.0** (Docker, pinned image `ghcr.io/hydra-db/hydradb:0.4.0`, MinIO for object storage) holds the whole graph:
   directory, messages, claims, who-saw-what, fact versions and read evidence.
 - **SelfGraph** (HydraDB's graph SDK) writes and versions the facts: each fact attribute is capped
   at one current value per subject (`max_count: 1`, `contradiction="supersede"`), so a newer update
@@ -310,10 +310,12 @@ Tools: `corrections(person)`, `check_before_sending(author, text, channel?)`,
 - Raw Cypher on HydraDB does the traversals; a pure-Python twin ([`unstale/reference.py`](unstale/reference.py))
   holds the same rules in dictionaries and is checked against HydraDB brief for brief.
 
-Things we learned about HydraDB 0.3 while building, in case they help others:
+Things we learned about HydraDB while building (measured on 0.3.0; the Northwind result and tests were re-run on 0.4.0), in case they help others:
 
-- SelfGraph's docs say its HydraDB store needs 0.4.0+. Everything Unstale uses works on 0.3.0
-  (writes, supersede, version history, raw Cypher), with SelfGraph installed from `main`.
+- SelfGraph's docs say its HydraDB store needs 0.4.0+. Unstale now runs on 0.4.0 (Northwind: precision 1.00,
+  recall 0.917, about 82 ms per brief); the earlier work on 0.3.0 also worked, with SelfGraph installed from `main`.
+- The 0.4.0 image runs as uid 10001, so the data volume must be owned by it. `infra/docker-compose.yml`
+  does the `chown` in its init step; without it the node exits with "cannot create the shared disk cache directory".
 - `WHERE r.is_current = true` on an edge costs about 110 ms per query; without it the same query
   takes about 20 ms. Directory edges are never retired, so Unstale leaves it out there.
 - A two-hop pattern starting from a person (`(p)-[]->(s)-[]->(x)`) took about 1.5 s; the same

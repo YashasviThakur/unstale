@@ -31,11 +31,11 @@ over MCP, and a Slack export importer.
   with 0, 1 and 2 prior sprints of evidence.
 - **Agents:** a support agent answering 31 customer questions gets 29% right from its own knowledge base and 94% with Unstale's correction block (+116 tokens, 0 outdated answers). Dumping every message gets 90% at 5.8x the tokens; vector RAG over every message gets 97% but needs the bot to index every internal channel.
 - **HydraDB:** the benchmark runs on HydraDB, and a pure-Python twin agrees with it brief for brief
-  (168 of 168 briefs identical in the parity check).
+  (168 of 168 briefs identical on 0.3.0; 308 of 308 on 0.4.0).
 
 ## How it uses HydraDB
 
-HydraDB open-source engine (v0.3.0, Docker) holds the whole graph: people, channels, messages,
+HydraDB open-source engine (v0.4.0, Docker) holds the whole graph: people, channels, messages,
 claims, SAW edges with strength, versioned fact relations and ReadEvidence nodes. SelfGraph caps each
 fact attribute at one current value per subject (`max_count: 1`, `contradiction="supersede"`), so a
 new statement retires the old one and keeps the history; `as_of` reads give time travel. Raw Cypher

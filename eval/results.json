@@ -1,6 +1,6 @@
 {
   "engine": {
-    "namespace": "northwind-llm-1794668740",
+    "namespace": "northwind-llm-1794686663",
     "checkpoints": [
       {
         "at": "2026-06-23T08:00:00Z",
@@ -44,7 +44,7 @@
       }
     ],
     "briefs": 80,
-    "ms_per_brief": 50.8,
+    "ms_per_brief": 82.3,
     "llm_tokens_per_brief": 0,
     "precision": 1.0,
     "recall": 0.917,
@@ -92,7 +92,7 @@
     ],
     "graph": {
       "queries": 142,
-      "avg_query_ms": 28.2
+      "avg_query_ms": 45.9
     }
   }
 }
