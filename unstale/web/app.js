@@ -145,7 +145,7 @@ async function loadBrief() {
   $("corr-title").textContent = n
     ? `${n} thing${n > 1 ? "s" : ""} ${who} believe${p.kind === "agent" || n ? "s" : ""} that ${n > 1 ? "are" : "is"} no longer true`
     : `${who === "this agent" ? "This agent is" : `${who} is`} up to date`;
-  $("corr-meta").textContent = `${b.graph_queries} graph reads${b.cached_reads ? ` (+${b.cached_reads} from memory)` : ""}, ${b.ms} ms, ${b.llm_tokens} LLM tokens.`;
+  $("corr-meta").textContent = `${b.graph_queries + b.cached_reads} graph read${b.graph_queries + b.cached_reads === 1 ? "" : "s"}${b.cached_reads ? ` (${b.cached_reads} already in memory)` : ""}, ${b.ms} ms, ${b.llm_tokens} LLM tokens.`;
   if (!n) {
     $("corr-list").innerHTML = `<div class="clean">Nothing ${who === "this agent" ? "it has" : "they have"} seen about their work has changed since.</div>`;
   } else {
@@ -350,10 +350,11 @@ $("btn-copy").onclick = () => navigator.clipboard?.writeText($("agent-context").
 
 function engineBadge() {
   const hydra = S.meta.store === "hydradb";
+  const real = S.meta.real_url ? `<a href="${esc(S.meta.real_url)}" target="_blank" rel="noopener">Open the same app on real HydraDB</a>` : "see the repo";
   $("engine-badge").innerHTML = hydra
-    ? `<b>Graph:</b> open-source HydraDB, self-hosted`
-    : `<b>Graph:</b> SelfGraph on embedded Kuzu <span class="muted">(hosted demo; the full build runs on HydraDB, see the repo)</span>`;
-  $("graph-note").textContent = (hydra ? `HydraDB namespace ${S.meta.namespace}.` : "Hosted demo on SelfGraph's embedded Kuzu store; the full build runs on HydraDB.") +
+    ? `<b>Graph:</b> open-source HydraDB 0.4.0`
+    : `<b>Graph:</b> SelfGraph on embedded Kuzu <span class="muted">(instant copy; the full build runs on HydraDB: ${real})</span>`;
+  $("graph-note").textContent = (hydra ? `HydraDB namespace ${S.meta.namespace}.` : "Instant copy on SelfGraph's embedded Kuzu store; the full build runs on HydraDB.") +
     " Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.";
 }
 

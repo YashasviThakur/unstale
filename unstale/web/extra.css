@@ -142,3 +142,5 @@ body.tour-dlg .tour-card { left: 50%; bottom: 12px; top: auto; transform: transl
   .corrections { order: 2; border-bottom: 1px solid var(--rule); }
   .center { order: 3; }
 }
+
+.topbar .engine a { color: #f4d37a; }

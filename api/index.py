@@ -14,5 +14,6 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 os.environ.setdefault("UNSTALE_STORE", "kuzu")
 os.environ.setdefault("UNSTALE_KUZU_PATH", "/tmp/unstale.kuzu")
 os.environ.setdefault("UNSTALE_HOSTED", "1")
+os.environ.setdefault("UNSTALE_REAL_URL", "https://unstale.onrender.com")
 
 from unstale.api import app  # noqa: E402,F401

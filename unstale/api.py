@@ -19,7 +19,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import rules
-from .config import ROOT as ROOT_DIR, Settings, dataset_path
+from .config import ROOT as ROOT_DIR, Settings, dataset_path, setting
 from .engine import EXPOSURES_CYPHER, Engine, agent_context, check_draft
 from .extract import extract_message
 from .llm import USAGE, LLMError
@@ -169,7 +169,7 @@ async def warm(as_of: str) -> None:
 @app.get("/api/meta")
 async def meta() -> dict:
     d = ds()
-    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store, "hosted": eng().settings.hosted,
+    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store, "hosted": eng().settings.hosted, "real_url": setting("UNSTALE_REAL_URL"),
             "people": d["people"], "channels": d["channels"], "subjects": d["subjects"],
             "attributes": {k: v.get("label", k) for k, v in d["attributes"].items()},
             "checkpoints": checkpoints(d), "drafts": d["drafts"],
