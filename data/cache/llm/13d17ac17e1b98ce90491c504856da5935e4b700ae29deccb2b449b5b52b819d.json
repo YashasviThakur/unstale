@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "feature:sso", "attribute": "AVAILABLE_IN", "believed": "2.4", "current": "2.5"}]}, "prompt_tokens": 1345, "completion_tokens": 146, "model": "openai/gpt-oss-120b"}

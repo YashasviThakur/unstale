@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "service:payments", "attribute": "OWNED_BY", "believed": "person:arjun", "current": "person:sara"}, {"subject": "api:payments-v1", "attribute": "STATUS", "believed": "supported", "current": "deprecated"}]}, "prompt_tokens": 1357, "completion_tokens": 273, "model": "openai/gpt-oss-120b"}

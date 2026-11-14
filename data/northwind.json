@@ -1,0 +1,1548 @@
+{
+  "name": "Northwind Labs",
+  "start": "2026-06-22T08:00:00Z",
+  "end": "2026-07-01T17:00:00Z",
+  "people": [
+    {
+      "id": "person:priya",
+      "name": "Priya Raman",
+      "role": "Product manager",
+      "kind": "person"
+    },
+    {
+      "id": "person:arjun",
+      "name": "Arjun Mehta",
+      "role": "Payments engineering lead",
+      "kind": "person",
+      "ooo": [
+        [
+          "2026-06-29T00:00:00Z",
+          "2026-07-04T00:00:00Z"
+        ]
+      ]
+    },
+    {
+      "id": "person:sara",
+      "name": "Sara Kim",
+      "role": "Backend engineer",
+      "kind": "person"
+    },
+    {
+      "id": "person:dev",
+      "name": "Dev Patel",
+      "role": "Site reliability engineer",
+      "kind": "person"
+    },
+    {
+      "id": "person:maya",
+      "name": "Maya Lopez",
+      "role": "Account executive",
+      "kind": "person"
+    },
+    {
+      "id": "person:tom",
+      "name": "Tom Becker",
+      "role": "Customer success manager",
+      "kind": "person"
+    },
+    {
+      "id": "person:lena",
+      "name": "Lena Fischer",
+      "role": "Revenue operations",
+      "kind": "person"
+    },
+    {
+      "id": "agent:support-bot",
+      "name": "Support agent",
+      "role": "AI agent answering customer questions",
+      "kind": "agent"
+    }
+  ],
+  "external": {
+    "ext:hannah": "Hannah (Kestrel Foods)",
+    "ext:jordan": "Jordan (Brightline)"
+  },
+  "channels": {
+    "general": [
+      "person:priya",
+      "person:arjun",
+      "person:sara",
+      "person:dev",
+      "person:maya",
+      "person:tom",
+      "person:lena"
+    ],
+    "release": [
+      "person:priya",
+      "person:arjun",
+      "person:sara",
+      "person:dev"
+    ],
+    "eng-payments": [
+      "person:arjun",
+      "person:sara",
+      "person:dev"
+    ],
+    "sales": [
+      "person:maya",
+      "person:tom",
+      "person:lena",
+      "person:priya"
+    ],
+    "pricing": [
+      "person:lena",
+      "person:priya"
+    ],
+    "cs-kestrel": [
+      "person:tom",
+      "person:arjun",
+      "person:sara"
+    ],
+    "support-kb": [
+      "person:lena",
+      "person:tom",
+      "agent:support-bot"
+    ]
+  },
+  "subjects": [
+    {
+      "id": "release:2.4",
+      "type": "Release",
+      "name": "Release 2.4"
+    },
+    {
+      "id": "feature:sso",
+      "type": "Feature",
+      "name": "SSO"
+    },
+    {
+      "id": "service:payments",
+      "type": "Service",
+      "name": "Payments service"
+    },
+    {
+      "id": "api:payments-v1",
+      "type": "API",
+      "name": "Payments API v1"
+    },
+    {
+      "id": "plan:team",
+      "type": "Plan",
+      "name": "Team plan"
+    },
+    {
+      "id": "plan:business",
+      "type": "Plan",
+      "name": "Business plan"
+    },
+    {
+      "id": "policy:monthly-refunds",
+      "type": "Policy",
+      "name": "Monthly plan refunds"
+    },
+    {
+      "id": "policy:annual-refunds",
+      "type": "Policy",
+      "name": "Annual plan refunds"
+    },
+    {
+      "id": "customer:brightline",
+      "type": "Customer",
+      "name": "Brightline"
+    },
+    {
+      "id": "customer:kestrel",
+      "type": "Customer",
+      "name": "Kestrel Foods"
+    },
+    {
+      "id": "meeting:kestrel-qbr",
+      "type": "Meeting",
+      "name": "Kestrel QBR"
+    }
+  ],
+  "links": [
+    [
+      "feature:sso",
+      "PART_OF",
+      "release:2.4"
+    ],
+    [
+      "release:2.4",
+      "DEPENDS_ON",
+      "service:payments"
+    ],
+    [
+      "api:payments-v1",
+      "PART_OF",
+      "service:payments"
+    ],
+    [
+      "customer:brightline",
+      "WANTS",
+      "feature:sso"
+    ],
+    [
+      "customer:brightline",
+      "WAITING_ON",
+      "release:2.4"
+    ],
+    [
+      "customer:kestrel",
+      "USES",
+      "service:payments"
+    ],
+    [
+      "customer:kestrel",
+      "USES",
+      "api:payments-v1"
+    ],
+    [
+      "meeting:kestrel-qbr",
+      "FOR",
+      "customer:kestrel"
+    ]
+  ],
+  "responsibility": [
+    [
+      "person:priya",
+      "OWNS",
+      "release:2.4"
+    ],
+    [
+      "person:priya",
+      "OWNS",
+      "feature:sso"
+    ],
+    [
+      "person:arjun",
+      "OWNS",
+      "service:payments"
+    ],
+    [
+      "person:arjun",
+      "WORKS_ON",
+      "release:2.4"
+    ],
+    [
+      "person:sara",
+      "WORKS_ON",
+      "service:payments"
+    ],
+    [
+      "person:sara",
+      "WORKS_ON",
+      "release:2.4"
+    ],
+    [
+      "person:dev",
+      "WORKS_ON",
+      "release:2.4"
+    ],
+    [
+      "person:maya",
+      "OWNS",
+      "customer:brightline"
+    ],
+    [
+      "person:maya",
+      "WORKS_ON",
+      "plan:team"
+    ],
+    [
+      "person:maya",
+      "ATTENDS",
+      "meeting:kestrel-qbr"
+    ],
+    [
+      "person:tom",
+      "OWNS",
+      "customer:kestrel"
+    ],
+    [
+      "person:tom",
+      "OWNS",
+      "meeting:kestrel-qbr"
+    ],
+    [
+      "person:tom",
+      "WORKS_ON",
+      "plan:team"
+    ],
+    [
+      "person:tom",
+      "WORKS_ON",
+      "policy:monthly-refunds"
+    ],
+    [
+      "person:lena",
+      "OWNS",
+      "plan:team"
+    ],
+    [
+      "person:lena",
+      "OWNS",
+      "plan:business"
+    ],
+    [
+      "person:lena",
+      "OWNS",
+      "policy:monthly-refunds"
+    ],
+    [
+      "person:lena",
+      "OWNS",
+      "policy:annual-refunds"
+    ],
+    [
+      "agent:support-bot",
+      "WORKS_ON",
+      "plan:team"
+    ],
+    [
+      "agent:support-bot",
+      "WORKS_ON",
+      "policy:monthly-refunds"
+    ],
+    [
+      "agent:support-bot",
+      "WORKS_ON",
+      "api:payments-v1"
+    ]
+  ],
+  "attributes": {
+    "SHIPS_ON": {
+      "label": "ship date",
+      "on": [
+        "Release"
+      ],
+      "format": "date YYYY-MM-DD",
+      "desc": "the day the release goes live in production ('ships', 'goes live', 'deploys', '2.4 is Friday')"
+    },
+    "CODE_FREEZE": {
+      "label": "code freeze",
+      "on": [
+        "Release"
+      ],
+      "format": "date YYYY-MM-DD",
+      "desc": "the last day code can merge before the release; only messages about the 'freeze'"
+    },
+    "DEPLOY_WINDOW": {
+      "label": "deploy window",
+      "on": [
+        "Release"
+      ],
+      "format": "HH:MM UTC",
+      "desc": "the time of day the release deploys"
+    },
+    "AVAILABLE_IN": {
+      "label": "target release",
+      "on": [
+        "Feature"
+      ],
+      "format": "release version, e.g. 2.4",
+      "desc": "which release a feature ships in; a feature named as part or a headliner of a release counts"
+    },
+    "OWNED_BY": {
+      "label": "owner",
+      "on": [
+        "Service",
+        "Feature",
+        "Customer"
+      ],
+      "format": "person id, e.g. person:sara",
+      "desc": "who is responsible right now; 'questions come to me' or 'X owns it' counts"
+    },
+    "WEBHOOK_RETRIES": {
+      "label": "webhook retries",
+      "on": [
+        "Service"
+      ],
+      "format": "integer",
+      "desc": "how many delivery attempts webhooks get"
+    },
+    "STATUS": {
+      "label": "status",
+      "on": [
+        "API"
+      ],
+      "format": "one of: supported, deprecated, retired",
+      "desc": "whether customers should build on the API"
+    },
+    "PRICED_AT": {
+      "label": "price",
+      "on": [
+        "Plan"
+      ],
+      "format": "$N/seat/month",
+      "desc": "the plan's price"
+    },
+    "WINDOW": {
+      "label": "refund window",
+      "on": [
+        "Policy"
+      ],
+      "format": "N days",
+      "desc": "the refund window"
+    },
+    "CONTRACT_START": {
+      "label": "contract start",
+      "on": [
+        "Customer"
+      ],
+      "format": "date YYYY-MM-DD",
+      "desc": "when the customer's contract starts"
+    },
+    "RENEWAL_DATE": {
+      "label": "renewal date",
+      "on": [
+        "Customer"
+      ],
+      "format": "date YYYY-MM-DD",
+      "desc": "when the customer renews"
+    },
+    "SCHEDULED_FOR": {
+      "label": "meeting time",
+      "on": [
+        "Meeting"
+      ],
+      "format": "YYYY-MM-DD HH:MM UTC",
+      "desc": "when the meeting happens"
+    }
+  },
+  "messages": [
+    {
+      "id": "m001",
+      "ts": "2026-06-22T09:05:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:priya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Morning all! Plan for the next two weeks: 2.4 ships Monday June 29. Headliners are SSO and the new invoices page.",
+      "reactions": [
+        "person:maya",
+        "person:tom",
+        "person:dev"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "SHIPS_ON",
+            "value": "2026-06-29"
+          },
+          {
+            "subject": "feature:sso",
+            "attribute": "AVAILABLE_IN",
+            "value": "2.4"
+          }
+        ],
+        "unread_by": [
+          "person:lena"
+        ]
+      }
+    },
+    {
+      "id": "m002",
+      "ts": "2026-06-22T09:12:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:arjun",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Reminder that payments questions (webhooks, invoices, the v2 migration) come to me.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "service:payments",
+            "attribute": "OWNED_BY",
+            "value": "person:arjun"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m003",
+      "ts": "2026-06-22T09:30:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Release train for 2.4 is booked. Deploy window is 16:00 UTC and code freeze is Thursday June 25, end of day.",
+      "reactions": [
+        "person:priya",
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "DEPLOY_WINDOW",
+            "value": "16:00 UTC"
+          },
+          {
+            "subject": "release:2.4",
+            "attribute": "CODE_FREEZE",
+            "value": "2026-06-25"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m004",
+      "ts": "2026-06-22T10:00:00Z",
+      "kind": "slack",
+      "channel": "sales",
+      "thread": null,
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Q3 renewal refresher: the Team plan stays at $39/seat/month. Business is unchanged at $79/seat/month.",
+      "reactions": [
+        "person:tom"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "plan:team",
+            "attribute": "PRICED_AT",
+            "value": "$39/seat/month"
+          },
+          {
+            "subject": "plan:business",
+            "attribute": "PRICED_AT",
+            "value": "$79/seat/month"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m005",
+      "ts": "2026-06-22T10:20:00Z",
+      "kind": "slack",
+      "channel": "support-kb",
+      "thread": null,
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Knowledge base update for the support agent: Team plan is $39/seat/month. Monthly plans get a full refund within 30 days. Payments API v1 is the supported API for integrations.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "plan:team",
+            "attribute": "PRICED_AT",
+            "value": "$39/seat/month"
+          },
+          {
+            "subject": "policy:monthly-refunds",
+            "attribute": "WINDOW",
+            "value": "30 days"
+          },
+          {
+            "subject": "api:payments-v1",
+            "attribute": "STATUS",
+            "value": "supported"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m006",
+      "ts": "2026-06-22T11:00:00Z",
+      "kind": "slack",
+      "channel": "eng-payments",
+      "thread": null,
+      "author": "person:arjun",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Webhook retries on the payments service are set to 3 attempts with exponential backoff.",
+      "reactions": [
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "service:payments",
+            "attribute": "WEBHOOK_RETRIES",
+            "value": "3"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m007",
+      "ts": "2026-06-22T13:15:00Z",
+      "kind": "slack",
+      "channel": "sales",
+      "thread": null,
+      "author": "person:maya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Brightline signed! Contract starts July 1. They mostly care about SSO.",
+      "reactions": [
+        "person:tom",
+        "person:lena",
+        "person:priya"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "customer:brightline",
+            "attribute": "CONTRACT_START",
+            "value": "2026-07-01"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m008",
+      "ts": "2026-06-22T15:40:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:tom",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Anyone up for lunch tomorrow? There's a new ramen place on 3rd.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m009",
+      "ts": "2026-06-23T08:30:00Z",
+      "kind": "email",
+      "channel": null,
+      "thread": null,
+      "author": "person:tom",
+      "to": [
+        "ext:hannah"
+      ],
+      "cc": [
+        "person:maya"
+      ],
+      "subject_line": "Kestrel QBR",
+      "text": "Hi Hannah, confirming our QBR on Tuesday June 30 at 10:00 UTC. Maya and I will both join.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "meeting:kestrel-qbr",
+            "attribute": "SCHEDULED_FOR",
+            "value": "2026-06-30 10:00 UTC"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m010",
+      "ts": "2026-06-23T09:10:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Freeze moves to Friday June 26, end of day, so the invoices work can land.",
+      "reactions": [
+        "person:priya",
+        "person:sara",
+        "person:arjun"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "CODE_FREEZE",
+            "value": "2026-06-26"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m011",
+      "ts": "2026-06-23T09:25:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:sara",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Can we push the deploy window to 18:00 UTC? The migration dry run takes two hours.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m012",
+      "ts": "2026-06-23T09:40:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": "m011",
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Done, deploy window is now 18:00 UTC.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "DEPLOY_WINDOW",
+            "value": "18:00 UTC"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m013",
+      "ts": "2026-06-23T11:05:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": "m011",
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Scratch that. Ops review says 18:00 overlaps the EU support handover, so we're back to 16:00 UTC and the dry run starts earlier instead.",
+      "reactions": [
+        "person:sara",
+        "person:priya"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "DEPLOY_WINDOW",
+            "value": "16:00 UTC"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m014",
+      "ts": "2026-06-23T12:00:00Z",
+      "kind": "slack",
+      "channel": "cs-kestrel",
+      "thread": null,
+      "author": "person:tom",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "FYI for anyone touching the Kestrel account: they run their webhooks on payments API v1.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m015",
+      "ts": "2026-06-23T14:30:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:sara",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Is the freeze still Thursday?",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m016",
+      "ts": "2026-06-23T14:35:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": "m015",
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Friday now, see #release.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "CODE_FREEZE",
+            "value": "2026-06-26"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m017",
+      "ts": "2026-06-24T10:00:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:priya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Reminder: 2.4 deploys Monday June 29. Please get your PRs reviewed by Friday.",
+      "reactions": [
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "SHIPS_ON",
+            "value": "2026-06-29"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m018",
+      "ts": "2026-06-24T11:20:00Z",
+      "kind": "email",
+      "channel": null,
+      "thread": null,
+      "author": "person:maya",
+      "to": [
+        "ext:jordan"
+      ],
+      "cc": [],
+      "subject_line": "SSO timing",
+      "text": "Hi Jordan, great news: SSO lands in 2.4 on Monday June 29, so your team can switch it on from day one.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "feature:sso",
+            "attribute": "AVAILABLE_IN",
+            "value": "2.4"
+          },
+          {
+            "subject": "release:2.4",
+            "attribute": "SHIPS_ON",
+            "value": "2026-06-29"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m019",
+      "ts": "2026-06-24T15:00:00Z",
+      "kind": "slack",
+      "channel": "eng-payments",
+      "thread": null,
+      "author": "person:sara",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Staging migration hit a deadlock on the invoices table. Investigating.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m020",
+      "ts": "2026-06-25T09:00:00Z",
+      "kind": "slack",
+      "channel": "pricing",
+      "thread": null,
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Leadership signed off: the Team plan goes to $49/seat/month for all renewals from July 1. Existing contracts keep their price until renewal.",
+      "reactions": [
+        "person:priya"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "plan:team",
+            "attribute": "PRICED_AT",
+            "value": "$49/seat/month"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m021",
+      "ts": "2026-06-25T09:20:00Z",
+      "kind": "slack",
+      "channel": "pricing",
+      "thread": "m020",
+      "author": "person:priya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Makes sense. Are you telling sales?",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m022",
+      "ts": "2026-06-25T09:22:00Z",
+      "kind": "slack",
+      "channel": "pricing",
+      "thread": "m020",
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Will do in the next sales sync.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m023",
+      "ts": "2026-06-25T16:00:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:maya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Kestrel renewal is July 15, Tom is driving it.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "customer:kestrel",
+            "attribute": "RENEWAL_DATE",
+            "value": "2026-07-15"
+          },
+          {
+            "subject": "customer:kestrel",
+            "attribute": "OWNED_BY",
+            "value": "person:tom"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m024",
+      "ts": "2026-06-26T10:30:00Z",
+      "kind": "slack",
+      "channel": "eng-payments",
+      "thread": null,
+      "author": "person:arjun",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "I'm out June 29 to July 3. Sara owns payments while I'm away, migration included. Page her, not me.",
+      "reactions": [
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "service:payments",
+            "attribute": "OWNED_BY",
+            "value": "person:sara"
+          }
+        ],
+        "unread_by": [
+          "person:dev"
+        ]
+      }
+    },
+    {
+      "id": "m025",
+      "ts": "2026-06-26T15:00:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:arjun",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Migration failed in staging again. I don't think we can ship 2.4 on Monday. Proposing Friday July 3.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m026",
+      "ts": "2026-06-26T15:20:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": "m025",
+      "author": "person:priya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Agreed. 2.4 moves to Friday July 3. Do not deploy Monday.",
+      "reactions": [
+        "person:dev",
+        "person:sara",
+        "person:arjun"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "SHIPS_ON",
+            "value": "2026-07-03"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m027",
+      "ts": "2026-06-26T15:25:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": "m025",
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Rebooked the train for Friday July 3, same 16:00 UTC window. Freeze is extended to Wednesday July 1.",
+      "reactions": [
+        "person:priya"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "DEPLOY_WINDOW",
+            "value": "16:00 UTC"
+          },
+          {
+            "subject": "release:2.4",
+            "attribute": "CODE_FREEZE",
+            "value": "2026-07-01"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m028",
+      "ts": "2026-06-26T17:00:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:tom",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Have a good weekend everyone!",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m029",
+      "ts": "2026-06-27T11:00:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:priya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Scope cut: SSO slips to 2.5 (late July). 2.4 ships without it.",
+      "reactions": [
+        "person:dev",
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "feature:sso",
+            "attribute": "AVAILABLE_IN",
+            "value": "2.5"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m030",
+      "ts": "2026-06-27T12:00:00Z",
+      "kind": "slack",
+      "channel": "eng-payments",
+      "thread": null,
+      "author": "person:sara",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Decision from the API review: payments API v1 is deprecated as of today and shuts off August 1. All integrations should move to v2.",
+      "reactions": [
+        "person:arjun",
+        "person:dev"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "api:payments-v1",
+            "attribute": "STATUS",
+            "value": "deprecated"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m031",
+      "ts": "2026-06-29T08:45:00Z",
+      "kind": "email",
+      "channel": null,
+      "thread": null,
+      "author": "ext:hannah",
+      "to": [
+        "person:tom"
+      ],
+      "cc": [],
+      "subject_line": "Re: Kestrel QBR",
+      "text": "Hi Tom, could we move the QBR to Thursday July 2 at 14:00 UTC? Tuesday got crowded on our side.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m032",
+      "ts": "2026-06-29T09:00:00Z",
+      "kind": "slack",
+      "channel": "sales",
+      "thread": null,
+      "author": "person:maya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Brightline is pumped. Told Jordan 2.4 goes live today and SSO is in it!",
+      "reactions": [
+        "person:tom"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "SHIPS_ON",
+            "value": "2026-06-29"
+          },
+          {
+            "subject": "feature:sso",
+            "attribute": "AVAILABLE_IN",
+            "value": "2.4"
+          }
+        ],
+        "unread_by": [
+          "person:priya",
+          "person:lena"
+        ]
+      }
+    },
+    {
+      "id": "m033",
+      "ts": "2026-06-29T09:10:00Z",
+      "kind": "email",
+      "channel": null,
+      "thread": null,
+      "author": "person:tom",
+      "to": [
+        "ext:hannah"
+      ],
+      "cc": [],
+      "subject_line": "Re: Kestrel QBR",
+      "text": "No problem, Thursday July 2 at 14:00 UTC it is. I've updated the invite.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "meeting:kestrel-qbr",
+            "attribute": "SCHEDULED_FOR",
+            "value": "2026-07-02 14:00 UTC"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m034",
+      "ts": "2026-06-29T10:00:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Reminder: nothing deploys today. 2.4 is Friday.",
+      "reactions": [
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "SHIPS_ON",
+            "value": "2026-07-03"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m035",
+      "ts": "2026-06-29T14:00:00Z",
+      "kind": "slack",
+      "channel": "cs-kestrel",
+      "thread": null,
+      "author": "person:tom",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "@Arjun Kestrel says webhook retries are failing on their v1 integration, can you take a look?",
+      "reactions": [],
+      "mentions": [
+        "person:arjun"
+      ],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m036",
+      "ts": "2026-06-29T15:00:00Z",
+      "kind": "slack",
+      "channel": "eng-payments",
+      "thread": null,
+      "author": "person:sara",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Migration is fixed on staging. I also bumped webhook retries from 3 to 5 attempts.",
+      "reactions": [
+        "person:dev"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "service:payments",
+            "attribute": "WEBHOOK_RETRIES",
+            "value": "5"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m037",
+      "ts": "2026-06-30T09:00:00Z",
+      "kind": "slack",
+      "channel": "general",
+      "thread": null,
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Office is closed on July 4th, enjoy the long weekend!",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m038",
+      "ts": "2026-06-30T10:05:00Z",
+      "kind": "slack",
+      "channel": "cs-kestrel",
+      "thread": "m035",
+      "author": "person:sara",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "@Tom saw your note. I own payments while Arjun is out, looking at Kestrel's retries now.",
+      "reactions": [],
+      "mentions": [
+        "person:tom"
+      ],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "service:payments",
+            "attribute": "OWNED_BY",
+            "value": "person:sara"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m039",
+      "ts": "2026-06-30T11:00:00Z",
+      "kind": "slack",
+      "channel": "support-kb",
+      "thread": null,
+      "author": "person:tom",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Customer asked about refunds. Still 30 days on monthly plans, right?",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m040",
+      "ts": "2026-06-30T11:05:00Z",
+      "kind": "slack",
+      "channel": "support-kb",
+      "thread": "m039",
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Yes, 30 days for now.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "policy:monthly-refunds",
+            "attribute": "WINDOW",
+            "value": "30 days"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m041",
+      "ts": "2026-07-01T08:30:00Z",
+      "kind": "slack",
+      "channel": "pricing",
+      "thread": null,
+      "author": "person:lena",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Refund policy update, effective today: monthly plans get 14 days, annual plans stay at 30.",
+      "reactions": [
+        "person:priya"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "policy:monthly-refunds",
+            "attribute": "WINDOW",
+            "value": "14 days"
+          },
+          {
+            "subject": "policy:annual-refunds",
+            "attribute": "WINDOW",
+            "value": "30 days"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m042",
+      "ts": "2026-07-01T09:00:00Z",
+      "kind": "slack",
+      "channel": "release",
+      "thread": null,
+      "author": "person:dev",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Freeze is in effect from tonight, as planned. Only release blockers after this.",
+      "reactions": [
+        "person:sara"
+      ],
+      "mentions": [],
+      "_truth": {
+        "claims": [
+          {
+            "subject": "release:2.4",
+            "attribute": "CODE_FREEZE",
+            "value": "2026-07-01"
+          }
+        ],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m043",
+      "ts": "2026-07-01T10:00:00Z",
+      "kind": "slack",
+      "channel": "sales",
+      "thread": null,
+      "author": "person:maya",
+      "to": [],
+      "cc": [],
+      "subject_line": null,
+      "text": "Brightline asked for SSO setup docs ahead of Friday. Who can share them?",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m044",
+      "ts": "2026-07-01T11:30:00Z",
+      "kind": "dm",
+      "channel": null,
+      "thread": null,
+      "author": "person:priya",
+      "to": [
+        "person:lena"
+      ],
+      "cc": [],
+      "subject_line": null,
+      "text": "Did sales get the new Team pricing?",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    },
+    {
+      "id": "m045",
+      "ts": "2026-07-01T11:35:00Z",
+      "kind": "dm",
+      "channel": null,
+      "thread": null,
+      "author": "person:lena",
+      "to": [
+        "person:priya"
+      ],
+      "cc": [],
+      "subject_line": null,
+      "text": "Ugh, not yet. I'll post it tomorrow.",
+      "reactions": [],
+      "mentions": [],
+      "_truth": {
+        "claims": [],
+        "unread_by": []
+      }
+    }
+  ],
+  "drafts": [
+    {
+      "author": "person:tom",
+      "to": [
+        "ext:hannah"
+      ],
+      "kind": "email",
+      "as_of": "2026-07-01T12:00:00Z",
+      "text": "Hi Hannah, quick note ahead of the renewal: your Team plan renewal stays at $39/seat/month, and your v1 webhooks are fully supported."
+    },
+    {
+      "author": "person:maya",
+      "channel": "sales",
+      "kind": "slack",
+      "as_of": "2026-06-29T08:55:00Z",
+      "text": "Brightline is pumped. Told Jordan 2.4 goes live today and SSO is in it!"
+    },
+    {
+      "author": "agent:support-bot",
+      "kind": "agent",
+      "as_of": "2026-07-01T12:00:00Z",
+      "text": "You can get a full refund within 30 days on the monthly Team plan ($39/seat/month). For integrations, use payments API v1."
+    }
+  ]
+}

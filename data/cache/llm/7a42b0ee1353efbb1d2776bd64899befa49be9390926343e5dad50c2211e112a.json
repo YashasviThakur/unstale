@@ -1,0 +1,1 @@
+{"reply": {"value": "deprecated", "answer": "Payments API v1 is now deprecated and should not be used for new integrations."}, "prompt_tokens": 435, "completion_tokens": 53, "model": "openai/gpt-oss-120b"}

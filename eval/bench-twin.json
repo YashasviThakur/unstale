@@ -1,0 +1,4977 @@
+{
+ "summary": {
+  "backend": "Python twin, parity-checked against HydraDB",
+  "orgs": 20,
+  "sprints_per_org": 3,
+  "threshold": 0.5,
+  "response_rate": 0.7,
+  "messages": 5210,
+  "people": 229,
+  "briefs_per_method": 5496,
+  "total": {
+   "v1": {
+    "precision": 0.679,
+    "recall": 0.669,
+    "f1": 0.674,
+    "tp": 2486,
+    "fp": 1174,
+    "fn": 1232,
+    "briefs": 5496,
+    "false_alarms_per_100_briefs": 21.4
+   },
+   "strong": {
+    "precision": 0.488,
+    "recall": 0.554,
+    "f1": 0.519,
+    "tp": 2058,
+    "fp": 2158,
+    "fn": 1660,
+    "briefs": 5496,
+    "false_alarms_per_100_briefs": 39.3
+   },
+   "digest": {
+    "precision": 0.095,
+    "recall": 0.164,
+    "f1": 0.12,
+    "tp": 610,
+    "fp": 5797,
+    "fn": 3108,
+    "briefs": 5496,
+    "false_alarms_per_100_briefs": 105.5
+   },
+   "learned-noFB": {
+    "precision": 0.679,
+    "recall": 0.674,
+    "f1": 0.677,
+    "tp": 2507,
+    "fp": 1185,
+    "fn": 1211,
+    "briefs": 5496,
+    "false_alarms_per_100_briefs": 21.6
+   },
+   "learned": {
+    "precision": 0.868,
+    "recall": 0.662,
+    "f1": 0.751,
+    "tp": 2460,
+    "fp": 373,
+    "fn": 1258,
+    "briefs": 5496,
+    "false_alarms_per_100_briefs": 6.8
+   },
+   "ceiling": {
+    "precision": 0.832,
+    "recall": 0.69,
+    "f1": 0.754,
+    "tp": 2566,
+    "fp": 519,
+    "fn": 1152,
+    "briefs": 5496,
+    "false_alarms_per_100_briefs": 9.4
+   }
+  },
+  "by_sprint": {
+   "v1": [
+    {
+     "precision": 0.663,
+     "recall": 0.711,
+     "f1": 0.686,
+     "tp": 434,
+     "fp": 221,
+     "fn": 176,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 12.1
+    },
+    {
+     "precision": 0.654,
+     "recall": 0.649,
+     "f1": 0.652,
+     "tp": 786,
+     "fp": 415,
+     "fn": 425,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 22.7
+    },
+    {
+     "precision": 0.702,
+     "recall": 0.667,
+     "f1": 0.684,
+     "tp": 1266,
+     "fp": 538,
+     "fn": 631,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 29.4
+    }
+   ],
+   "strong": [
+    {
+     "precision": 0.509,
+     "recall": 0.503,
+     "f1": 0.506,
+     "tp": 307,
+     "fp": 296,
+     "fn": 303,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 16.2
+    },
+    {
+     "precision": 0.458,
+     "recall": 0.529,
+     "f1": 0.491,
+     "tp": 641,
+     "fp": 759,
+     "fn": 570,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 41.4
+    },
+    {
+     "precision": 0.502,
+     "recall": 0.585,
+     "f1": 0.54,
+     "tp": 1110,
+     "fp": 1103,
+     "fn": 787,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 60.2
+    }
+   ],
+   "digest": [
+    {
+     "precision": 0.065,
+     "recall": 0.32,
+     "f1": 0.108,
+     "tp": 195,
+     "fp": 2811,
+     "fn": 415,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 153.4
+    },
+    {
+     "precision": 0.12,
+     "recall": 0.173,
+     "f1": 0.142,
+     "tp": 210,
+     "fp": 1534,
+     "fn": 1001,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 83.7
+    },
+    {
+     "precision": 0.124,
+     "recall": 0.108,
+     "f1": 0.115,
+     "tp": 205,
+     "fp": 1452,
+     "fn": 1692,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 79.3
+    }
+   ],
+   "learned-noFB": [
+    {
+     "precision": 0.664,
+     "recall": 0.713,
+     "f1": 0.688,
+     "tp": 435,
+     "fp": 220,
+     "fn": 175,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 12.0
+    },
+    {
+     "precision": 0.655,
+     "recall": 0.655,
+     "f1": 0.655,
+     "tp": 793,
+     "fp": 417,
+     "fn": 418,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 22.8
+    },
+    {
+     "precision": 0.7,
+     "recall": 0.674,
+     "f1": 0.687,
+     "tp": 1279,
+     "fp": 548,
+     "fn": 618,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 29.9
+    }
+   ],
+   "learned": [
+    {
+     "precision": 0.797,
+     "recall": 0.726,
+     "f1": 0.76,
+     "tp": 443,
+     "fp": 113,
+     "fn": 167,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 6.2
+    },
+    {
+     "precision": 0.87,
+     "recall": 0.633,
+     "f1": 0.733,
+     "tp": 767,
+     "fp": 115,
+     "fn": 444,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 6.3
+    },
+    {
+     "precision": 0.896,
+     "recall": 0.659,
+     "f1": 0.759,
+     "tp": 1250,
+     "fp": 145,
+     "fn": 647,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 7.9
+    }
+   ],
+   "ceiling": [
+    {
+     "precision": 0.826,
+     "recall": 0.71,
+     "f1": 0.764,
+     "tp": 433,
+     "fp": 91,
+     "fn": 177,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 5.0
+    },
+    {
+     "precision": 0.824,
+     "recall": 0.675,
+     "f1": 0.742,
+     "tp": 818,
+     "fp": 175,
+     "fn": 393,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 9.6
+    },
+    {
+     "precision": 0.839,
+     "recall": 0.693,
+     "f1": 0.759,
+     "tp": 1315,
+     "fp": 253,
+     "fn": 582,
+     "briefs": 1832,
+     "false_alarms_per_100_briefs": 13.8
+    }
+   ]
+  },
+  "same_sprint_after_n_prior_sprints": [
+   {
+    "precision": 0.859,
+    "recall": 0.654,
+    "f1": 0.743,
+    "tp": 1240,
+    "fp": 203,
+    "fn": 657,
+    "briefs": 1832,
+    "false_alarms_per_100_briefs": 11.1
+   },
+   {
+    "precision": 0.874,
+    "recall": 0.639,
+    "f1": 0.738,
+    "tp": 1212,
+    "fp": 174,
+    "fn": 685,
+    "briefs": 1832,
+    "false_alarms_per_100_briefs": 9.5
+   },
+   {
+    "precision": 0.894,
+    "recall": 0.654,
+    "f1": 0.755,
+    "tp": 1240,
+    "fp": 147,
+    "fn": 657,
+    "briefs": 1832,
+    "false_alarms_per_100_briefs": 8.0
+   }
+  ],
+  "calibration": [
+   {
+    "bucket": "0.0-0.1",
+    "stale": 283,
+    "n": 2663,
+    "rate": 0.106
+   },
+   {
+    "bucket": "0.1-0.2",
+    "stale": 312,
+    "n": 1752,
+    "rate": 0.178
+   },
+   {
+    "bucket": "0.2-0.3",
+    "stale": 161,
+    "n": 988,
+    "rate": 0.163
+   },
+   {
+    "bucket": "0.3-0.4",
+    "stale": 199,
+    "n": 817,
+    "rate": 0.244
+   },
+   {
+    "bucket": "0.4-0.5",
+    "stale": 129,
+    "n": 622,
+    "rate": 0.207
+   },
+   {
+    "bucket": "0.5-0.6",
+    "stale": 97,
+    "n": 210,
+    "rate": 0.462
+   },
+   {
+    "bucket": "0.6-0.7",
+    "stale": 95,
+    "n": 136,
+    "rate": 0.699
+   },
+   {
+    "bucket": "0.7-0.8",
+    "stale": 173,
+    "n": 216,
+    "rate": 0.801
+   },
+   {
+    "bucket": "0.8-0.9",
+    "stale": 211,
+    "n": 290,
+    "rate": 0.728
+   },
+   {
+    "bucket": "0.9-1.0",
+    "stale": 1884,
+    "n": 1981,
+    "rate": 0.951
+   }
+  ],
+  "ingest_s_per_org": 0.1
+ },
+ "orgs": [
+  {
+   "seed": 1,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 249,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 189,
+     "fp": 19,
+     "fn": 48,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 152,
+     "fp": 131,
+     "fn": 85,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 32,
+     "fp": 279,
+     "fn": 205,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 192,
+     "fp": 19,
+     "fn": 45,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 202,
+     "fp": 15,
+     "fn": 35,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 202,
+     "fp": 15,
+     "fn": 35,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 51,
+      "fp": 0,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 48,
+      "fp": 9,
+      "fn": 17,
+      "briefs": 88
+     },
+     {
+      "tp": 90,
+      "fp": 10,
+      "fn": 25,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 38,
+      "fp": 30,
+      "fn": 19,
+      "briefs": 88
+     },
+     {
+      "tp": 42,
+      "fp": 35,
+      "fn": 23,
+      "briefs": 88
+     },
+     {
+      "tp": 72,
+      "fp": 66,
+      "fn": 43,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 15,
+      "fp": 126,
+      "fn": 42,
+      "briefs": 88
+     },
+     {
+      "tp": 8,
+      "fp": 78,
+      "fn": 57,
+      "briefs": 88
+     },
+     {
+      "tp": 9,
+      "fp": 75,
+      "fn": 106,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 52,
+      "fp": 0,
+      "fn": 5,
+      "briefs": 88
+     },
+     {
+      "tp": 50,
+      "fp": 9,
+      "fn": 15,
+      "briefs": 88
+     },
+     {
+      "tp": 90,
+      "fp": 10,
+      "fn": 25,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 53,
+      "fp": 0,
+      "fn": 4,
+      "briefs": 88
+     },
+     {
+      "tp": 53,
+      "fp": 5,
+      "fn": 12,
+      "briefs": 88
+     },
+     {
+      "tp": 96,
+      "fp": 10,
+      "fn": 19,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 53,
+      "fp": 0,
+      "fn": 4,
+      "briefs": 88
+     },
+     {
+      "tp": 53,
+      "fp": 3,
+      "fn": 12,
+      "briefs": 88
+     },
+     {
+      "tp": 96,
+      "fp": 12,
+      "fn": 19,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 90,
+     "fp": 2,
+     "fn": 25,
+     "briefs": 88
+    },
+    {
+     "tp": 96,
+     "fp": 11,
+     "fn": 19,
+     "briefs": 88
+    },
+    {
+     "tp": 96,
+     "fp": 12,
+     "fn": 19,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "9": [
+     161,
+     164
+    ],
+    "1": [
+     20,
+     125
+    ],
+    "0": [
+     6,
+     92
+    ],
+    "8": [
+     20,
+     24
+    ],
+    "2": [
+     6,
+     27
+    ],
+    "5": [
+     1,
+     1
+    ],
+    "3": [
+     0,
+     4
+    ],
+    "6": [
+     8,
+     13
+    ],
+    "7": [
+     12,
+     15
+    ],
+    "4": [
+     0,
+     11
+    ]
+   },
+   "feedback_evidence": 19,
+   "implicit_evidence": 49
+  },
+  {
+   "seed": 2,
+   "backend": "python twin",
+   "people": 10,
+   "channels": 8,
+   "messages": 267,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 74,
+     "fp": 36,
+     "fn": 44,
+     "briefs": 240
+    },
+    "strong": {
+     "tp": 69,
+     "fp": 109,
+     "fn": 49,
+     "briefs": 240
+    },
+    "digest": {
+     "tp": 17,
+     "fp": 243,
+     "fn": 101,
+     "briefs": 240
+    },
+    "learned-noFB": {
+     "tp": 74,
+     "fp": 36,
+     "fn": 44,
+     "briefs": 240
+    },
+    "learned": {
+     "tp": 85,
+     "fp": 16,
+     "fn": 33,
+     "briefs": 240
+    },
+    "ceiling": {
+     "tp": 64,
+     "fp": 9,
+     "fn": 54,
+     "briefs": 240
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 26,
+      "fp": 10,
+      "fn": 3,
+      "briefs": 80
+     },
+     {
+      "tp": 25,
+      "fp": 6,
+      "fn": 19,
+      "briefs": 80
+     },
+     {
+      "tp": 23,
+      "fp": 20,
+      "fn": 22,
+      "briefs": 80
+     }
+    ],
+    "strong": [
+     {
+      "tp": 16,
+      "fp": 9,
+      "fn": 13,
+      "briefs": 80
+     },
+     {
+      "tp": 25,
+      "fp": 40,
+      "fn": 19,
+      "briefs": 80
+     },
+     {
+      "tp": 28,
+      "fp": 60,
+      "fn": 17,
+      "briefs": 80
+     }
+    ],
+    "digest": [
+     {
+      "tp": 6,
+      "fp": 111,
+      "fn": 23,
+      "briefs": 80
+     },
+     {
+      "tp": 9,
+      "fp": 76,
+      "fn": 35,
+      "briefs": 80
+     },
+     {
+      "tp": 2,
+      "fp": 56,
+      "fn": 43,
+      "briefs": 80
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 26,
+      "fp": 10,
+      "fn": 3,
+      "briefs": 80
+     },
+     {
+      "tp": 25,
+      "fp": 6,
+      "fn": 19,
+      "briefs": 80
+     },
+     {
+      "tp": 23,
+      "fp": 20,
+      "fn": 22,
+      "briefs": 80
+     }
+    ],
+    "learned": [
+     {
+      "tp": 29,
+      "fp": 9,
+      "fn": 0,
+      "briefs": 80
+     },
+     {
+      "tp": 32,
+      "fp": 2,
+      "fn": 12,
+      "briefs": 80
+     },
+     {
+      "tp": 24,
+      "fp": 5,
+      "fn": 21,
+      "briefs": 80
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 24,
+      "fp": 8,
+      "fn": 5,
+      "briefs": 80
+     },
+     {
+      "tp": 18,
+      "fp": 1,
+      "fn": 26,
+      "briefs": 80
+     },
+     {
+      "tp": 22,
+      "fp": 0,
+      "fn": 23,
+      "briefs": 80
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 23,
+     "fp": 3,
+     "fn": 22,
+     "briefs": 80
+    },
+    {
+     "tp": 28,
+     "fp": 2,
+     "fn": 17,
+     "briefs": 80
+    },
+    {
+     "tp": 24,
+     "fp": 4,
+     "fn": 21,
+     "briefs": 80
+    }
+   ],
+   "calibration": {
+    "0": [
+     6,
+     106
+    ],
+    "9": [
+     50,
+     52
+    ],
+    "8": [
+     15,
+     16
+    ],
+    "1": [
+     2,
+     71
+    ],
+    "6": [
+     6,
+     10
+    ],
+    "7": [
+     10,
+     11
+    ],
+    "3": [
+     22,
+     53
+    ],
+    "2": [
+     0,
+     36
+    ],
+    "4": [
+     3,
+     34
+    ],
+    "5": [
+     4,
+     12
+    ]
+   },
+   "feedback_evidence": 46,
+   "implicit_evidence": 44
+  },
+  {
+   "seed": 3,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 256,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 184,
+     "fp": 42,
+     "fn": 103,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 138,
+     "fp": 157,
+     "fn": 149,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 39,
+     "fp": 269,
+     "fn": 248,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 184,
+     "fp": 42,
+     "fn": 103,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 186,
+     "fp": 27,
+     "fn": 101,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 186,
+     "fp": 30,
+     "fn": 101,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 33,
+      "fp": 4,
+      "fn": 0,
+      "briefs": 88
+     },
+     {
+      "tp": 63,
+      "fp": 12,
+      "fn": 40,
+      "briefs": 88
+     },
+     {
+      "tp": 88,
+      "fp": 26,
+      "fn": 63,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 11,
+      "fp": 14,
+      "fn": 22,
+      "briefs": 88
+     },
+     {
+      "tp": 58,
+      "fp": 58,
+      "fn": 45,
+      "briefs": 88
+     },
+     {
+      "tp": 69,
+      "fp": 85,
+      "fn": 82,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 6,
+      "fp": 138,
+      "fn": 27,
+      "briefs": 88
+     },
+     {
+      "tp": 22,
+      "fp": 63,
+      "fn": 81,
+      "briefs": 88
+     },
+     {
+      "tp": 11,
+      "fp": 68,
+      "fn": 140,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 33,
+      "fp": 4,
+      "fn": 0,
+      "briefs": 88
+     },
+     {
+      "tp": 63,
+      "fp": 12,
+      "fn": 40,
+      "briefs": 88
+     },
+     {
+      "tp": 88,
+      "fp": 26,
+      "fn": 63,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 33,
+      "fp": 4,
+      "fn": 0,
+      "briefs": 88
+     },
+     {
+      "tp": 63,
+      "fp": 10,
+      "fn": 40,
+      "briefs": 88
+     },
+     {
+      "tp": 90,
+      "fp": 13,
+      "fn": 61,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 26,
+      "fp": 4,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 67,
+      "fp": 12,
+      "fn": 36,
+      "briefs": 88
+     },
+     {
+      "tp": 93,
+      "fp": 14,
+      "fn": 58,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 90,
+     "fp": 13,
+     "fn": 61,
+     "briefs": 88
+    },
+    {
+     "tp": 90,
+     "fp": 19,
+     "fn": 61,
+     "briefs": 88
+    },
+    {
+     "tp": 90,
+     "fp": 13,
+     "fn": 61,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "9": [
+     153,
+     164
+    ],
+    "8": [
+     19,
+     23
+    ],
+    "5": [
+     0,
+     7
+    ],
+    "0": [
+     6,
+     78
+    ],
+    "1": [
+     17,
+     108
+    ],
+    "2": [
+     22,
+     83
+    ],
+    "4": [
+     4,
+     60
+    ],
+    "7": [
+     13,
+     15
+    ],
+    "3": [
+     18,
+     45
+    ],
+    "6": [
+     1,
+     4
+    ]
+   },
+   "feedback_evidence": 23,
+   "implicit_evidence": 53
+  },
+  {
+   "seed": 4,
+   "backend": "python twin",
+   "people": 12,
+   "channels": 8,
+   "messages": 266,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 91,
+     "fp": 220,
+     "fn": 25,
+     "briefs": 288
+    },
+    "strong": {
+     "tp": 89,
+     "fp": 77,
+     "fn": 27,
+     "briefs": 288
+    },
+    "digest": {
+     "tp": 25,
+     "fp": 301,
+     "fn": 91,
+     "briefs": 288
+    },
+    "learned-noFB": {
+     "tp": 92,
+     "fp": 220,
+     "fn": 24,
+     "briefs": 288
+    },
+    "learned": {
+     "tp": 102,
+     "fp": 24,
+     "fn": 14,
+     "briefs": 288
+    },
+    "ceiling": {
+     "tp": 95,
+     "fp": 14,
+     "fn": 21,
+     "briefs": 288
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 20,
+      "fp": 46,
+      "fn": 7,
+      "briefs": 96
+     },
+     {
+      "tp": 19,
+      "fp": 77,
+      "fn": 3,
+      "briefs": 96
+     },
+     {
+      "tp": 52,
+      "fp": 97,
+      "fn": 15,
+      "briefs": 96
+     }
+    ],
+    "strong": [
+     {
+      "tp": 19,
+      "fp": 9,
+      "fn": 8,
+      "briefs": 96
+     },
+     {
+      "tp": 19,
+      "fp": 21,
+      "fn": 3,
+      "briefs": 96
+     },
+     {
+      "tp": 51,
+      "fp": 47,
+      "fn": 16,
+      "briefs": 96
+     }
+    ],
+    "digest": [
+     {
+      "tp": 6,
+      "fp": 151,
+      "fn": 21,
+      "briefs": 96
+     },
+     {
+      "tp": 7,
+      "fp": 83,
+      "fn": 15,
+      "briefs": 96
+     },
+     {
+      "tp": 12,
+      "fp": 67,
+      "fn": 55,
+      "briefs": 96
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 20,
+      "fp": 46,
+      "fn": 7,
+      "briefs": 96
+     },
+     {
+      "tp": 19,
+      "fp": 77,
+      "fn": 3,
+      "briefs": 96
+     },
+     {
+      "tp": 53,
+      "fp": 97,
+      "fn": 14,
+      "briefs": 96
+     }
+    ],
+    "learned": [
+     {
+      "tp": 24,
+      "fp": 7,
+      "fn": 3,
+      "briefs": 96
+     },
+     {
+      "tp": 20,
+      "fp": 6,
+      "fn": 2,
+      "briefs": 96
+     },
+     {
+      "tp": 58,
+      "fp": 11,
+      "fn": 9,
+      "briefs": 96
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 20,
+      "fp": 0,
+      "fn": 7,
+      "briefs": 96
+     },
+     {
+      "tp": 17,
+      "fp": 3,
+      "fn": 5,
+      "briefs": 96
+     },
+     {
+      "tp": 58,
+      "fp": 11,
+      "fn": 9,
+      "briefs": 96
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 57,
+     "fp": 25,
+     "fn": 10,
+     "briefs": 96
+    },
+    {
+     "tp": 58,
+     "fp": 15,
+     "fn": 9,
+     "briefs": 96
+    },
+    {
+     "tp": 54,
+     "fp": 13,
+     "fn": 13,
+     "briefs": 96
+    }
+   ],
+   "calibration": {
+    "0": [
+     1,
+     53
+    ],
+    "1": [
+     0,
+     40
+    ],
+    "8": [
+     2,
+     8
+    ],
+    "9": [
+     86,
+     86
+    ],
+    "2": [
+     8,
+     61
+    ],
+    "3": [
+     4,
+     187
+    ],
+    "4": [
+     1,
+     56
+    ],
+    "5": [
+     3,
+     14
+    ],
+    "6": [
+     4,
+     10
+    ],
+    "7": [
+     7,
+     8
+    ]
+   },
+   "feedback_evidence": 26,
+   "implicit_evidence": 60
+  },
+  {
+   "seed": 5,
+   "backend": "python twin",
+   "people": 12,
+   "channels": 8,
+   "messages": 261,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 127,
+     "fp": 65,
+     "fn": 76,
+     "briefs": 288
+    },
+    "strong": {
+     "tp": 122,
+     "fp": 71,
+     "fn": 81,
+     "briefs": 288
+    },
+    "digest": {
+     "tp": 43,
+     "fp": 291,
+     "fn": 160,
+     "briefs": 288
+    },
+    "learned-noFB": {
+     "tp": 127,
+     "fp": 65,
+     "fn": 76,
+     "briefs": 288
+    },
+    "learned": {
+     "tp": 128,
+     "fp": 17,
+     "fn": 75,
+     "briefs": 288
+    },
+    "ceiling": {
+     "tp": 130,
+     "fp": 48,
+     "fn": 73,
+     "briefs": 288
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 27,
+      "fp": 1,
+      "fn": 5,
+      "briefs": 96
+     },
+     {
+      "tp": 27,
+      "fp": 23,
+      "fn": 34,
+      "briefs": 96
+     },
+     {
+      "tp": 73,
+      "fp": 41,
+      "fn": 37,
+      "briefs": 96
+     }
+    ],
+    "strong": [
+     {
+      "tp": 12,
+      "fp": 6,
+      "fn": 20,
+      "briefs": 96
+     },
+     {
+      "tp": 36,
+      "fp": 26,
+      "fn": 25,
+      "briefs": 96
+     },
+     {
+      "tp": 74,
+      "fp": 39,
+      "fn": 36,
+      "briefs": 96
+     }
+    ],
+    "digest": [
+     {
+      "tp": 10,
+      "fp": 125,
+      "fn": 22,
+      "briefs": 96
+     },
+     {
+      "tp": 12,
+      "fp": 76,
+      "fn": 49,
+      "briefs": 96
+     },
+     {
+      "tp": 21,
+      "fp": 90,
+      "fn": 89,
+      "briefs": 96
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 27,
+      "fp": 1,
+      "fn": 5,
+      "briefs": 96
+     },
+     {
+      "tp": 27,
+      "fp": 23,
+      "fn": 34,
+      "briefs": 96
+     },
+     {
+      "tp": 73,
+      "fp": 41,
+      "fn": 37,
+      "briefs": 96
+     }
+    ],
+    "learned": [
+     {
+      "tp": 27,
+      "fp": 1,
+      "fn": 5,
+      "briefs": 96
+     },
+     {
+      "tp": 27,
+      "fp": 10,
+      "fn": 34,
+      "briefs": 96
+     },
+     {
+      "tp": 74,
+      "fp": 6,
+      "fn": 36,
+      "briefs": 96
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 27,
+      "fp": 1,
+      "fn": 5,
+      "briefs": 96
+     },
+     {
+      "tp": 25,
+      "fp": 17,
+      "fn": 36,
+      "briefs": 96
+     },
+     {
+      "tp": 78,
+      "fp": 30,
+      "fn": 32,
+      "briefs": 96
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 73,
+     "fp": 10,
+     "fn": 37,
+     "briefs": 96
+    },
+    {
+     "tp": 74,
+     "fp": 11,
+     "fn": 36,
+     "briefs": 96
+    },
+    {
+     "tp": 74,
+     "fp": 6,
+     "fn": 36,
+     "briefs": 96
+    }
+   ],
+   "calibration": {
+    "1": [
+     19,
+     90
+    ],
+    "0": [
+     35,
+     121
+    ],
+    "9": [
+     99,
+     106
+    ],
+    "8": [
+     3,
+     4
+    ],
+    "7": [
+     13,
+     15
+    ],
+    "5": [
+     1,
+     8
+    ],
+    "2": [
+     5,
+     33
+    ],
+    "4": [
+     12,
+     51
+    ],
+    "6": [
+     12,
+     12
+    ],
+    "3": [
+     4,
+     26
+    ]
+   },
+   "feedback_evidence": 14,
+   "implicit_evidence": 64
+  },
+  {
+   "seed": 6,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 257,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 151,
+     "fp": 54,
+     "fn": 50,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 130,
+     "fp": 102,
+     "fn": 71,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 34,
+     "fp": 321,
+     "fn": 167,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 151,
+     "fp": 54,
+     "fn": 50,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 138,
+     "fp": 7,
+     "fn": 63,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 137,
+     "fp": 8,
+     "fn": 64,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 23,
+      "fp": 13,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 45,
+      "fp": 20,
+      "fn": 9,
+      "briefs": 88
+     },
+     {
+      "tp": 83,
+      "fp": 21,
+      "fn": 30,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 22,
+      "fp": 14,
+      "fn": 12,
+      "briefs": 88
+     },
+     {
+      "tp": 37,
+      "fp": 41,
+      "fn": 17,
+      "briefs": 88
+     },
+     {
+      "tp": 71,
+      "fp": 47,
+      "fn": 42,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 9,
+      "fp": 162,
+      "fn": 25,
+      "briefs": 88
+     },
+     {
+      "tp": 11,
+      "fp": 83,
+      "fn": 43,
+      "briefs": 88
+     },
+     {
+      "tp": 14,
+      "fp": 76,
+      "fn": 99,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 23,
+      "fp": 13,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 45,
+      "fp": 20,
+      "fn": 9,
+      "briefs": 88
+     },
+     {
+      "tp": 83,
+      "fp": 21,
+      "fn": 30,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 24,
+      "fp": 7,
+      "fn": 10,
+      "briefs": 88
+     },
+     {
+      "tp": 44,
+      "fp": 0,
+      "fn": 10,
+      "briefs": 88
+     },
+     {
+      "tp": 70,
+      "fp": 0,
+      "fn": 43,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 23,
+      "fp": 5,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 44,
+      "fp": 3,
+      "fn": 10,
+      "briefs": 88
+     },
+     {
+      "tp": 70,
+      "fp": 0,
+      "fn": 43,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 79,
+     "fp": 4,
+     "fn": 34,
+     "briefs": 88
+    },
+    {
+     "tp": 70,
+     "fp": 0,
+     "fn": 43,
+     "briefs": 88
+    },
+    {
+     "tp": 70,
+     "fp": 0,
+     "fn": 43,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "9": [
+     107,
+     108
+    ],
+    "0": [
+     22,
+     146
+    ],
+    "1": [
+     9,
+     48
+    ],
+    "4": [
+     16,
+     55
+    ],
+    "5": [
+     3,
+     5
+    ],
+    "2": [
+     1,
+     35
+    ],
+    "8": [
+     13,
+     17
+    ],
+    "7": [
+     13,
+     13
+    ],
+    "6": [
+     2,
+     2
+    ],
+    "3": [
+     0,
+     9
+    ]
+   },
+   "feedback_evidence": 5,
+   "implicit_evidence": 54
+  },
+  {
+   "seed": 7,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 259,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 155,
+     "fp": 38,
+     "fn": 46,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 109,
+     "fp": 124,
+     "fn": 92,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 36,
+     "fp": 282,
+     "fn": 165,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 158,
+     "fp": 49,
+     "fn": 43,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 153,
+     "fp": 16,
+     "fn": 48,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 163,
+     "fp": 74,
+     "fn": 38,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 19,
+      "fp": 18,
+      "fn": 8,
+      "briefs": 88
+     },
+     {
+      "tp": 48,
+      "fp": 12,
+      "fn": 15,
+      "briefs": 88
+     },
+     {
+      "tp": 88,
+      "fp": 8,
+      "fn": 23,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 16,
+      "fp": 19,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 39,
+      "fp": 49,
+      "fn": 24,
+      "briefs": 88
+     },
+     {
+      "tp": 54,
+      "fp": 56,
+      "fn": 57,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 11,
+      "fp": 124,
+      "fn": 16,
+      "briefs": 88
+     },
+     {
+      "tp": 9,
+      "fp": 82,
+      "fn": 54,
+      "briefs": 88
+     },
+     {
+      "tp": 16,
+      "fp": 76,
+      "fn": 95,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 19,
+      "fp": 18,
+      "fn": 8,
+      "briefs": 88
+     },
+     {
+      "tp": 51,
+      "fp": 15,
+      "fn": 12,
+      "briefs": 88
+     },
+     {
+      "tp": 88,
+      "fp": 16,
+      "fn": 23,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 19,
+      "fp": 9,
+      "fn": 8,
+      "briefs": 88
+     },
+     {
+      "tp": 50,
+      "fp": 4,
+      "fn": 13,
+      "briefs": 88
+     },
+     {
+      "tp": 84,
+      "fp": 3,
+      "fn": 27,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 19,
+      "fp": 24,
+      "fn": 8,
+      "briefs": 88
+     },
+     {
+      "tp": 51,
+      "fp": 23,
+      "fn": 12,
+      "briefs": 88
+     },
+     {
+      "tp": 93,
+      "fp": 27,
+      "fn": 18,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 88,
+     "fp": 2,
+     "fn": 23,
+     "briefs": 88
+    },
+    {
+     "tp": 84,
+     "fp": 1,
+     "fn": 27,
+     "briefs": 88
+    },
+    {
+     "tp": 84,
+     "fp": 2,
+     "fn": 27,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "8": [
+     4,
+     7
+    ],
+    "1": [
+     9,
+     116
+    ],
+    "9": [
+     140,
+     141
+    ],
+    "6": [
+     4,
+     6
+    ],
+    "2": [
+     8,
+     64
+    ],
+    "4": [
+     2,
+     20
+    ],
+    "5": [
+     5,
+     15
+    ],
+    "0": [
+     9,
+     99
+    ],
+    "3": [
+     15,
+     60
+    ]
+   },
+   "feedback_evidence": 16,
+   "implicit_evidence": 51
+  },
+  {
+   "seed": 8,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 259,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 70,
+     "fp": 46,
+     "fn": 16,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 50,
+     "fp": 115,
+     "fn": 36,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 19,
+     "fp": 242,
+     "fn": 67,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 70,
+     "fp": 46,
+     "fn": 16,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 59,
+     "fp": 9,
+     "fn": 27,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 70,
+     "fp": 7,
+     "fn": 16,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 7,
+      "fp": 6,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 18,
+      "fp": 15,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 45,
+      "fp": 25,
+      "fn": 6,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 3,
+      "fp": 16,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 6,
+      "fp": 48,
+      "fn": 19,
+      "briefs": 88
+     },
+     {
+      "tp": 41,
+      "fp": 51,
+      "fn": 10,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 4,
+      "fp": 126,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 5,
+      "fp": 62,
+      "fn": 20,
+      "briefs": 88
+     },
+     {
+      "tp": 10,
+      "fp": 54,
+      "fn": 41,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 7,
+      "fp": 6,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 18,
+      "fp": 15,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 45,
+      "fp": 25,
+      "fn": 6,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 7,
+      "fp": 4,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 10,
+      "fp": 1,
+      "fn": 15,
+      "briefs": 88
+     },
+     {
+      "tp": 42,
+      "fp": 4,
+      "fn": 9,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 7,
+      "fp": 3,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 18,
+      "fp": 0,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 45,
+      "fp": 4,
+      "fn": 6,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 43,
+     "fp": 8,
+     "fn": 8,
+     "briefs": 88
+    },
+    {
+     "tp": 35,
+     "fp": 4,
+     "fn": 16,
+     "briefs": 88
+    },
+    {
+     "tp": 42,
+     "fp": 4,
+     "fn": 9,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "1": [
+     4,
+     51
+    ],
+    "0": [
+     7,
+     90
+    ],
+    "8": [
+     3,
+     7
+    ],
+    "9": [
+     40,
+     40
+    ],
+    "4": [
+     10,
+     27
+    ],
+    "6": [
+     3,
+     3
+    ],
+    "5": [
+     13,
+     17
+    ],
+    "3": [
+     3,
+     27
+    ],
+    "2": [
+     3,
+     33
+    ],
+    "7": [
+     0,
+     1
+    ]
+   },
+   "feedback_evidence": 22,
+   "implicit_evidence": 65
+  },
+  {
+   "seed": 9,
+   "backend": "python twin",
+   "people": 12,
+   "channels": 8,
+   "messages": 265,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 70,
+     "fp": 38,
+     "fn": 46,
+     "briefs": 288
+    },
+    "strong": {
+     "tp": 66,
+     "fp": 100,
+     "fn": 50,
+     "briefs": 288
+    },
+    "digest": {
+     "tp": 21,
+     "fp": 326,
+     "fn": 95,
+     "briefs": 288
+    },
+    "learned-noFB": {
+     "tp": 70,
+     "fp": 38,
+     "fn": 46,
+     "briefs": 288
+    },
+    "learned": {
+     "tp": 65,
+     "fp": 21,
+     "fn": 51,
+     "briefs": 288
+    },
+    "ceiling": {
+     "tp": 86,
+     "fp": 29,
+     "fn": 30,
+     "briefs": 288
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 12,
+      "fp": 8,
+      "fn": 9,
+      "briefs": 96
+     },
+     {
+      "tp": 26,
+      "fp": 8,
+      "fn": 18,
+      "briefs": 96
+     },
+     {
+      "tp": 32,
+      "fp": 22,
+      "fn": 19,
+      "briefs": 96
+     }
+    ],
+    "strong": [
+     {
+      "tp": 11,
+      "fp": 10,
+      "fn": 10,
+      "briefs": 96
+     },
+     {
+      "tp": 29,
+      "fp": 35,
+      "fn": 15,
+      "briefs": 96
+     },
+     {
+      "tp": 26,
+      "fp": 55,
+      "fn": 25,
+      "briefs": 96
+     }
+    ],
+    "digest": [
+     {
+      "tp": 8,
+      "fp": 148,
+      "fn": 13,
+      "briefs": 96
+     },
+     {
+      "tp": 7,
+      "fp": 90,
+      "fn": 37,
+      "briefs": 96
+     },
+     {
+      "tp": 6,
+      "fp": 88,
+      "fn": 45,
+      "briefs": 96
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 12,
+      "fp": 8,
+      "fn": 9,
+      "briefs": 96
+     },
+     {
+      "tp": 26,
+      "fp": 8,
+      "fn": 18,
+      "briefs": 96
+     },
+     {
+      "tp": 32,
+      "fp": 22,
+      "fn": 19,
+      "briefs": 96
+     }
+    ],
+    "learned": [
+     {
+      "tp": 12,
+      "fp": 4,
+      "fn": 9,
+      "briefs": 96
+     },
+     {
+      "tp": 26,
+      "fp": 6,
+      "fn": 18,
+      "briefs": 96
+     },
+     {
+      "tp": 27,
+      "fp": 11,
+      "fn": 24,
+      "briefs": 96
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 12,
+      "fp": 0,
+      "fn": 9,
+      "briefs": 96
+     },
+     {
+      "tp": 35,
+      "fp": 6,
+      "fn": 9,
+      "briefs": 96
+     },
+     {
+      "tp": 39,
+      "fp": 23,
+      "fn": 12,
+      "briefs": 96
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 29,
+     "fp": 11,
+     "fn": 22,
+     "briefs": 96
+    },
+    {
+     "tp": 28,
+     "fp": 11,
+     "fn": 23,
+     "briefs": 96
+    },
+    {
+     "tp": 27,
+     "fp": 11,
+     "fn": 24,
+     "briefs": 96
+    }
+   ],
+   "calibration": {
+    "0": [
+     24,
+     276
+    ],
+    "9": [
+     41,
+     45
+    ],
+    "8": [
+     11,
+     15
+    ],
+    "5": [
+     0,
+     9
+    ],
+    "7": [
+     13,
+     17
+    ],
+    "2": [
+     0,
+     45
+    ],
+    "3": [
+     6,
+     18
+    ],
+    "1": [
+     8,
+     69
+    ],
+    "4": [
+     8,
+     23
+    ]
+   },
+   "feedback_evidence": 15,
+   "implicit_evidence": 68
+  },
+  {
+   "seed": 10,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 261,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 87,
+     "fp": 104,
+     "fn": 120,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 106,
+     "fp": 116,
+     "fn": 101,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 29,
+     "fp": 304,
+     "fn": 178,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 87,
+     "fp": 104,
+     "fn": 120,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 76,
+     "fp": 18,
+     "fn": 131,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 107,
+     "fp": 11,
+     "fn": 100,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 16,
+      "fp": 28,
+      "fn": 15,
+      "briefs": 88
+     },
+     {
+      "tp": 33,
+      "fp": 41,
+      "fn": 38,
+      "briefs": 88
+     },
+     {
+      "tp": 38,
+      "fp": 35,
+      "fn": 67,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 14,
+      "fp": 21,
+      "fn": 17,
+      "briefs": 88
+     },
+     {
+      "tp": 34,
+      "fp": 43,
+      "fn": 37,
+      "briefs": 88
+     },
+     {
+      "tp": 58,
+      "fp": 52,
+      "fn": 47,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 8,
+      "fp": 147,
+      "fn": 23,
+      "briefs": 88
+     },
+     {
+      "tp": 14,
+      "fp": 75,
+      "fn": 57,
+      "briefs": 88
+     },
+     {
+      "tp": 7,
+      "fp": 82,
+      "fn": 98,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 16,
+      "fp": 27,
+      "fn": 15,
+      "briefs": 88
+     },
+     {
+      "tp": 33,
+      "fp": 40,
+      "fn": 38,
+      "briefs": 88
+     },
+     {
+      "tp": 38,
+      "fp": 37,
+      "fn": 67,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 14,
+      "fp": 11,
+      "fn": 17,
+      "briefs": 88
+     },
+     {
+      "tp": 25,
+      "fp": 5,
+      "fn": 46,
+      "briefs": 88
+     },
+     {
+      "tp": 37,
+      "fp": 2,
+      "fn": 68,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 16,
+      "fp": 5,
+      "fn": 15,
+      "briefs": 88
+     },
+     {
+      "tp": 41,
+      "fp": 2,
+      "fn": 30,
+      "briefs": 88
+     },
+     {
+      "tp": 50,
+      "fp": 4,
+      "fn": 55,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 31,
+     "fp": 14,
+     "fn": 74,
+     "briefs": 88
+    },
+    {
+     "tp": 27,
+     "fp": 6,
+     "fn": 78,
+     "briefs": 88
+    },
+    {
+     "tp": 37,
+     "fp": 2,
+     "fn": 68,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "1": [
+     26,
+     109
+    ],
+    "0": [
+     30,
+     126
+    ],
+    "8": [
+     1,
+     7
+    ],
+    "9": [
+     29,
+     30
+    ],
+    "7": [
+     15,
+     18
+    ],
+    "5": [
+     26,
+     33
+    ],
+    "3": [
+     25,
+     72
+    ],
+    "6": [
+     5,
+     6
+    ],
+    "4": [
+     15,
+     73
+    ],
+    "2": [
+     14,
+     81
+    ]
+   },
+   "feedback_evidence": 24,
+   "implicit_evidence": 81
+  },
+  {
+   "seed": 11,
+   "backend": "python twin",
+   "people": 12,
+   "channels": 8,
+   "messages": 263,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 99,
+     "fp": 18,
+     "fn": 75,
+     "briefs": 288
+    },
+    "strong": {
+     "tp": 50,
+     "fp": 111,
+     "fn": 124,
+     "briefs": 288
+    },
+    "digest": {
+     "tp": 26,
+     "fp": 304,
+     "fn": 148,
+     "briefs": 288
+    },
+    "learned-noFB": {
+     "tp": 99,
+     "fp": 18,
+     "fn": 75,
+     "briefs": 288
+    },
+    "learned": {
+     "tp": 87,
+     "fp": 16,
+     "fn": 87,
+     "briefs": 288
+    },
+    "ceiling": {
+     "tp": 105,
+     "fp": 14,
+     "fn": 69,
+     "briefs": 288
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 17,
+      "fp": 3,
+      "fn": 8,
+      "briefs": 96
+     },
+     {
+      "tp": 36,
+      "fp": 8,
+      "fn": 26,
+      "briefs": 96
+     },
+     {
+      "tp": 46,
+      "fp": 7,
+      "fn": 41,
+      "briefs": 96
+     }
+    ],
+    "strong": [
+     {
+      "tp": 4,
+      "fp": 6,
+      "fn": 21,
+      "briefs": 96
+     },
+     {
+      "tp": 19,
+      "fp": 32,
+      "fn": 43,
+      "briefs": 96
+     },
+     {
+      "tp": 27,
+      "fp": 73,
+      "fn": 60,
+      "briefs": 96
+     }
+    ],
+    "digest": [
+     {
+      "tp": 8,
+      "fp": 150,
+      "fn": 17,
+      "briefs": 96
+     },
+     {
+      "tp": 10,
+      "fp": 73,
+      "fn": 52,
+      "briefs": 96
+     },
+     {
+      "tp": 8,
+      "fp": 81,
+      "fn": 79,
+      "briefs": 96
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 17,
+      "fp": 3,
+      "fn": 8,
+      "briefs": 96
+     },
+     {
+      "tp": 36,
+      "fp": 8,
+      "fn": 26,
+      "briefs": 96
+     },
+     {
+      "tp": 46,
+      "fp": 7,
+      "fn": 41,
+      "briefs": 96
+     }
+    ],
+    "learned": [
+     {
+      "tp": 17,
+      "fp": 3,
+      "fn": 8,
+      "briefs": 96
+     },
+     {
+      "tp": 27,
+      "fp": 8,
+      "fn": 35,
+      "briefs": 96
+     },
+     {
+      "tp": 43,
+      "fp": 5,
+      "fn": 44,
+      "briefs": 96
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 17,
+      "fp": 3,
+      "fn": 8,
+      "briefs": 96
+     },
+     {
+      "tp": 39,
+      "fp": 8,
+      "fn": 23,
+      "briefs": 96
+     },
+     {
+      "tp": 49,
+      "fp": 3,
+      "fn": 38,
+      "briefs": 96
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 46,
+     "fp": 5,
+     "fn": 41,
+     "briefs": 96
+    },
+    {
+     "tp": 46,
+     "fp": 8,
+     "fn": 41,
+     "briefs": 96
+    },
+    {
+     "tp": 42,
+     "fp": 5,
+     "fn": 45,
+     "briefs": 96
+    }
+   ],
+   "calibration": {
+    "1": [
+     27,
+     120
+    ],
+    "0": [
+     8,
+     119
+    ],
+    "9": [
+     49,
+     50
+    ],
+    "8": [
+     11,
+     13
+    ],
+    "6": [
+     14,
+     16
+    ],
+    "7": [
+     4,
+     5
+    ],
+    "2": [
+     14,
+     63
+    ],
+    "5": [
+     9,
+     19
+    ],
+    "4": [
+     13,
+     31
+    ],
+    "3": [
+     24,
+     33
+    ]
+   },
+   "feedback_evidence": 37,
+   "implicit_evidence": 73
+  },
+  {
+   "seed": 12,
+   "backend": "python twin",
+   "people": 13,
+   "channels": 8,
+   "messages": 259,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 150,
+     "fp": 163,
+     "fn": 127,
+     "briefs": 312
+    },
+    "strong": {
+     "tp": 159,
+     "fp": 104,
+     "fn": 118,
+     "briefs": 312
+    },
+    "digest": {
+     "tp": 44,
+     "fp": 341,
+     "fn": 233,
+     "briefs": 312
+    },
+    "learned-noFB": {
+     "tp": 154,
+     "fp": 163,
+     "fn": 123,
+     "briefs": 312
+    },
+    "learned": {
+     "tp": 133,
+     "fp": 40,
+     "fn": 144,
+     "briefs": 312
+    },
+    "ceiling": {
+     "tp": 154,
+     "fp": 42,
+     "fn": 123,
+     "briefs": 312
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 26,
+      "fp": 26,
+      "fn": 19,
+      "briefs": 104
+     },
+     {
+      "tp": 66,
+      "fp": 60,
+      "fn": 39,
+      "briefs": 104
+     },
+     {
+      "tp": 58,
+      "fp": 77,
+      "fn": 69,
+      "briefs": 104
+     }
+    ],
+    "strong": [
+     {
+      "tp": 29,
+      "fp": 14,
+      "fn": 16,
+      "briefs": 104
+     },
+     {
+      "tp": 57,
+      "fp": 18,
+      "fn": 48,
+      "briefs": 104
+     },
+     {
+      "tp": 73,
+      "fp": 72,
+      "fn": 54,
+      "briefs": 104
+     }
+    ],
+    "digest": [
+     {
+      "tp": 13,
+      "fp": 151,
+      "fn": 32,
+      "briefs": 104
+     },
+     {
+      "tp": 19,
+      "fp": 99,
+      "fn": 86,
+      "briefs": 104
+     },
+     {
+      "tp": 12,
+      "fp": 91,
+      "fn": 115,
+      "briefs": 104
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 26,
+      "fp": 26,
+      "fn": 19,
+      "briefs": 104
+     },
+     {
+      "tp": 66,
+      "fp": 60,
+      "fn": 39,
+      "briefs": 104
+     },
+     {
+      "tp": 62,
+      "fp": 77,
+      "fn": 65,
+      "briefs": 104
+     }
+    ],
+    "learned": [
+     {
+      "tp": 27,
+      "fp": 18,
+      "fn": 18,
+      "briefs": 104
+     },
+     {
+      "tp": 63,
+      "fp": 4,
+      "fn": 42,
+      "briefs": 104
+     },
+     {
+      "tp": 43,
+      "fp": 18,
+      "fn": 84,
+      "briefs": 104
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 33,
+      "fp": 6,
+      "fn": 12,
+      "briefs": 104
+     },
+     {
+      "tp": 66,
+      "fp": 12,
+      "fn": 39,
+      "briefs": 104
+     },
+     {
+      "tp": 55,
+      "fp": 24,
+      "fn": 72,
+      "briefs": 104
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 43,
+     "fp": 24,
+     "fn": 84,
+     "briefs": 104
+    },
+    {
+     "tp": 44,
+     "fp": 18,
+     "fn": 83,
+     "briefs": 104
+    },
+    {
+     "tp": 43,
+     "fp": 18,
+     "fn": 84,
+     "briefs": 104
+    }
+   ],
+   "calibration": {
+    "9": [
+     102,
+     117
+    ],
+    "8": [
+     11,
+     20
+    ],
+    "1": [
+     42,
+     152
+    ],
+    "0": [
+     17,
+     117
+    ],
+    "7": [
+     6,
+     15
+    ],
+    "5": [
+     12,
+     15
+    ],
+    "2": [
+     34,
+     170
+    ],
+    "4": [
+     19,
+     37
+    ],
+    "3": [
+     30,
+     113
+    ],
+    "6": [
+     2,
+     6
+    ]
+   },
+   "feedback_evidence": 24,
+   "implicit_evidence": 48
+  },
+  {
+   "seed": 13,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 243,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 40,
+     "fp": 54,
+     "fn": 21,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 38,
+     "fp": 87,
+     "fn": 23,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 15,
+     "fp": 256,
+     "fn": 46,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 40,
+     "fp": 54,
+     "fn": 21,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 27,
+     "fp": 7,
+     "fn": 34,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 29,
+     "fp": 0,
+     "fn": 32,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 6,
+      "fp": 7,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 1,
+      "fp": 15,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 33,
+      "fp": 32,
+      "fn": 8,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 10,
+      "fp": 24,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 5,
+      "fp": 38,
+      "fn": 2,
+      "briefs": 88
+     },
+     {
+      "tp": 23,
+      "fp": 25,
+      "fn": 18,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 6,
+      "fp": 139,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 2,
+      "fp": 50,
+      "fn": 5,
+      "briefs": 88
+     },
+     {
+      "tp": 7,
+      "fp": 67,
+      "fn": 34,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 6,
+      "fp": 7,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 1,
+      "fp": 15,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 33,
+      "fp": 32,
+      "fn": 8,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 6,
+      "fp": 5,
+      "fn": 7,
+      "briefs": 88
+     },
+     {
+      "tp": 1,
+      "fp": 1,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 20,
+      "fp": 1,
+      "fn": 21,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 8,
+      "fp": 0,
+      "fn": 5,
+      "briefs": 88
+     },
+     {
+      "tp": 1,
+      "fp": 0,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 20,
+      "fp": 0,
+      "fn": 21,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 20,
+     "fp": 4,
+     "fn": 21,
+     "briefs": 88
+    },
+    {
+     "tp": 20,
+     "fp": 2,
+     "fn": 21,
+     "briefs": 88
+    },
+    {
+     "tp": 20,
+     "fp": 1,
+     "fn": 21,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "2": [
+     1,
+     4
+    ],
+    "1": [
+     6,
+     65
+    ],
+    "8": [
+     0,
+     4
+    ],
+    "9": [
+     27,
+     27
+    ],
+    "0": [
+     8,
+     104
+    ],
+    "4": [
+     5,
+     25
+    ],
+    "5": [
+     0,
+     2
+    ],
+    "3": [
+     9,
+     36
+    ],
+    "7": [
+     0,
+     1
+    ]
+   },
+   "feedback_evidence": 5,
+   "implicit_evidence": 66
+  },
+  {
+   "seed": 14,
+   "backend": "python twin",
+   "people": 12,
+   "channels": 8,
+   "messages": 262,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 148,
+     "fp": 19,
+     "fn": 125,
+     "briefs": 288
+    },
+    "strong": {
+     "tp": 122,
+     "fp": 105,
+     "fn": 151,
+     "briefs": 288
+    },
+    "digest": {
+     "tp": 38,
+     "fp": 254,
+     "fn": 235,
+     "briefs": 288
+    },
+    "learned-noFB": {
+     "tp": 156,
+     "fp": 19,
+     "fn": 117,
+     "briefs": 288
+    },
+    "learned": {
+     "tp": 168,
+     "fp": 9,
+     "fn": 105,
+     "briefs": 288
+    },
+    "ceiling": {
+     "tp": 174,
+     "fp": 22,
+     "fn": 99,
+     "briefs": 288
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 31,
+      "fp": 10,
+      "fn": 20,
+      "briefs": 96
+     },
+     {
+      "tp": 32,
+      "fp": 4,
+      "fn": 56,
+      "briefs": 96
+     },
+     {
+      "tp": 85,
+      "fp": 5,
+      "fn": 49,
+      "briefs": 96
+     }
+    ],
+    "strong": [
+     {
+      "tp": 18,
+      "fp": 9,
+      "fn": 33,
+      "briefs": 96
+     },
+     {
+      "tp": 32,
+      "fp": 41,
+      "fn": 56,
+      "briefs": 96
+     },
+     {
+      "tp": 72,
+      "fp": 55,
+      "fn": 62,
+      "briefs": 96
+     }
+    ],
+    "digest": [
+     {
+      "tp": 16,
+      "fp": 120,
+      "fn": 35,
+      "briefs": 96
+     },
+     {
+      "tp": 12,
+      "fp": 68,
+      "fn": 76,
+      "briefs": 96
+     },
+     {
+      "tp": 10,
+      "fp": 66,
+      "fn": 124,
+      "briefs": 96
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 31,
+      "fp": 10,
+      "fn": 20,
+      "briefs": 96
+     },
+     {
+      "tp": 34,
+      "fp": 4,
+      "fn": 54,
+      "briefs": 96
+     },
+     {
+      "tp": 91,
+      "fp": 5,
+      "fn": 43,
+      "briefs": 96
+     }
+    ],
+    "learned": [
+     {
+      "tp": 31,
+      "fp": 4,
+      "fn": 20,
+      "briefs": 96
+     },
+     {
+      "tp": 35,
+      "fp": 4,
+      "fn": 53,
+      "briefs": 96
+     },
+     {
+      "tp": 102,
+      "fp": 1,
+      "fn": 32,
+      "briefs": 96
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 36,
+      "fp": 7,
+      "fn": 15,
+      "briefs": 96
+     },
+     {
+      "tp": 42,
+      "fp": 10,
+      "fn": 46,
+      "briefs": 96
+     },
+     {
+      "tp": 96,
+      "fp": 5,
+      "fn": 38,
+      "briefs": 96
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 87,
+     "fp": 4,
+     "fn": 47,
+     "briefs": 96
+    },
+    {
+     "tp": 85,
+     "fp": 5,
+     "fn": 49,
+     "briefs": 96
+    },
+    {
+     "tp": 99,
+     "fp": 2,
+     "fn": 35,
+     "briefs": 96
+    }
+   ],
+   "calibration": {
+    "1": [
+     32,
+     115
+    ],
+    "9": [
+     120,
+     121
+    ],
+    "8": [
+     20,
+     27
+    ],
+    "7": [
+     14,
+     15
+    ],
+    "4": [
+     3,
+     30
+    ],
+    "6": [
+     10,
+     10
+    ],
+    "0": [
+     28,
+     61
+    ],
+    "2": [
+     21,
+     61
+    ],
+    "3": [
+     18,
+     31
+    ],
+    "5": [
+     4,
+     4
+    ]
+   },
+   "feedback_evidence": 25,
+   "implicit_evidence": 49
+  },
+  {
+   "seed": 15,
+   "backend": "python twin",
+   "people": 9,
+   "channels": 8,
+   "messages": 254,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 32,
+     "fp": 67,
+     "fn": 50,
+     "briefs": 216
+    },
+    "strong": {
+     "tp": 40,
+     "fp": 86,
+     "fn": 42,
+     "briefs": 216
+    },
+    "digest": {
+     "tp": 16,
+     "fp": 244,
+     "fn": 66,
+     "briefs": 216
+    },
+    "learned-noFB": {
+     "tp": 32,
+     "fp": 67,
+     "fn": 50,
+     "briefs": 216
+    },
+    "learned": {
+     "tp": 32,
+     "fp": 31,
+     "fn": 50,
+     "briefs": 216
+    },
+    "ceiling": {
+     "tp": 32,
+     "fp": 61,
+     "fn": 50,
+     "briefs": 216
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 5,
+      "fp": 4,
+      "fn": 11,
+      "briefs": 72
+     },
+     {
+      "tp": 13,
+      "fp": 22,
+      "fn": 20,
+      "briefs": 72
+     },
+     {
+      "tp": 14,
+      "fp": 41,
+      "fn": 19,
+      "briefs": 72
+     }
+    ],
+    "strong": [
+     {
+      "tp": 5,
+      "fp": 7,
+      "fn": 11,
+      "briefs": 72
+     },
+     {
+      "tp": 16,
+      "fp": 33,
+      "fn": 17,
+      "briefs": 72
+     },
+     {
+      "tp": 19,
+      "fp": 46,
+      "fn": 14,
+      "briefs": 72
+     }
+    ],
+    "digest": [
+     {
+      "tp": 5,
+      "fp": 117,
+      "fn": 11,
+      "briefs": 72
+     },
+     {
+      "tp": 5,
+      "fp": 73,
+      "fn": 28,
+      "briefs": 72
+     },
+     {
+      "tp": 6,
+      "fp": 54,
+      "fn": 27,
+      "briefs": 72
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 5,
+      "fp": 4,
+      "fn": 11,
+      "briefs": 72
+     },
+     {
+      "tp": 13,
+      "fp": 22,
+      "fn": 20,
+      "briefs": 72
+     },
+     {
+      "tp": 14,
+      "fp": 41,
+      "fn": 19,
+      "briefs": 72
+     }
+    ],
+    "learned": [
+     {
+      "tp": 5,
+      "fp": 4,
+      "fn": 11,
+      "briefs": 72
+     },
+     {
+      "tp": 13,
+      "fp": 14,
+      "fn": 20,
+      "briefs": 72
+     },
+     {
+      "tp": 14,
+      "fp": 13,
+      "fn": 19,
+      "briefs": 72
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 4,
+      "fp": 1,
+      "fn": 12,
+      "briefs": 72
+     },
+     {
+      "tp": 14,
+      "fp": 20,
+      "fn": 19,
+      "briefs": 72
+     },
+     {
+      "tp": 14,
+      "fp": 40,
+      "fn": 19,
+      "briefs": 72
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 14,
+     "fp": 18,
+     "fn": 19,
+     "briefs": 72
+    },
+    {
+     "tp": 14,
+     "fp": 16,
+     "fn": 19,
+     "briefs": 72
+    },
+    {
+     "tp": 14,
+     "fp": 12,
+     "fn": 19,
+     "briefs": 72
+    }
+   ],
+   "calibration": {
+    "1": [
+     14,
+     59
+    ],
+    "0": [
+     16,
+     134
+    ],
+    "8": [
+     4,
+     12
+    ],
+    "9": [
+     28,
+     28
+    ],
+    "5": [
+     0,
+     16
+    ],
+    "2": [
+     2,
+     20
+    ],
+    "3": [
+     1,
+     16
+    ],
+    "4": [
+     1,
+     33
+    ],
+    "6": [
+     0,
+     6
+    ],
+    "7": [
+     0,
+     1
+    ]
+   },
+   "feedback_evidence": 28,
+   "implicit_evidence": 47
+  },
+  {
+   "seed": 16,
+   "backend": "python twin",
+   "people": 14,
+   "channels": 8,
+   "messages": 266,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 195,
+     "fp": 46,
+     "fn": 43,
+     "briefs": 336
+    },
+    "strong": {
+     "tp": 106,
+     "fp": 109,
+     "fn": 132,
+     "briefs": 336
+    },
+    "digest": {
+     "tp": 35,
+     "fp": 377,
+     "fn": 203,
+     "briefs": 336
+    },
+    "learned-noFB": {
+     "tp": 195,
+     "fp": 46,
+     "fn": 43,
+     "briefs": 336
+    },
+    "learned": {
+     "tp": 192,
+     "fp": 20,
+     "fn": 46,
+     "briefs": 336
+    },
+    "ceiling": {
+     "tp": 196,
+     "fp": 39,
+     "fn": 42,
+     "briefs": 336
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 19,
+      "fp": 7,
+      "fn": 11,
+      "briefs": 112
+     },
+     {
+      "tp": 65,
+      "fp": 18,
+      "fn": 6,
+      "briefs": 112
+     },
+     {
+      "tp": 111,
+      "fp": 21,
+      "fn": 26,
+      "briefs": 112
+     }
+    ],
+    "strong": [
+     {
+      "tp": 13,
+      "fp": 32,
+      "fn": 17,
+      "briefs": 112
+     },
+     {
+      "tp": 29,
+      "fp": 48,
+      "fn": 42,
+      "briefs": 112
+     },
+     {
+      "tp": 64,
+      "fp": 29,
+      "fn": 73,
+      "briefs": 112
+     }
+    ],
+    "digest": [
+     {
+      "tp": 12,
+      "fp": 195,
+      "fn": 18,
+      "briefs": 112
+     },
+     {
+      "tp": 15,
+      "fp": 77,
+      "fn": 56,
+      "briefs": 112
+     },
+     {
+      "tp": 8,
+      "fp": 105,
+      "fn": 129,
+      "briefs": 112
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 19,
+      "fp": 7,
+      "fn": 11,
+      "briefs": 112
+     },
+     {
+      "tp": 65,
+      "fp": 18,
+      "fn": 6,
+      "briefs": 112
+     },
+     {
+      "tp": 111,
+      "fp": 21,
+      "fn": 26,
+      "briefs": 112
+     }
+    ],
+    "learned": [
+     {
+      "tp": 19,
+      "fp": 7,
+      "fn": 11,
+      "briefs": 112
+     },
+     {
+      "tp": 60,
+      "fp": 4,
+      "fn": 11,
+      "briefs": 112
+     },
+     {
+      "tp": 113,
+      "fp": 9,
+      "fn": 24,
+      "briefs": 112
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 16,
+      "fp": 7,
+      "fn": 14,
+      "briefs": 112
+     },
+     {
+      "tp": 65,
+      "fp": 12,
+      "fn": 6,
+      "briefs": 112
+     },
+     {
+      "tp": 115,
+      "fp": 20,
+      "fn": 22,
+      "briefs": 112
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 111,
+     "fp": 10,
+     "fn": 26,
+     "briefs": 112
+    },
+    {
+     "tp": 107,
+     "fp": 13,
+     "fn": 30,
+     "briefs": 112
+    },
+    {
+     "tp": 113,
+     "fp": 9,
+     "fn": 24,
+     "briefs": 112
+    }
+   ],
+   "calibration": {
+    "0": [
+     8,
+     137
+    ],
+    "8": [
+     12,
+     17
+    ],
+    "9": [
+     143,
+     148
+    ],
+    "2": [
+     5,
+     97
+    ],
+    "1": [
+     17,
+     150
+    ],
+    "3": [
+     7,
+     16
+    ],
+    "7": [
+     17,
+     19
+    ],
+    "5": [
+     8,
+     14
+    ],
+    "4": [
+     4,
+     21
+    ],
+    "6": [
+     12,
+     14
+    ]
+   },
+   "feedback_evidence": 26,
+   "implicit_evidence": 66
+  },
+  {
+   "seed": 17,
+   "backend": "python twin",
+   "people": 13,
+   "channels": 8,
+   "messages": 260,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 202,
+     "fp": 32,
+     "fn": 53,
+     "briefs": 312
+    },
+    "strong": {
+     "tp": 180,
+     "fp": 159,
+     "fn": 75,
+     "briefs": 312
+    },
+    "digest": {
+     "tp": 41,
+     "fp": 338,
+     "fn": 214,
+     "briefs": 312
+    },
+    "learned-noFB": {
+     "tp": 202,
+     "fp": 32,
+     "fn": 53,
+     "briefs": 312
+    },
+    "learned": {
+     "tp": 202,
+     "fp": 11,
+     "fn": 53,
+     "briefs": 312
+    },
+    "ceiling": {
+     "tp": 209,
+     "fp": 16,
+     "fn": 46,
+     "briefs": 312
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 18,
+      "fp": 4,
+      "fn": 4,
+      "briefs": 104
+     },
+     {
+      "tp": 79,
+      "fp": 14,
+      "fn": 12,
+      "briefs": 104
+     },
+     {
+      "tp": 105,
+      "fp": 14,
+      "fn": 37,
+      "briefs": 104
+     }
+    ],
+    "strong": [
+     {
+      "tp": 16,
+      "fp": 21,
+      "fn": 6,
+      "briefs": 104
+     },
+     {
+      "tp": 62,
+      "fp": 53,
+      "fn": 29,
+      "briefs": 104
+     },
+     {
+      "tp": 102,
+      "fp": 85,
+      "fn": 40,
+      "briefs": 104
+     }
+    ],
+    "digest": [
+     {
+      "tp": 10,
+      "fp": 165,
+      "fn": 12,
+      "briefs": 104
+     },
+     {
+      "tp": 13,
+      "fp": 105,
+      "fn": 78,
+      "briefs": 104
+     },
+     {
+      "tp": 18,
+      "fp": 68,
+      "fn": 124,
+      "briefs": 104
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 18,
+      "fp": 4,
+      "fn": 4,
+      "briefs": 104
+     },
+     {
+      "tp": 79,
+      "fp": 14,
+      "fn": 12,
+      "briefs": 104
+     },
+     {
+      "tp": 105,
+      "fp": 14,
+      "fn": 37,
+      "briefs": 104
+     }
+    ],
+    "learned": [
+     {
+      "tp": 18,
+      "fp": 2,
+      "fn": 4,
+      "briefs": 104
+     },
+     {
+      "tp": 79,
+      "fp": 0,
+      "fn": 12,
+      "briefs": 104
+     },
+     {
+      "tp": 105,
+      "fp": 9,
+      "fn": 37,
+      "briefs": 104
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 22,
+      "fp": 4,
+      "fn": 0,
+      "briefs": 104
+     },
+     {
+      "tp": 79,
+      "fp": 6,
+      "fn": 12,
+      "briefs": 104
+     },
+     {
+      "tp": 108,
+      "fp": 6,
+      "fn": 34,
+      "briefs": 104
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 108,
+     "fp": 16,
+     "fn": 34,
+     "briefs": 104
+    },
+    {
+     "tp": 105,
+     "fp": 9,
+     "fn": 37,
+     "briefs": 104
+    },
+    {
+     "tp": 105,
+     "fp": 10,
+     "fn": 37,
+     "briefs": 104
+    }
+   ],
+   "calibration": {
+    "0": [
+     27,
+     358
+    ],
+    "9": [
+     176,
+     178
+    ],
+    "5": [
+     0,
+     4
+    ],
+    "1": [
+     16,
+     81
+    ],
+    "8": [
+     23,
+     25
+    ],
+    "3": [
+     7,
+     42
+    ],
+    "6": [
+     3,
+     6
+    ],
+    "2": [
+     3,
+     17
+    ]
+   },
+   "feedback_evidence": 14,
+   "implicit_evidence": 48
+  },
+  {
+   "seed": 18,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 268,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 168,
+     "fp": 17,
+     "fn": 26,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 101,
+     "fp": 140,
+     "fn": 93,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 30,
+     "fp": 293,
+     "fn": 164,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 168,
+     "fp": 17,
+     "fn": 26,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 169,
+     "fp": 11,
+     "fn": 25,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 170,
+     "fp": 15,
+     "fn": 24,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 32,
+      "fp": 6,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 61,
+      "fp": 9,
+      "fn": 5,
+      "briefs": 88
+     },
+     {
+      "tp": 75,
+      "fp": 2,
+      "fn": 18,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 18,
+      "fp": 13,
+      "fn": 17,
+      "briefs": 88
+     },
+     {
+      "tp": 32,
+      "fp": 50,
+      "fn": 34,
+      "briefs": 88
+     },
+     {
+      "tp": 51,
+      "fp": 77,
+      "fn": 42,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 13,
+      "fp": 145,
+      "fn": 22,
+      "briefs": 88
+     },
+     {
+      "tp": 10,
+      "fp": 87,
+      "fn": 56,
+      "briefs": 88
+     },
+     {
+      "tp": 7,
+      "fp": 61,
+      "fn": 86,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 32,
+      "fp": 6,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 61,
+      "fp": 9,
+      "fn": 5,
+      "briefs": 88
+     },
+     {
+      "tp": 75,
+      "fp": 2,
+      "fn": 18,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 32,
+      "fp": 2,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 60,
+      "fp": 6,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 77,
+      "fp": 3,
+      "fn": 16,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 32,
+      "fp": 4,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 61,
+      "fp": 9,
+      "fn": 5,
+      "briefs": 88
+     },
+     {
+      "tp": 77,
+      "fp": 2,
+      "fn": 16,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 77,
+     "fp": 2,
+     "fn": 16,
+     "briefs": 88
+    },
+    {
+     "tp": 77,
+     "fp": 2,
+     "fn": 16,
+     "briefs": 88
+    },
+    {
+     "tp": 75,
+     "fp": 2,
+     "fn": 18,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "1": [
+     6,
+     33
+    ],
+    "0": [
+     12,
+     206
+    ],
+    "8": [
+     23,
+     25
+    ],
+    "9": [
+     123,
+     124
+    ],
+    "7": [
+     15,
+     18
+    ],
+    "4": [
+     3,
+     10
+    ],
+    "5": [
+     7,
+     12
+    ],
+    "3": [
+     0,
+     5
+    ],
+    "2": [
+     0,
+     7
+    ],
+    "6": [
+     1,
+     1
+    ]
+   },
+   "feedback_evidence": 12,
+   "implicit_evidence": 57
+  },
+  {
+   "seed": 19,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 269,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 176,
+     "fp": 49,
+     "fn": 97,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 148,
+     "fp": 100,
+     "fn": 125,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 46,
+     "fp": 262,
+     "fn": 227,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 176,
+     "fp": 49,
+     "fn": 97,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 184,
+     "fp": 49,
+     "fn": 89,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 180,
+     "fp": 44,
+     "fn": 93,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 29,
+      "fp": 7,
+      "fn": 23,
+      "briefs": 88
+     },
+     {
+      "tp": 60,
+      "fp": 22,
+      "fn": 44,
+      "briefs": 88
+     },
+     {
+      "tp": 87,
+      "fp": 20,
+      "fn": 30,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 18,
+      "fp": 11,
+      "fn": 34,
+      "briefs": 88
+     },
+     {
+      "tp": 41,
+      "fp": 36,
+      "fn": 63,
+      "briefs": 88
+     },
+     {
+      "tp": 89,
+      "fp": 53,
+      "fn": 28,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 22,
+      "fp": 143,
+      "fn": 30,
+      "briefs": 88
+     },
+     {
+      "tp": 13,
+      "fp": 66,
+      "fn": 91,
+      "briefs": 88
+     },
+     {
+      "tp": 11,
+      "fp": 53,
+      "fn": 106,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 29,
+      "fp": 7,
+      "fn": 23,
+      "briefs": 88
+     },
+     {
+      "tp": 60,
+      "fp": 22,
+      "fn": 44,
+      "briefs": 88
+     },
+     {
+      "tp": 87,
+      "fp": 20,
+      "fn": 30,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 29,
+      "fp": 5,
+      "fn": 23,
+      "briefs": 88
+     },
+     {
+      "tp": 60,
+      "fp": 23,
+      "fn": 44,
+      "briefs": 88
+     },
+     {
+      "tp": 95,
+      "fp": 21,
+      "fn": 22,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 24,
+      "fp": 4,
+      "fn": 28,
+      "briefs": 88
+     },
+     {
+      "tp": 61,
+      "fp": 20,
+      "fn": 43,
+      "briefs": 88
+     },
+     {
+      "tp": 95,
+      "fp": 20,
+      "fn": 22,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 87,
+     "fp": 23,
+     "fn": 30,
+     "briefs": 88
+    },
+    {
+     "tp": 87,
+     "fp": 21,
+     "fn": 30,
+     "briefs": 88
+    },
+    {
+     "tp": 95,
+     "fp": 21,
+     "fn": 22,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "1": [
+     26,
+     80
+    ],
+    "8": [
+     16,
+     19
+    ],
+    "9": [
+     144,
+     183
+    ],
+    "0": [
+     1,
+     93
+    ],
+    "7": [
+     19,
+     24
+    ],
+    "4": [
+     0,
+     4
+    ],
+    "2": [
+     11,
+     34
+    ],
+    "3": [
+     3,
+     5
+    ],
+    "6": [
+     5,
+     7
+    ]
+   },
+   "feedback_evidence": 44,
+   "implicit_evidence": 42
+  },
+  {
+   "seed": 20,
+   "backend": "python twin",
+   "people": 11,
+   "channels": 8,
+   "messages": 266,
+   "ingest_s": 0.1,
+   "totals": {
+    "v1": {
+     "tp": 78,
+     "fp": 47,
+     "fn": 41,
+     "briefs": 264
+    },
+    "strong": {
+     "tp": 83,
+     "fp": 55,
+     "fn": 36,
+     "briefs": 264
+    },
+    "digest": {
+     "tp": 24,
+     "fp": 270,
+     "fn": 95,
+     "briefs": 264
+    },
+    "learned-noFB": {
+     "tp": 80,
+     "fp": 47,
+     "fn": 39,
+     "briefs": 264
+    },
+    "learned": {
+     "tp": 72,
+     "fp": 9,
+     "fn": 47,
+     "briefs": 264
+    },
+    "ceiling": {
+     "tp": 77,
+     "fp": 21,
+     "fn": 42,
+     "briefs": 264
+    }
+   },
+   "per_sprint": {
+    "v1": [
+     {
+      "tp": 17,
+      "fp": 13,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 21,
+      "fp": 20,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 40,
+      "fp": 14,
+      "fn": 27,
+      "briefs": 88
+     }
+    ],
+    "strong": [
+     {
+      "tp": 14,
+      "fp": 11,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 23,
+      "fp": 14,
+      "fn": 9,
+      "briefs": 88
+     },
+     {
+      "tp": 46,
+      "fp": 30,
+      "fn": 21,
+      "briefs": 88
+     }
+    ],
+    "digest": [
+     {
+      "tp": 7,
+      "fp": 128,
+      "fn": 13,
+      "briefs": 88
+     },
+     {
+      "tp": 7,
+      "fp": 68,
+      "fn": 25,
+      "briefs": 88
+     },
+     {
+      "tp": 10,
+      "fp": 74,
+      "fn": 57,
+      "briefs": 88
+     }
+    ],
+    "learned-noFB": [
+     {
+      "tp": 17,
+      "fp": 13,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 21,
+      "fp": 20,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 42,
+      "fp": 14,
+      "fn": 25,
+      "briefs": 88
+     }
+    ],
+    "learned": [
+     {
+      "tp": 17,
+      "fp": 7,
+      "fn": 3,
+      "briefs": 88
+     },
+     {
+      "tp": 19,
+      "fp": 2,
+      "fn": 13,
+      "briefs": 88
+     },
+     {
+      "tp": 36,
+      "fp": 0,
+      "fn": 31,
+      "briefs": 88
+     }
+    ],
+    "ceiling": [
+     {
+      "tp": 14,
+      "fp": 5,
+      "fn": 6,
+      "briefs": 88
+     },
+     {
+      "tp": 21,
+      "fp": 8,
+      "fn": 11,
+      "briefs": 88
+     },
+     {
+      "tp": 42,
+      "fp": 8,
+      "fn": 25,
+      "briefs": 88
+     }
+    ]
+   },
+   "runs": [
+    {
+     "tp": 44,
+     "fp": 5,
+     "fn": 23,
+     "briefs": 88
+    },
+    {
+     "tp": 37,
+     "fp": 0,
+     "fn": 30,
+     "briefs": 88
+    },
+    {
+     "tp": 36,
+     "fp": 0,
+     "fn": 31,
+     "briefs": 88
+    }
+   ],
+   "calibration": {
+    "0": [
+     12,
+     147
+    ],
+    "9": [
+     66,
+     69
+    ],
+    "1": [
+     12,
+     70
+    ],
+    "4": [
+     10,
+     21
+    ],
+    "7": [
+     2,
+     5
+    ],
+    "6": [
+     3,
+     4
+    ],
+    "3": [
+     3,
+     19
+    ],
+    "2": [
+     3,
+     17
+    ],
+    "5": [
+     1,
+     3
+    ]
+   },
+   "feedback_evidence": 13,
+   "implicit_evidence": 71
+  }
+ ]
+}

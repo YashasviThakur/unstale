@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+infra/.env
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+node_modules/
+dist/
+data/generated/
+*.kuzu
+data/cache/*
+!data/cache/llm/
+data/state.json
+.claude/

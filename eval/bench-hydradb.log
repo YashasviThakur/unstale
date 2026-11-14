@@ -1,0 +1,2 @@
+org 001: 249 msgs, learned F1 0.89 (P 0.93 R 0.85) vs v1 F1 0.85; ingest 362.7s; 899s total
+org 002: 267 msgs, learned F1 0.78 (P 0.84 R 0.72) vs v1 F1 0.65; ingest 534.6s; 2028s total

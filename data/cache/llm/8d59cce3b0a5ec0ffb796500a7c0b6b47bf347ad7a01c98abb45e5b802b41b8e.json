@@ -1,0 +1,1 @@
+{"reply": {"value": "deprecated", "answer": "Billing API v1 is deprecated and should not be used for new integrations."}, "prompt_tokens": 518, "completion_tokens": 50, "model": "openai/gpt-oss-120b"}

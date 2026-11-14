@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "policy:monthly-refunds", "attribute": "WINDOW", "believed": "30 days", "current": "14 days"}, {"subject": "plan:team", "attribute": "PRICED_AT", "believed": "$39/seat/month", "current": "$49/seat/month"}]}, "prompt_tokens": 3173, "completion_tokens": 473, "model": "openai/gpt-oss-120b"}

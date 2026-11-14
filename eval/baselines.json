@@ -1,0 +1,749 @@
+{
+  "vector_rag": {
+    "precision": 0.13,
+    "recall": 0.12,
+    "f1": 0.125,
+    "tp": 3,
+    "fp": 20,
+    "fn": 22,
+    "told_what_they_knew": 18,
+    "briefs": 16,
+    "tokens_per_brief": 1548,
+    "errors": [
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "service:payments|WEBHOOK_RETRIES",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:sara",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:lena",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "service:payments|OWNED_BY",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "service:payments|WEBHOOK_RETRIES",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:sara",
+        "slot": "service:payments|WEBHOOK_RETRIES",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:sara",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:dev",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:dev",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:dev",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "meeting:kestrel-qbr|SCHEDULED_FOR",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "meeting:kestrel-qbr|SCHEDULED_FOR",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:lena",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:lena",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "missed"
+      }
+    ]
+  },
+  "recap": {
+    "precision": 0.08,
+    "recall": 0.08,
+    "f1": 0.08,
+    "tp": 2,
+    "fp": 23,
+    "fn": 23,
+    "told_what_they_knew": 21,
+    "briefs": 16,
+    "tokens_per_brief": 2027,
+    "errors": [
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:sara",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:lena",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "api:payments-v1|STATUS",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:sara",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:dev",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "meeting:kestrel-qbr|SCHEDULED_FOR",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:lena",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:lena",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "agent:support-bot",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      }
+    ]
+  },
+  "org_llm": {
+    "precision": 0.391,
+    "recall": 0.36,
+    "f1": 0.375,
+    "tp": 9,
+    "fp": 14,
+    "fn": 16,
+    "told_what_they_knew": 9,
+    "briefs": 16,
+    "tokens_per_brief": 3188,
+    "errors": [
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:priya",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:arjun",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:sara",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:sara",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:sara",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:dev",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:tom",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-06-29T08:00:00Z",
+        "person": "person:lena",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:priya",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:arjun",
+        "slot": "service:payments|WEBHOOK_RETRIES",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:sara",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:sara",
+        "slot": "policy:monthly-refunds|WINDOW",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:dev",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "false alarm"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:dev",
+        "slot": "service:payments|OWNED_BY",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|SHIPS_ON",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "release:2.4|CODE_FREEZE",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "meeting:kestrel-qbr|SCHEDULED_FOR",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "feature:sso|AVAILABLE_IN",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:maya",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "api:payments-v1|STATUS",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:tom",
+        "slot": "plan:team|PRICED_AT",
+        "type": "missed"
+      },
+      {
+        "at": "2026-07-01T17:00:00Z",
+        "person": "person:lena",
+        "slot": "plan:team|PRICED_AT",
+        "type": "false alarm"
+      }
+    ]
+  }
+}

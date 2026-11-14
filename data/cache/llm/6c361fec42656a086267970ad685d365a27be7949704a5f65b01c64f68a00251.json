@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "customer:kestrel", "attribute": "RENEWAL_DATE", "value": "2026-07-15"}]}, "prompt_tokens": 849, "completion_tokens": 76, "model": "openai/gpt-oss-120b"}

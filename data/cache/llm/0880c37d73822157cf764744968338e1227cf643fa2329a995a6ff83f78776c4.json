@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "plan:team", "attribute": "PRICED_AT", "believed": "$39/seat/month", "current": "$49/seat/month"}, {"subject": "api:payments-v1", "attribute": "STATUS", "believed": "supported", "current": "deprecated"}]}, "prompt_tokens": 2545, "completion_tokens": 268, "model": "openai/gpt-oss-120b"}

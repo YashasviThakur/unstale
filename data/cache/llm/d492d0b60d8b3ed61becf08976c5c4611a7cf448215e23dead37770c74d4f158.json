@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "release:2.4", "attribute": "SHIPS_ON", "believed": "2026-06-29", "current": "2026-06-29"}, {"subject": "meeting:kestrel-qbr", "attribute": "SCHEDULED_FOR", "believed": "2026-06-30 10:00 UTC", "current": "2026-07-02 14:00 UTC"}]}, "prompt_tokens": 1313, "completion_tokens": 374, "model": "openai/gpt-oss-120b"}

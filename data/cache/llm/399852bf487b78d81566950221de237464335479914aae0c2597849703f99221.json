@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "feature:sso", "attribute": "AVAILABLE_IN", "value": "2.5"}]}, "prompt_tokens": 1067, "completion_tokens": 143, "model": "openai/gpt-oss-120b"}

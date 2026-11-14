@@ -1,0 +1,63 @@
+org 001: 249 msgs, learned F1 0.89 (P 0.93 R 0.85) vs v1 F1 0.85; ingest 0.1s; 1s total
+org 002: 267 msgs, learned F1 0.78 (P 0.84 R 0.72) vs v1 F1 0.65; ingest 0.1s; 3s total
+org 003: 256 msgs, learned F1 0.74 (P 0.87 R 0.65) vs v1 F1 0.72; ingest 0.1s; 5s total
+org 004: 266 msgs, learned F1 0.84 (P 0.81 R 0.88) vs v1 F1 0.43; ingest 0.1s; 7s total
+org 005: 261 msgs, learned F1 0.74 (P 0.88 R 0.63) vs v1 F1 0.64; ingest 0.1s; 9s total
+org 006: 257 msgs, learned F1 0.80 (P 0.95 R 0.69) vs v1 F1 0.74; ingest 0.1s; 10s total
+org 007: 259 msgs, learned F1 0.83 (P 0.91 R 0.76) vs v1 F1 0.79; ingest 0.1s; 12s total
+org 008: 259 msgs, learned F1 0.77 (P 0.87 R 0.69) vs v1 F1 0.69; ingest 0.1s; 14s total
+org 009: 265 msgs, learned F1 0.64 (P 0.76 R 0.56) vs v1 F1 0.62; ingest 0.1s; 16s total
+org 010: 261 msgs, learned F1 0.51 (P 0.81 R 0.37) vs v1 F1 0.44; ingest 0.1s; 18s total
+org 011: 263 msgs, learned F1 0.63 (P 0.84 R 0.50) vs v1 F1 0.68; ingest 0.1s; 20s total
+org 012: 259 msgs, learned F1 0.59 (P 0.77 R 0.48) vs v1 F1 0.51; ingest 0.1s; 22s total
+org 013: 243 msgs, learned F1 0.57 (P 0.79 R 0.44) vs v1 F1 0.52; ingest 0.1s; 23s total
+org 014: 262 msgs, learned F1 0.75 (P 0.95 R 0.61) vs v1 F1 0.67; ingest 0.1s; 25s total
+org 015: 254 msgs, learned F1 0.44 (P 0.51 R 0.39) vs v1 F1 0.35; ingest 0.1s; 27s total
+org 016: 266 msgs, learned F1 0.85 (P 0.91 R 0.81) vs v1 F1 0.81; ingest 0.1s; 28s total
+org 017: 260 msgs, learned F1 0.86 (P 0.95 R 0.79) vs v1 F1 0.83; ingest 0.1s; 31s total
+org 018: 268 msgs, learned F1 0.90 (P 0.94 R 0.87) vs v1 F1 0.89; ingest 0.1s; 32s total
+org 019: 269 msgs, learned F1 0.73 (P 0.79 R 0.67) vs v1 F1 0.71; ingest 0.1s; 34s total
+org 020: 266 msgs, learned F1 0.72 (P 0.89 R 0.60) vs v1 F1 0.64; ingest 0.1s; 36s total
+# Benchmark: 20 generated orgs x 3 sprints (Python twin, parity-checked against HydraDB)
+
+5,210 messages, 229 people and agents, 5,496 briefs per method, threshold 0.5, 70% of corrections answered.
+
+| Method | Precision | Recall | F1 | False alarms per 100 briefs |
+|---|---|---|---|---|
+| **Unstale (learned exposure)** | 0.87 | 0.66 | 0.75 | 6.8 |
+| Unstale, learned from echoes only | 0.68 | 0.67 | 0.68 | 21.6 |
+| Unstale v1 (every channel member read every message) | 0.68 | 0.67 | 0.67 | 21.4 |
+| Interactions only | 0.49 | 0.55 | 0.52 | 39.3 |
+| Daily changelog of changes in your scope | 0.10 | 0.16 | 0.12 | 105.5 |
+| Same model with the true hidden read rates | 0.83 | 0.69 | 0.75 | 9.4 |
+
+By sprint (F1):
+
+| Method | Sprint 1 | Sprint 2 | Sprint 3 |
+|---|---|---|---|
+| **Unstale (learned exposure)** | 0.76 | 0.73 | 0.76 |
+| Unstale v1 (every channel member read every message) | 0.69 | 0.65 | 0.68 |
+
+The last sprint, scored again with evidence from only the first n sprints:
+
+| Prior sprints of evidence | Precision | Recall | F1 | False alarms per 100 briefs |
+|---|---|---|---|---|
+| 0 | 0.86 | 0.65 | 0.74 | 11.1 |
+| 1 | 0.87 | 0.64 | 0.74 | 9.5 |
+| 2 | 0.89 | 0.65 | 0.76 | 8.0 |
+
+Calibration of the learned model (every candidate it scored):
+
+| Predicted chance stale | Candidates | Actually stale |
+|---|---|---|
+| 0.0-0.1 | 2663 | 0.11 |
+| 0.1-0.2 | 1752 | 0.18 |
+| 0.2-0.3 | 988 | 0.16 |
+| 0.3-0.4 | 817 | 0.24 |
+| 0.4-0.5 | 622 | 0.21 |
+| 0.5-0.6 | 210 | 0.46 |
+| 0.6-0.7 | 136 | 0.70 |
+| 0.7-0.8 | 216 | 0.80 |
+| 0.8-0.9 | 290 | 0.73 |
+| 0.9-1.0 | 1981 | 0.95 |
+

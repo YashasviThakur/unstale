@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "release:2.4", "attribute": "SHIPS_ON", "believed": "2026-06-29", "current": "2026-07-03"}, {"subject": "feature:sso", "attribute": "AVAILABLE_IN", "believed": "2.4", "current": "2.5"}]}, "prompt_tokens": 2538, "completion_tokens": 285, "model": "openai/gpt-oss-120b"}

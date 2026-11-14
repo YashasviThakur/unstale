@@ -1,0 +1,1 @@
+{"reply": {"items": [{"subject": "service:payments", "attribute": "WEBHOOK_RETRIES", "believed": "3", "current": "5"}, {"subject": "api:payments-v1", "attribute": "STATUS", "believed": "supported", "current": "deprecated"}]}, "prompt_tokens": 1318, "completion_tokens": 168, "model": "openai/gpt-oss-120b"}

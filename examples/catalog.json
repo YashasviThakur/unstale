@@ -1,0 +1,213 @@
+{
+ "_comment": "Catalog for unstale.slack_import: the subjects your team's facts are about, who is responsible for what, and how subjects connect. Ids are 'type:slug'; people are 'person:<slack handle>'. Attributes default to Unstale's built-in vocabulary (ship dates, prices, owners, status, ...).",
+ "name": "Northwind Labs",
+ "agents": [
+  "support-bot"
+ ],
+ "subjects": [
+  {
+   "id": "release:2.4",
+   "type": "Release",
+   "name": "Release 2.4"
+  },
+  {
+   "id": "feature:sso",
+   "type": "Feature",
+   "name": "SSO"
+  },
+  {
+   "id": "service:payments",
+   "type": "Service",
+   "name": "Payments service"
+  },
+  {
+   "id": "api:payments-v1",
+   "type": "API",
+   "name": "Payments API v1"
+  },
+  {
+   "id": "plan:team",
+   "type": "Plan",
+   "name": "Team plan"
+  },
+  {
+   "id": "plan:business",
+   "type": "Plan",
+   "name": "Business plan"
+  },
+  {
+   "id": "policy:monthly-refunds",
+   "type": "Policy",
+   "name": "Monthly plan refunds"
+  },
+  {
+   "id": "policy:annual-refunds",
+   "type": "Policy",
+   "name": "Annual plan refunds"
+  },
+  {
+   "id": "customer:brightline",
+   "type": "Customer",
+   "name": "Brightline"
+  },
+  {
+   "id": "customer:kestrel",
+   "type": "Customer",
+   "name": "Kestrel Foods"
+  },
+  {
+   "id": "meeting:kestrel-qbr",
+   "type": "Meeting",
+   "name": "Kestrel QBR"
+  }
+ ],
+ "links": [
+  [
+   "feature:sso",
+   "PART_OF",
+   "release:2.4"
+  ],
+  [
+   "release:2.4",
+   "DEPENDS_ON",
+   "service:payments"
+  ],
+  [
+   "api:payments-v1",
+   "PART_OF",
+   "service:payments"
+  ],
+  [
+   "customer:brightline",
+   "WANTS",
+   "feature:sso"
+  ],
+  [
+   "customer:brightline",
+   "WAITING_ON",
+   "release:2.4"
+  ],
+  [
+   "customer:kestrel",
+   "USES",
+   "service:payments"
+  ],
+  [
+   "customer:kestrel",
+   "USES",
+   "api:payments-v1"
+  ],
+  [
+   "meeting:kestrel-qbr",
+   "FOR",
+   "customer:kestrel"
+  ]
+ ],
+ "responsibility": [
+  [
+   "person:priya",
+   "OWNS",
+   "release:2.4"
+  ],
+  [
+   "person:priya",
+   "OWNS",
+   "feature:sso"
+  ],
+  [
+   "person:arjun",
+   "OWNS",
+   "service:payments"
+  ],
+  [
+   "person:arjun",
+   "WORKS_ON",
+   "release:2.4"
+  ],
+  [
+   "person:sara",
+   "WORKS_ON",
+   "service:payments"
+  ],
+  [
+   "person:sara",
+   "WORKS_ON",
+   "release:2.4"
+  ],
+  [
+   "person:dev",
+   "WORKS_ON",
+   "release:2.4"
+  ],
+  [
+   "person:maya",
+   "OWNS",
+   "customer:brightline"
+  ],
+  [
+   "person:maya",
+   "WORKS_ON",
+   "plan:team"
+  ],
+  [
+   "person:maya",
+   "ATTENDS",
+   "meeting:kestrel-qbr"
+  ],
+  [
+   "person:tom",
+   "OWNS",
+   "customer:kestrel"
+  ],
+  [
+   "person:tom",
+   "OWNS",
+   "meeting:kestrel-qbr"
+  ],
+  [
+   "person:tom",
+   "WORKS_ON",
+   "plan:team"
+  ],
+  [
+   "person:tom",
+   "WORKS_ON",
+   "policy:monthly-refunds"
+  ],
+  [
+   "person:lena",
+   "OWNS",
+   "plan:team"
+  ],
+  [
+   "person:lena",
+   "OWNS",
+   "plan:business"
+  ],
+  [
+   "person:lena",
+   "OWNS",
+   "policy:monthly-refunds"
+  ],
+  [
+   "person:lena",
+   "OWNS",
+   "policy:annual-refunds"
+  ],
+  [
+   "agent:support-bot",
+   "WORKS_ON",
+   "plan:team"
+  ],
+  [
+   "agent:support-bot",
+   "WORKS_ON",
+   "policy:monthly-refunds"
+  ],
+  [
+   "agent:support-bot",
+   "WORKS_ON",
+   "api:payments-v1"
+  ]
+ ]
+}

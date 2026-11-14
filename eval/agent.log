@@ -1,0 +1,41 @@
+Northwind Labs   2026-06-26 api:payments-v1|STATUS               own=Y unstale=Y everything=Y rag=Y
+Northwind Labs   2026-06-26 plan:team|PRICED_AT                  own=OLD unstale=Y everything=Y rag=Y
+Northwind Labs   2026-06-26 policy:monthly-refunds|WINDOW        own=Y unstale=Y everything=Y rag=Y
+Northwind Labs   2026-06-30 api:payments-v1|STATUS               own=OLD unstale=Y everything=Y rag=Y
+Northwind Labs   2026-06-30 plan:team|PRICED_AT                  own=OLD unstale=Y everything=Y rag=Y
+Northwind Labs   2026-06-30 policy:monthly-refunds|WINDOW        own=Y unstale=Y everything=Y rag=Y
+Northwind Labs   2026-07-01 api:payments-v1|STATUS               own=OLD unstale=Y everything=Y rag=Y
+Northwind Labs   2026-07-01 plan:team|PRICED_AT                  own=OLD unstale=Y everything=Y rag=Y
+Northwind Labs   2026-07-01 policy:monthly-refunds|WINDOW        own=OLD unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 api:billing-v1|STATUS                own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 api:notifications-v1|STATUS          own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:business|PRICED_AT              own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:team|PRICED_AT                  own=n unstale=Y everything=OLD rag=Y
+Generated org 10 2026-09-16 policy:annual-refunds|WINDOW         own=Y unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 policy:monthly-refunds|WINDOW        own=OLD unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 api:billing-v1|STATUS                own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:business|PRICED_AT              own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:team|PRICED_AT                  own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 policy:annual-refunds|WINDOW         own=Y unstale=n everything=Y rag=Y
+Generated org 10 2026-09-16 policy:monthly-refunds|WINDOW        own=OLD unstale=Y everything=OLD rag=Y
+Generated org 10 2026-09-16 api:notifications-v1|STATUS          own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:business|PRICED_AT              own=n unstale=Y everything=n rag=n
+Generated org 10 2026-09-16 plan:team|PRICED_AT                  own=Y unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 policy:annual-refunds|WINDOW         own=Y unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 policy:monthly-refunds|WINDOW        own=OLD unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 api:billing-v1|STATUS                own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 api:notifications-v1|STATUS          own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:business|PRICED_AT              own=n unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 plan:team|PRICED_AT                  own=Y unstale=Y everything=Y rag=Y
+Generated org 10 2026-09-16 policy:annual-refunds|WINDOW         own=Y unstale=n everything=Y rag=Y
+Generated org 10 2026-09-16 policy:monthly-refunds|WINDOW        own=OLD unstale=Y everything=Y rag=Y
+# Agent eval: a support agent answering customers
+
+| Context | Correct | Confidently outdated answers | Prompt tokens per answer |
+|---|---|---|---|
+| Agent's own knowledge base | 29% (9/31) | 10 | 429 |
+| **Own knowledge base + Unstale corrections** | 94% (29/31) | 0 | 545 |
+| Every message in the org | 90% (28/31) | 2 | 3,156 |
+| Vector RAG over every message (top 8) | 97% (30/31) | 0 | 544 |
+
+llm calls 124 (cached 0)

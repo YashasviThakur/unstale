@@ -1,0 +1,1 @@
+{"reply": {"value": "deprecated", "answer": "Notifications API v1 is deprecated and should not be used for new integrations."}, "prompt_tokens": 775, "completion_tokens": 70, "model": "openai/gpt-oss-120b"}

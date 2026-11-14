@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unstale</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="masthead">
+    <div class="brand">
+      <h1>Unstale</h1>
+      <p class="dek">Who is working from an old version of the truth. <span id="orgname"></span></p>
+    </div>
+    <div class="clock">
+      <div class="clock-row">
+        <span class="kicker">Time</span>
+        <strong id="clock-label">...</strong>
+      </div>
+      <input id="scrub" type="range" min="0" max="100" step="1" aria-label="Scenario time">
+      <div id="ticks" class="ticks"></div>
+    </div>
+  </header>
+
+  <nav class="viewers" aria-label="View as">
+    <span class="kicker">Viewing as</span>
+    <div id="viewer-list" class="viewer-list"></div>
+  </nav>
+
+  <main class="desk">
+    <aside class="rail">
+      <div class="kicker">Channels</div>
+      <ul id="channel-list" class="channel-list"></ul>
+      <div class="rail-foot">
+        <div class="kicker">Graph</div>
+        <p id="graph-note" class="small muted"></p>
+      </div>
+    </aside>
+
+    <section class="center">
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="feed" role="tab">Messages</button>
+        <button class="tab" data-tab="team" role="tab">Team</button>
+      </div>
+      <div id="feed" class="feed"></div>
+      <div id="team" class="team hidden"></div>
+      <form id="compose" class="compose">
+        <div class="compose-head">
+          <span class="kicker" id="compose-label">Draft</span>
+          <div id="draft-presets" class="presets"></div>
+        </div>
+        <textarea id="draft" rows="3" placeholder="Write a message. Unstale checks it against the current record before it goes out."></textarea>
+        <div class="compose-actions">
+          <span id="compose-target" class="small muted"></span>
+          <span class="spacer"></span>
+          <button type="button" id="btn-check" class="btn">Check before sending</button>
+          <button type="button" id="btn-send" class="btn ghost" title="Posts into the graph. Only at the end of the scenario.">Send</button>
+        </div>
+        <div id="check-result" class="check-result"></div>
+      </form>
+    </section>
+
+    <aside class="corrections">
+      <div class="corr-head">
+        <div class="kicker" id="corr-kicker">Corrections</div>
+        <h2 id="corr-title">...</h2>
+        <p id="corr-meta" class="small muted"></p>
+      </div>
+      <div id="corr-list"></div>
+      <div id="agent-block" class="agent-block hidden">
+        <div class="kicker">Prompt block for this agent</div>
+        <pre id="agent-context"></pre>
+        <button type="button" id="btn-copy" class="btn ghost small">Copy</button>
+      </div>
+    </aside>
+  </main>
+
+  <dialog id="slot-dialog">
+    <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
+    <div id="slot-body"></div>
+  </dialog>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
