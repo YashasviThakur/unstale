@@ -19,8 +19,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import rules
-from .config import Settings, dataset_path
-from .engine import Engine, agent_context, check_draft
+from .config import ROOT as ROOT_DIR, Settings, dataset_path
+from .engine import EXPOSURES_CYPHER, Engine, agent_context, check_draft
 from .extract import extract_message
 from .llm import USAGE, LLMError
 from .timeline import checkpoints
@@ -33,24 +33,23 @@ _INIT = asyncio.Lock()
 
 
 async def init_state() -> None:
-    """Open the engine once per process. With the embedded store (the hosted demo) the graph does not
-    outlive the process, so it is rebuilt here from the dataset and the committed extraction cache."""
+    """Open the engine once per process. With the embedded store, or UNSTALE_BUILD_ON_START=1 (the single-container
+    deployment), the graph does not outlive the process, so it is rebuilt here from the dataset and the committed
+    extraction cache. Otherwise the API serves the namespace that scripts/ingest.py loaded."""
     async with _INIT:
         if "eng" in STATE:
             return
+        cfg = Settings.load()
         ds = json.loads(dataset_path().read_text(encoding="utf-8"))
-        eng = await Engine.open(ds, namespace="northwind-hosted" if eng_embedded() else None)
-        if eng_embedded():
+        build = cfg.store != "hydradb" or cfg.build_on_start
+        eng = await Engine.open(ds, namespace=f"northwind-hosted-{int(time.time())}" if build else None)
+        if build:
             await eng.load_directory()
             by_id = {m["id"]: m for m in ds["messages"]}
             for m in ds["messages"]:
                 await eng.ingest(m, extract_message(m, ds, by_id.get(m["thread"]) if m.get("thread") else None))
         eng.remember_threads()
-        STATE.update(ds=ds, eng=eng, claims=await eng.all_claims(), live=0)
-
-
-def eng_embedded() -> bool:
-    return Settings.load().store != "hydradb"
+        STATE.update(ds=ds, eng=eng, claims=await eng.all_claims(), live=0, feedback=0)
 
 
 @asynccontextmanager
@@ -156,7 +155,7 @@ async def warm(as_of: str) -> None:
 @app.get("/api/meta")
 async def meta() -> dict:
     d = ds()
-    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store,
+    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store, "hosted": eng().settings.hosted,
             "people": d["people"], "channels": d["channels"], "subjects": d["subjects"],
             "attributes": {k: v.get("label", k) for k, v in d["attributes"].items()},
             "checkpoints": checkpoints(d), "drafts": d["drafts"],
@@ -280,6 +279,8 @@ async def check(d: Draft) -> dict:
 @app.post("/api/send")
 async def send(d: Draft) -> dict:
     """Post a new message into the graph (demo: someone finally shares the change)."""
+    if Settings.load().hosted:
+        raise HTTPException(403, "Sending is switched off on the public demo, so visitors don't change each other's graph. Run it locally to try it.")
     from .extract import extract_message  # noqa: PLC0415
 
     last = max(m["ts"] for m in ds()["messages"])
@@ -311,6 +312,10 @@ async def feedback(f: Feedback) -> dict:
     """Someone answers a correction. The graph records what it reveals about who reads which channel."""
     if f.person not in people():
         raise HTTPException(404, "unknown person")
+    if Settings.load().hosted:
+        STATE["feedback"] += 1
+        if STATE["feedback"] > 80:
+            raise HTTPException(429, "This demo instance has taken enough feedback for now; it resets when it restarts.")
     try:
         res = await eng().record_feedback(f.person, f.slot, f.verdict, f.as_of)
     except ValueError as e:
@@ -336,6 +341,91 @@ async def learned(as_of: str) -> dict:
 @app.get("/api/agent/{pid}/context")
 async def agent_ctx(pid: str, as_of: str) -> dict:
     return {"agent": pid, "as_of": as_of, "context": await agent_context(eng(), pid, as_of)}
+
+
+@app.get("/api/graph")
+async def fact_graph(slot: str, as_of: str) -> dict:
+    """The part of the graph behind one fact: its versions, the messages that assert them, who saw which.
+
+    The ``missing`` list is the point: people with no SAW edge to the message that changed the fact.
+    """
+    subject, attribute = slot.split("|", 1)
+    t0, q0 = time.perf_counter(), eng().stats.queries
+    t = rules.parse_ts(as_of)
+    vers = [v for v in await eng().versions(subject, attribute) if rules.parse_ts(v.since) <= t]
+    cur = Engine.pick(vers, as_of)
+    model = await eng().read_model(as_of)
+    claim_of: dict[str, dict] = {}
+    for mid, cls in STATE["claims"].items():
+        for cl in cls:
+            if cl["slot"] == slot and rules.parse_ts(cl["ts"]) <= t:
+                claim_of[mid] = cl
+    version_nodes = [{"id": f"v{i}", "value": v.value, "shown": show(attribute, v.value), "since": v.since,
+                      "until": v.until, "message": v.message, "current": cur is not None and v is cur}
+                     for i, v in enumerate(vers)]
+    by_value = {n["value"].lower(): n["id"] for n in version_nodes}
+    msg_nodes, asserts = [], []
+    for mid, cl in sorted(claim_of.items(), key=lambda kv: kv[1]["ts"]):
+        m = eng()._messages.get(mid, {})
+        msg_nodes.append({"id": mid, "author": name(m["author"]) if m else "", "where": where(m) if m else "",
+                          "ts": cl["ts"], "text": (m.get("text") or "")[:160], "kind": cl["kind"],
+                          "value": show(attribute, cl["value"])})
+        target = next((n["id"] for n in version_nodes if n["message"] == mid), None) or by_value.get(cl["value"].lower())
+        if target:
+            asserts.append({"message": mid, "version": target, "kind": cl["kind"]})
+    cur_msg = cur.message if cur else None
+    people_out, saw, missing = [], [], []
+    for p in ds()["people"]:
+        pid = p["id"]
+        exps = (await eng().exposures(pid, as_of, {slot})).get(slot, [])
+        b = (await eng().beliefs(pid, as_of, slots={slot})).get(slot)
+        relevant = subject in await eng().scope(pid)
+        if not exps and not relevant:
+            continue
+        stale = bool(b and cur and not rules.same(b.value, cur.value))
+        people_out.append({"id": pid, "name": p["name"], "kind": p["kind"], "role": p["role"], "relevant": relevant,
+                           "believes": show(attribute, b.value) if b else None, "stale": stale,
+                           "in_sync": bool(b and cur and not stale)})
+        seen_msgs = set()
+        for e in exps:
+            seen_msgs.add(e.message)
+            saw.append({"person": pid, "message": e.message, "strength": e.strength,
+                        "rate": round(model.rate(pid, e.channel), 2) if e.strength == "weak" else 1.0,
+                        "channel": e.channel})
+        if cur_msg and cur_msg not in seen_msgs:
+            missing.append({"person": pid, "message": cur_msg})
+    return {"slot": slot, "subject": subject, "attribute": attribute, "as_of": as_of,
+            "title": f"{next((x['name'] for x in ds()['subjects'] if x['id'] == subject), subject)}: {label(attribute)}",
+            "versions": version_nodes, "messages": msg_nodes, "people": people_out, "asserts": asserts, "saw": saw,
+            "missing": missing, "cypher": as_hydradb(EXPOSURES_CYPHER), "store": eng().settings.store,
+            "graph_queries": eng().stats.queries - q0, "ms": round((time.perf_counter() - t0) * 1000, 1)}
+
+
+def as_hydradb(q: str) -> str:
+    """The query as written for HydraDB (the engine rewrites it for the embedded store)."""
+    return q.replace(" WHERE ", chr(10) + "WHERE ").replace(" RETURN ", chr(10) + "RETURN ")
+
+
+EVAL = ROOT_DIR / "eval"
+
+
+def _load(name: str) -> dict:
+    p = EVAL / name
+    return json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+
+
+@app.get("/api/proof")
+async def proof() -> dict:
+    """Every number the Proof panel shows, read from the committed result files (see scripts/ and eval/)."""
+    res, base = _load("results.json"), _load("baselines.json")
+    bench, curve, agent = _load("bench-twin.json"), _load("curve-twin.json"), _load("agent.json")
+    summary = bench.get("summary", {})
+    return {"northwind": {"unstale": res.get("engine", {}), "baselines": {
+                k: {x: v[x] for x in ("precision", "recall", "f1", "tokens_per_brief", "told_what_they_knew")}
+                for k, v in base.items()}},
+            "bench": {k: summary.get(k) for k in ("orgs", "sprints_per_org", "messages", "people", "briefs_per_method",
+                                                   "total", "same_sprint_after_n_prior_sprints", "calibration")},
+            "curve": curve, "agent": agent.get("summary", {})}
 
 
 @app.get("/")

@@ -46,6 +46,8 @@ class Settings:
     groq_model: str
     weak_exposure: bool
     store: str = "hydradb"
+    hosted: bool = False          # public demo: no sends, capped feedback
+    build_on_start: bool = False  # ingest the dataset into a fresh namespace when the API starts
     kuzu_path: str = "/tmp/unstale.kuzu"
 
     @classmethod
@@ -58,5 +60,7 @@ class Settings:
             groq_model=setting("UNSTALE_LLM_MODEL", "openai/gpt-oss-120b"),
             weak_exposure=(setting("UNSTALE_WEAK_EXPOSURE", "1") != "0"),
             store=setting("UNSTALE_STORE", "hydradb"),
+            hosted=setting("UNSTALE_HOSTED", "0") == "1",
+            build_on_start=setting("UNSTALE_BUILD_ON_START", "0") == "1",
             kuzu_path=setting("UNSTALE_KUZU_PATH", "/tmp/unstale.kuzu"),
         )

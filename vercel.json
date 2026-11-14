@@ -2,7 +2,7 @@
   "functions": {
     "api/index.py": {
       "maxDuration": 60,
-      "includeFiles": "{unstale/**,data/northwind.json,data/cache/llm/**}"
+      "includeFiles": "{unstale/**,data/northwind.json,data/cache/llm/**,eval/*.json}"
     }
   }
 }

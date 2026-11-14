@@ -98,6 +98,14 @@ class Stats:
     write_ms: float = 0.0
 
 
+# The traversal behind every correction: what a person saw, and which claims those messages assert.
+EXPOSURES_CYPHER = (
+    "MATCH (p:Entity)-[s:RELATES]->(m:Entity)-[a:RELATES]->(c:Entity) "
+    "WHERE p.sid = $p AND p.ns = $ns AND s.etype = 'SAW' AND a.etype = 'ASSERTS' "
+    "RETURN c.doc AS claim, s.doc AS saw, c.sid AS cid"
+)
+
+
 def kuzu_dialect(q: str) -> str:
     """HydraDB's generic Entity/RELATES graph, spelled the way SelfGraph's Kuzu store names it (N/R, id)."""
     for alias in re.findall(r"\((\w+):Entity\)", q):
@@ -411,10 +419,7 @@ class Engine:
         A message seen twice (weakly as a channel member, then strongly by replying in its thread)
         counts once, with the strongest exposure in effect at ``as_of``.
         """
-        rows = await self._cypher(
-            "MATCH (p:Entity)-[s:RELATES]->(m:Entity)-[a:RELATES]->(c:Entity) "
-            "WHERE p.sid = $p AND p.ns = $ns AND s.etype = 'SAW' AND a.etype = 'ASSERTS' "
-            "RETURN c.doc AS claim, s.doc AS saw, c.sid AS cid", {"p": person})
+        rows = await self._cypher(EXPOSURES_CYPHER, {"p": person})
         t = rules.parse_ts(as_of)
         best: dict[str, tuple[dict, str, str]] = {}
         for r in rows:

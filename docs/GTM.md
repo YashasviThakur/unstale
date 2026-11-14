@@ -91,8 +91,8 @@ That report is the sales call.
 ## Pricing (hypothesis to test with design partners)
 
 - **Free:** one team, up to 15 people and one agent.
-- **Team:** per person per month, priced like a Slack add-on, for briefs and pre-send checks.
-- **Agents:** per agent per month, for the MCP correction layer, with a volume of checks included.
+- **Team:** $6 per person per month, priced like a Slack add-on, for briefs, pre-send checks and feedback learning.
+- **Agents:** $20 per agent per month, for the MCP correction layer, with a volume of checks included and usage pricing above it.
 
 The agent line is where usage scales: one company runs a handful of people per team but can run
 dozens of agents, each checking before every answer.
@@ -104,7 +104,8 @@ dozens of agents, each checking before every answer.
 - **It gets sharper every run.** Each "news to me", each echo, each restatement is evidence about who
   reads which channel, written back to the graph. On a held-out sprint, false alarms fall from 11.1 to
   8.0 per 100 briefs as the graph accumulates two prior sprints of evidence, and the learned model
-  matches a model given the true hidden read rates (F1 0.75 both).
+  matches a model given the true hidden read rates (F1 0.75 both). On 40 orgs it had never seen, four sprints of evidence cut false
+  alarms 22.2 → 15.9 per 100 briefs (paired change −6.3, 95% interval −8.9 to −3.6).
 - **Zero tokens per brief.** Briefs are graph traversals, not LLM calls, so cost doesn't grow with the
   number of people. LLM tokens are spent once per message, at extraction.
 

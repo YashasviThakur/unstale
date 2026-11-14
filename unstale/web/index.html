@@ -3,13 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Unstale</title>
+  <title>Unstale: who is working from an old version of the truth</title>
+  <meta name="description" content="Search tells you what is true. Unstale tells you who doesn't know yet. A versioned graph on HydraDB of every fact and who saw which version.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Unstale: who is working from an old version of the truth">
+  <meta property="og:description" content="A versioned graph of every fact and who saw which version. F1 0.96 vs 0.13 for vector RAG, zero LLM tokens per brief.">
+  <meta property="og:image" content="/static/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/static/og.png">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/extra.css">
 </head>
 <body>
+  <div class="topbar">
+    <span id="engine-badge" class="engine">Starting the graph...</span>
+    <span class="spacer"></span>
+    <button type="button" id="btn-tour" class="tb primary">60-second tour</button>
+    <button type="button" id="btn-proof" class="tb">Proof</button>
+    <button type="button" id="btn-pitch" class="tb">Pitch</button>
+    <a class="tb" href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
+  </div>
+
   <header class="masthead">
     <div class="brand">
       <h1>Unstale</h1>
@@ -66,8 +84,8 @@
     <aside class="corrections">
       <div class="corr-head">
         <div class="kicker" id="corr-kicker">Corrections</div>
-        <h2 id="corr-title">...</h2>
-        <p id="corr-meta" class="small muted"></p>
+        <h2 id="corr-title">Starting the graph...</h2>
+        <p id="corr-meta" class="small muted">The hosted demo rebuilds its graph after a quiet spell; this can take a few seconds.</p>
       </div>
       <div id="corr-list"></div>
       <div id="agent-block" class="agent-block hidden">
@@ -78,11 +96,35 @@
     </aside>
   </main>
 
-  <dialog id="slot-dialog">
+  <div id="scrim" class="scrim hidden"></div>
+
+  <dialog id="slot-dialog" class="sheet" aria-label="Fact graph">
     <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
     <div id="slot-body"></div>
   </dialog>
 
+  <dialog id="proof-dialog" class="sheet" aria-label="Proof">
+    <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
+    <h2 class="sheet-title">Proof</h2>
+    <div id="proof-body"></div>
+  </dialog>
+
+  <dialog id="pitch-dialog" class="sheet" aria-label="Pitch">
+    <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
+    <h2 class="sheet-title">Why someone pays for this</h2>
+    <div id="pitch-body"></div>
+  </dialog>
+
+  <aside id="tour-card" class="tour-card hidden" data-pos="bl" aria-live="polite">
+    <div class="tour-top"><span id="tour-n" class="kicker"></span><button type="button" id="tour-skip" class="linkish" aria-label="Close the tour">Skip tour</button></div>
+    <h3 id="tour-title"></h3>
+    <p id="tour-text"></p>
+    <div class="tour-nav"><button type="button" id="tour-prev" class="btn ghost small">Back</button><button type="button" id="tour-next" class="btn small">Next</button></div>
+  </aside>
+
   <script src="/static/app.js"></script>
+  <script src="/static/graph.js"></script>
+  <script src="/static/panels.js"></script>
+  <script src="/static/tour.js"></script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+.git
+.github
+.venv
+.claude
+.vercel
+docs
+examples
+tests
+infra
+scripts
+data/tmp-kuzu
+data/generated
+data/cache/fastembed
+data/cache/hf
+**/__pycache__
+*.pyc

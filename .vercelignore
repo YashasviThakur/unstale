@@ -3,7 +3,8 @@
 .github
 .claude
 docs
-eval
+eval/*.log
+eval/*.md
 examples
 scripts
 tests

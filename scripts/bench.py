@@ -384,6 +384,57 @@ def report(s: dict) -> str:
     return "\n".join(lines) + "\n"
 
 
+def bootstrap_curve(rows: list[dict], sprints: int, boot: int = 2000, seed: int = 7) -> dict:
+    """The same last sprint scored with n prior sprints of evidence, with 95% intervals from resampling orgs.
+
+    Each org is a unit, so the intervals say how much the curve moves from org to org. The paired delta
+    compares n = max with n = 0 on the same resampled orgs.
+    """
+    rng = random.Random(seed)
+
+    def stats(sample: list[dict], n: int) -> dict:
+        t = defaultdict(int)
+        for r in sample:
+            for a, v in r["runs"][n].items():
+                t[a] += v
+        return prf(t)
+
+    pts = []
+    for n in range(sprints):
+        base = stats(rows, n)
+        fa, f1, pr = [], [], []
+        for _ in range(boot):
+            sample = [rows[rng.randrange(len(rows))] for _ in rows]
+            st = stats(sample, n)
+            fa.append(st["false_alarms_per_100_briefs"])
+            f1.append(st["f1"])
+            pr.append(st["precision"])
+        for xs in (fa, f1, pr):
+            xs.sort()
+        ci = lambda xs: [xs[int(0.025 * boot)], xs[int(0.975 * boot) - 1]]  # noqa: E731
+        pts.append({"prior_sprints": n, **base, "false_alarms_ci": ci(fa), "f1_ci": ci(f1), "precision_ci": ci(pr)})
+    last = sprints - 1
+    d_fa, d_f1, d_pr = [], [], []
+    for _ in range(boot):
+        sample = [rows[rng.randrange(len(rows))] for _ in rows]
+        a, b = stats(sample, 0), stats(sample, last)
+        d_fa.append(b["false_alarms_per_100_briefs"] - a["false_alarms_per_100_briefs"])
+        d_f1.append(b["f1"] - a["f1"])
+        d_pr.append(b["precision"] - a["precision"])
+    out = {}
+    for name, xs in (("false_alarms_per_100_briefs", d_fa), ("f1", d_f1), ("precision", d_pr)):
+        xs.sort()
+        out[name] = {"mean": round(sum(xs) / boot, 3), "ci95": [round(xs[int(0.025 * boot)], 3), round(xs[int(0.975 * boot) - 1], 3)],
+                     "orgs_improved": None}
+    # Per org: did the last-prior-sprint score beat the zero-prior one?
+    better = 0
+    for r in rows:
+        a, b = prf(r["runs"][0]), prf(r["runs"][last])
+        better += b["false_alarms_per_100_briefs"] < a["false_alarms_per_100_briefs"]
+    out["false_alarms_per_100_briefs"]["orgs_improved"] = better
+    return {"orgs": len(rows), "bootstrap_resamples": boot, "curve": pts, "paired_delta_last_vs_zero": out}
+
+
 async def parity(seeds: list[int], sprints: int, threshold: float) -> bool:
     """HydraDB and the Python twin must produce the same briefs."""
     ok = True
@@ -428,6 +479,15 @@ async def main_async(a) -> None:
         v = prf(r["totals"]["v1"])
         print(f"org {seed:03d}: {r['messages']} msgs, learned F1 {t['f1']:.2f} (P {t['precision']:.2f} R {t['recall']:.2f}) "
               f"vs v1 F1 {v['f1']:.2f}; ingest {r['ingest_s']}s; {time.perf_counter() - t0:.0f}s total", flush=True)
+    if a.curve:
+        c = bootstrap_curve(rows, a.sprints)
+        OUT.mkdir(exist_ok=True)
+        (OUT / "curve-twin.json").write_text(json.dumps(c, indent=1), encoding="utf-8")
+        for pt in c["curve"]:
+            print(f"n={pt['prior_sprints']}: false alarms {pt['false_alarms_per_100_briefs']} {pt['false_alarms_ci']}, "
+                  f"F1 {pt['f1']} {pt['f1_ci']}, P {pt['precision']}")
+        print(json.dumps(c["paired_delta_last_vs_zero"]))
+        return
     s = summarise(rows, a.sprints, a.threshold, "HydraDB" if a.hydradb else "Python twin, parity-checked against HydraDB")
     if a.no_write:
         print(report(s))
@@ -450,6 +510,7 @@ def main() -> None:
     ap.add_argument("--threshold", type=float, default=THRESHOLD)
     ap.add_argument("--hydradb", action="store_true")
     ap.add_argument("--parity", type=int, default=0, help="check N orgs on HydraDB against the twin")
+    ap.add_argument("--curve", action="store_true", help="write eval/curve-twin.json (learning curve with intervals) only")
     ap.add_argument("--no-write", action="store_true", help="print the report without overwriting eval/ and docs/")
     asyncio.run(main_async(ap.parse_args()))
 

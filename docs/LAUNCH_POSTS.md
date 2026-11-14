@@ -3,10 +3,11 @@
 Ready to paste. Fill the two `<...>` links after the app is hosted and the walkthrough is recorded.
 HydraDB's account is **@hydra_db** (X) and HydraDB on LinkedIn.
 
-- Live app: `<LIVE_LINK>`
+- Live app: `https://unstale.vercel.app`
 - Walkthrough: `<VIDEO_LINK>`
 - Repo: https://github.com/YashasviThakur/unstale
 
+Screenshots worth attaching: the graph view of a stale fact (click a fact chip, then the missing red edge) and the learning curve in the Proof panel.
 Attach the 45 s ink-wash film or the 99 s features film to the first post (video gets more reach than
 a link). Post the thread, then reply to a few teams who build agents or run RevOps.
 
@@ -36,7 +37,7 @@ Slack never tells you who read what, so Unstale learns it.
 Every "news to me" / "I knew this" click, every echo and restatement in a thread goes back into the
 graph as read evidence. "Channel member" turns into a learned read rate.
 
-Held-out false alarms: 11.1 → 9.5 → 8.0 per 100 briefs with 0, 1, 2 prior sprints.
+On 40 orgs it had never seen, four sprints of evidence cut false alarms 22.2 → 15.9 per 100 briefs (95% interval for the change: −8.9 to −3.6).
 
 **4/**
 The test. 20 generated orgs, 5,210 messages, hidden per-person reading habits:
@@ -58,7 +59,7 @@ Runs on the open-source HydraDB engine in Docker, SelfGraph for versioned facts,
 traversals. Slack export importer included.
 
 Repo: https://github.com/YashasviThakur/unstale
-Demo: `<LIVE_LINK>`
+Demo: `https://unstale.vercel.app`
 Walkthrough: `<VIDEO_LINK>`
 
 Built for the @hydra_db hackathon.
@@ -80,7 +81,7 @@ agent is wrong about, why they missed it, and how sure we are. No LLM call is ne
 What it measured:
 - 20 generated orgs with hidden reading habits: F1 0.75, 6.8 false alarms per 100 briefs. A daily
   changelog sends 105.
-- It gets sharper as it learns: held-out false alarms fall 11.1 → 9.5 → 8.0 with more feedback.
+- It gets sharper as it learns: on 40 unseen orgs, false alarms fall 22.2 → 15.9 per 100 briefs after four sprints of feedback.
 - A support agent: 29% correct on its own knowledge base, 94% with Unstale's correction block, with
   no outdated answers.
 
@@ -89,7 +90,7 @@ revenue team and a support agent sit downstream of product and pricing decisions
 I'd like 15 minutes.
 
 Repo: https://github.com/YashasviThakur/unstale
-Live demo: `<LIVE_LINK>`
+Live demo: `https://unstale.vercel.app`
 Walkthrough: `<VIDEO_LINK>`
 
 @HydraDB #HydraDB #AIAgents #RevOps

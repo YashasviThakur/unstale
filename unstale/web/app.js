@@ -24,6 +24,13 @@ function initials(name) { return name.split(/\s+/).map((w) => w[0]).join("").sli
 function person(id) { return S.meta.people.find((p) => p.id === id); }
 function firstName(id) { const p = person(id); return p ? p.name.split(" ")[0] : id; }
 
+function openDlg(dlg) {
+  if (!dlg.open) dlg.show();
+  dlg.scrollTop = 0;
+  $("scrim").classList.remove("hidden");
+}
+function closeDlgs() { document.querySelectorAll("dialog[open]").forEach((x) => x.close()); }
+
 async function api(path, opts) {
   const r = await fetch(path, opts);
   if (!r.ok) {
@@ -64,7 +71,8 @@ function renderClock() {
   $("clock-label").textContent = fmtTs(S.asOf);
   $("ticks").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.ts === S.asOf));
   const atEnd = d(S.asOf).getTime() >= d(S.meta.last_ts).getTime();
-  $("btn-send").disabled = !atEnd;
+  $("btn-send").disabled = !atEnd || !!(S.meta && S.meta.hosted);
+  if (S.meta && S.meta.hosted) $("btn-send").title = "Sending is switched off on the public demo, so visitors do not change each other's graph. Run it locally to try it.";
 }
 
 /* ---------------- viewers & channels ---------------- */
@@ -123,7 +131,7 @@ async function loadFeed() {
       </article>`;
   }
   $("feed").innerHTML = html;
-  $("feed").querySelectorAll(".claim").forEach((el) => el.onclick = () => openSlot(el.dataset.slot));
+  $("feed").querySelectorAll(".claim").forEach((el) => el.onclick = () => openSlot(el.dataset.slot, S.viewer));
   requestAnimationFrame(() => { $("feed").scrollTop = $("feed").scrollHeight; });
 }
 
@@ -161,11 +169,11 @@ async function loadBrief() {
             <button class="btn small" data-v="news">News to me</button>
             <button class="btn small ghost" data-v="knew">I knew this</button>
             <button class="btn small ghost" data-v="neither">Never heard of it</button></span>`}
-          <button class="linkish" data-open="${esc(it.slot)}">Who else believes what</button>
+          <button class="linkish" data-open="${esc(it.slot)}">See it in the graph</button>
           <div class="fb-note small muted"></div>
         </div>
       </div>`).join("");
-    $("corr-list").querySelectorAll("[data-open]").forEach((el) => el.onclick = () => openSlot(el.dataset.open));
+    $("corr-list").querySelectorAll("[data-open]").forEach((el) => el.onclick = () => openSlot(el.dataset.open, S.viewer));
     $("corr-list").querySelectorAll(".fb button").forEach((el) => el.onclick = () => sendFeedback(el));
   }
   if (p.kind === "agent") {
@@ -208,11 +216,11 @@ async function loadTeam() {
         <tr>
           <td class="n ${r.stale.length ? "" : "zero"}">${r.stale.length}</td>
           <td><strong>${esc(r.name)}</strong><div class="small muted">${esc(r.role)}</div></td>
-          <td>${r.stale.length ? r.stale.map((s) => `<span class="chip" data-slot="${esc(s.slot)}">${esc(s.subject)} ${esc(s.label)}: <s>${esc(fmtVal(s.believed))}</s> now ${esc(fmtVal(s.current))}</span>`).join("") : `<span class="small muted">In sync</span>`}</td>
+          <td>${r.stale.length ? r.stale.map((s) => `<span class="chip" data-slot="${esc(s.slot)}" data-person="${esc(r.person)}">${esc(s.subject)} ${esc(s.label)}: <s>${esc(fmtVal(s.believed))}</s> now ${esc(fmtVal(s.current))}</span>`).join("") : `<span class="small muted">In sync</span>`}</td>
         </tr>`).join("")}
       </tbody>
     </table>`;
-  $("team").querySelectorAll("[data-slot]").forEach((el) => el.onclick = () => openSlot(el.dataset.slot));
+  $("team").querySelectorAll("[data-slot]").forEach((el) => el.onclick = () => openSlot(el.dataset.slot, el.dataset.person));
   const L = await api(`/api/learned?as_of=${encodeURIComponent(S.asOf)}`);
   const src = Object.entries(L.by_source).map(([k, v]) => `${v} from ${k === "feedback" ? "feedback" : k + "es"}`).join(", ");
   $("team").insertAdjacentHTML("beforeend", `
@@ -228,9 +236,11 @@ async function loadTeam() {
 }
 
 /* ---------------- slot dialog ---------------- */
-async function openSlot(slot) {
+async function openSlot(slot, focus) {
   const [subject, attribute] = slot.split("|");
-  const v = await api(`/api/slot?${new URLSearchParams({ subject, attribute, as_of: S.asOf })}`);
+  const [v, g] = await Promise.all([
+    api(`/api/slot?${new URLSearchParams({ subject, attribute, as_of: S.asOf })}`),
+    api(`/api/graph?${new URLSearchParams({ slot, as_of: S.asOf })}`).catch(() => null)]);
   const cur = v.current ? v.current.value : null;
   const groups = {};
   for (const [pid, b] of Object.entries(v.people)) {
@@ -245,7 +255,8 @@ async function openSlot(slot) {
   }).join("");
   $("slot-body").innerHTML = `
     <h3 class="slot-title">${esc(v.title)}</h3>
-    <div class="kicker" style="margin-bottom:8px">Versions, from the graph's history</div>
+    ${g ? `<div id="graph-box"></div>` : ""}
+    <div class="kicker" style="margin:18px 0 8px">Versions, from the graph's history</div>
     <ul class="versions">${v.versions.map((x) => `
       <li class="${cur != null && x.value === cur && !x.until ? "now" : ""}">
         <div class="v">${esc(fmtVal(x.shown))}</div>
@@ -253,7 +264,8 @@ async function openSlot(slot) {
       </li>`).join("")}</ul>
     <div class="kicker" style="margin-bottom:8px">Who believes what</div>
     <div class="groups">${groupHtml}</div>`;
-  $("slot-dialog").showModal();
+  if (g) renderGraphInto($("graph-box"), g, g.people.some((p) => p.id === focus) ? focus : null);
+  openDlg($("slot-dialog"));
 }
 
 /* ---------------- compose ---------------- */
@@ -336,13 +348,40 @@ $("btn-check").onclick = runCheck;
 $("btn-send").onclick = runSend;
 $("btn-copy").onclick = () => navigator.clipboard?.writeText($("agent-context").textContent);
 
+function engineBadge() {
+  const hydra = S.meta.store === "hydradb";
+  $("engine-badge").innerHTML = hydra
+    ? `<b>Graph:</b> open-source HydraDB, self-hosted`
+    : `<b>Graph:</b> SelfGraph on embedded Kuzu <span class="muted">(hosted demo; the full build runs on HydraDB, see the repo)</span>`;
+  $("graph-note").textContent = (hydra ? `HydraDB namespace ${S.meta.namespace}.` : "Hosted demo on SelfGraph's embedded Kuzu store; the full build runs on HydraDB.") +
+    " Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.";
+}
+
+$("btn-tour").onclick = () => tourStart();
+$("btn-proof").onclick = () => openProof();
+$("btn-pitch").onclick = () => openPitch();
+$("scrim").onclick = closeDlgs;
+document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeDlgs(); });
+document.querySelectorAll("dialog").forEach((dl) => dl.addEventListener("close", () => {
+  if (!document.querySelector("dialog[open]")) $("scrim").classList.add("hidden");
+}));
+
 (async function init() {
-  S.meta = await api("/api/meta");
+  try {
+    S.meta = await api("/api/meta");
+  } catch (e) {
+    $("corr-title").textContent = "Couldn't reach the graph";
+    $("corr-meta").textContent = e.message;
+    return;
+  }
   $("orgname").textContent = `Demo team: ${S.meta.name}.`;
-  $("graph-note").textContent = (S.meta.store === "hydradb" ? `HydraDB namespace ${S.meta.namespace}.` : `Hosted demo on SelfGraph's embedded Kuzu store (the full build runs on HydraDB; see the repo).`) + " Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.";
+  engineBadge();
   buildSteps();
   renderViewers();
   renderChannels();
   renderComposeTarget();
   setTime("2026-06-29T08:00:00Z");
+  let seen = false;
+  try { seen = !!localStorage.getItem("unstale-tour-seen"); } catch (e) { /* private mode */ }
+  if (!seen && !location.search.includes("notour")) setTimeout(() => tourStart(), 900);
 })();

@@ -1,0 +1,147 @@
+{
+ "orgs": 40,
+ "bootstrap_resamples": 2000,
+ "curve": [
+  {
+   "prior_sprints": 0,
+   "precision": 0.816,
+   "recall": 0.653,
+   "f1": 0.725,
+   "tp": 3625,
+   "fp": 820,
+   "fn": 1925,
+   "briefs": 3696,
+   "false_alarms_per_100_briefs": 22.2,
+   "false_alarms_ci": [
+    17.0,
+    27.7
+   ],
+   "f1_ci": [
+    0.691,
+    0.755
+   ],
+   "precision_ci": [
+    0.774,
+    0.852
+   ]
+  },
+  {
+   "prior_sprints": 1,
+   "precision": 0.844,
+   "recall": 0.655,
+   "f1": 0.738,
+   "tp": 3637,
+   "fp": 670,
+   "fn": 1913,
+   "briefs": 3696,
+   "false_alarms_per_100_briefs": 18.1,
+   "false_alarms_ci": [
+    13.2,
+    24.3
+   ],
+   "f1_ci": [
+    0.702,
+    0.771
+   ],
+   "precision_ci": [
+    0.8,
+    0.882
+   ]
+  },
+  {
+   "prior_sprints": 2,
+   "precision": 0.845,
+   "recall": 0.663,
+   "f1": 0.743,
+   "tp": 3679,
+   "fp": 675,
+   "fn": 1871,
+   "briefs": 3696,
+   "false_alarms_per_100_briefs": 18.3,
+   "false_alarms_ci": [
+    12.9,
+    24.4
+   ],
+   "f1_ci": [
+    0.707,
+    0.776
+   ],
+   "precision_ci": [
+    0.801,
+    0.885
+   ]
+  },
+  {
+   "prior_sprints": 3,
+   "precision": 0.851,
+   "recall": 0.656,
+   "f1": 0.741,
+   "tp": 3642,
+   "fp": 638,
+   "fn": 1908,
+   "briefs": 3696,
+   "false_alarms_per_100_briefs": 17.3,
+   "false_alarms_ci": [
+    11.7,
+    23.8
+   ],
+   "f1_ci": [
+    0.705,
+    0.773
+   ],
+   "precision_ci": [
+    0.805,
+    0.893
+   ]
+  },
+  {
+   "prior_sprints": 4,
+   "precision": 0.862,
+   "recall": 0.662,
+   "f1": 0.749,
+   "tp": 3675,
+   "fp": 587,
+   "fn": 1875,
+   "briefs": 3696,
+   "false_alarms_per_100_briefs": 15.9,
+   "false_alarms_ci": [
+    10.2,
+    22.5
+   ],
+   "f1_ci": [
+    0.714,
+    0.782
+   ],
+   "precision_ci": [
+    0.815,
+    0.904
+   ]
+  }
+ ],
+ "paired_delta_last_vs_zero": {
+  "false_alarms_per_100_briefs": {
+   "mean": -6.303,
+   "ci95": [
+    -8.9,
+    -3.6
+   ],
+   "orgs_improved": 30
+  },
+  "f1": {
+   "mean": 0.024,
+   "ci95": [
+    0.007,
+    0.041
+   ],
+   "orgs_improved": null
+  },
+  "precision": {
+   "mean": 0.047,
+   "ci95": [
+    0.026,
+    0.068
+   ],
+   "orgs_improved": null
+  }
+ }
+}

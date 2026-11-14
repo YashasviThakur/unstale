@@ -1,0 +1,144 @@
+/* ---------- top bar, scrim, sheets ---------- */
+.topbar {
+  display: flex; align-items: center; gap: 8px; padding: 6px 24px;
+  background: var(--ink); color: var(--sheet); font-size: 12.5px;
+}
+.topbar .engine b { font-weight: 600; }
+.topbar .engine .muted { color: #b9b3a6; }
+.topbar .tb {
+  background: none; border: 1px solid #5b5750; color: var(--sheet); border-radius: 2px;
+  padding: 3px 10px; cursor: pointer; text-decoration: none; font-size: 12.5px;
+}
+.topbar .tb:hover { border-color: var(--sheet); }
+.topbar .tb.primary { background: var(--sheet); color: var(--ink); border-color: var(--sheet); font-weight: 600; }
+.scrim { position: fixed; inset: 0; background: rgba(31, 29, 26, 0.38); z-index: 40; }
+dialog { position: fixed; inset: 0; margin: auto; z-index: 50; max-height: 92vh; overflow: auto; }
+dialog.sheet { width: min(1000px, 96vw); height: fit-content; }
+.sheet-title { font: 600 26px/1.2 var(--serif); margin: 0 0 6px; }
+.lede { font: italic 17px/1.4 var(--serif); color: var(--ink-2); margin: 4px 0 18px; }
+body.tour-dlg dialog[open] { inset: 10px 0 auto 0; max-height: calc(100vh - 230px); }
+
+/* ---------- fact graph ---------- */
+.gwrap { overflow-x: auto; border: 1px solid var(--rule); background: #fff; }
+.fgraph { display: block; width: 100%; min-width: 760px; height: auto; font-family: var(--sans); }
+.fgraph .gcol { font: 600 10px var(--sans); letter-spacing: 0.08em; fill: var(--ink-3); }
+.fgraph .node rect { fill: var(--sheet); stroke: var(--ink-2); stroke-width: 1; }
+.fgraph .n1 { font: 600 12px var(--sans); fill: var(--ink); }
+.fgraph .n2 { font: 11px var(--sans); fill: var(--ink-2); }
+.fgraph .n3 { font: 10px var(--mono); fill: var(--ink-3); }
+.fgraph .person { cursor: pointer; outline: none; }
+.fgraph .person.stale rect { fill: var(--red-soft); stroke: var(--red); }
+.fgraph .person.sync rect { fill: var(--green-soft); stroke: var(--green); }
+.fgraph .person.none rect { stroke-dasharray: 3 3; }
+.fgraph .person.focus rect { stroke-width: 2.5; }
+.fgraph .person:hover rect, .fgraph .person:focus rect { stroke-width: 2.5; }
+.fgraph .msg.restate rect, .fgraph .msg.echo rect { stroke-dasharray: 4 3; }
+.fgraph .msg.now rect { stroke: var(--green); stroke-width: 2; }
+.fgraph .ver.cur rect { fill: var(--green-soft); stroke: var(--green); stroke-width: 2; }
+.fgraph .ver.old rect { fill: var(--red-soft); stroke: var(--red); }
+.fgraph .ver.old .n1 { text-decoration: line-through; fill: var(--red); }
+.fgraph .e { fill: none; }
+.fgraph .saw.strong { stroke: var(--ink); stroke-width: 1.6; }
+.fgraph .saw.weak { stroke: var(--ink-3); stroke-width: 1.2; stroke-dasharray: 4 3; }
+.fgraph .missing { stroke: var(--red); stroke-width: 1.8; stroke-dasharray: 2 5; }
+.fgraph .asserts.ok { stroke: var(--green); stroke-width: 1.4; }
+.fgraph .asserts.old { stroke: var(--red); stroke-width: 1.2; opacity: 0.75; }
+.fgraph .sup { stroke: var(--ink); stroke-width: 1.4; }
+.fgraph .elab { font: italic 11px var(--serif); fill: var(--ink-2); }
+.fgraph .dim { opacity: 0.1; }
+.fgraph .hot { opacity: 1; }
+.fgraph .xmark circle { fill: #fff; stroke: var(--red); stroke-width: 2; }
+.fgraph .xmark path { stroke: var(--red); stroke-width: 2; fill: none; }
+.fgraph .xlab { font: 600 11px var(--sans); fill: var(--red); }
+.glegend { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 8px 0 0; font-size: 12px; color: var(--ink-2); }
+.glegend .l { display: inline-block; width: 26px; border-top: 2px solid var(--ink); vertical-align: middle; margin-right: 5px; }
+.glegend .l.weak { border-top: 2px dashed var(--ink-3); }
+.glegend .l.missing { border-top: 2px dotted var(--red); }
+.gnote { margin: 12px 0 6px; font: 16px/1.4 var(--serif); }
+.gvs { margin: 8px 0; padding: 10px 12px; border-left: 3px solid var(--ink); background: var(--paper); font-size: 13px; color: var(--ink-2); }
+.gvs strong { color: var(--ink); }
+.gcy { margin-top: 8px; font-size: 12.5px; }
+.gcy pre { font: 11.5px/1.5 var(--mono); background: #fff; border: 1px solid var(--rule); padding: 10px; overflow-x: auto; }
+code { font: 11.5px var(--mono); background: var(--paper); padding: 0 4px; }
+
+/* ---------- proof & pitch ---------- */
+.sheet h3 { font: 600 19px/1.25 var(--serif); margin: 26px 0 8px; padding-top: 12px; border-top: 1px solid var(--ink); }
+.pcards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 10px 0 4px; }
+.pcards.three { grid-template-columns: repeat(3, 1fr); margin-top: 6px; }
+.pcard { border: 1px solid var(--rule); background: #fff; padding: 10px 12px; }
+.pcard b { display: block; font: 600 24px/1.1 var(--serif); }
+.pcard b em { font: italic 400 16px var(--serif); color: var(--ink-3); }
+.pcard b small { font: 12px var(--mono); color: var(--ink-3); }
+.pcard span { display: block; margin-top: 4px; font-size: 12px; color: var(--ink-2); line-height: 1.35; }
+.defs { display: grid; grid-template-columns: 200px 1fr; gap: 6px 16px; margin: 6px 0; font-size: 13px; }
+.defs dt { font-weight: 600; }
+.defs dd { margin: 0; color: var(--ink-2); }
+.brow { display: grid; grid-template-columns: minmax(0, 300px) 1fr 150px; gap: 12px; align-items: center; padding: 5px 0; font-size: 13px; }
+.brow .bl span { display: block; font-size: 11.5px; color: var(--ink-3); }
+.brow .bt { height: 12px; background: var(--rule-2); }
+.brow .bt i { display: block; height: 100%; background: var(--ink-3); }
+.brow.us .bt i { background: var(--ink); }
+.brow.us .bl { font-weight: 600; }
+.brow .bv { font: 500 12px var(--mono); }
+.brow .bv small { color: var(--ink-3); }
+.ptable { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+.ptable th, .ptable td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--rule); }
+.ptable th { font: 600 11px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+.ptable tr.us td { font-weight: 600; background: var(--sheet); border-bottom: 1px solid var(--ink); }
+.ptable tr.ceil td { color: var(--ink-3); font-style: italic; }
+.curve { width: 100%; max-width: 680px; height: auto; display: block; margin: 8px 0; }
+.curve .cg { stroke: var(--rule); stroke-width: 1; }
+.curve .ct { font: 11px var(--sans); fill: var(--ink-3); }
+.curve .cband { fill: rgba(31, 29, 26, 0.12); }
+.curve .cline { fill: none; stroke: var(--ink); stroke-width: 2.4; }
+.curve .cdot { fill: var(--ink); }
+.curve .cval { font: 600 12px var(--mono); fill: var(--ink); }
+.curve .cbase { stroke: var(--red); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.limits { padding-left: 18px; font-size: 13px; color: var(--ink-2); }
+.limits li { margin: 6px 0; }
+.limits b { color: var(--ink); }
+.pcols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 28px; }
+.pcols h3 { margin-top: 18px; }
+.pcols p, .pcols li { font-size: 13.5px; color: var(--ink-2); }
+.pcols b { color: var(--ink); }
+.pcols ol, .pcols ul { padding-left: 18px; }
+.price td:first-child { width: 90px; }
+.cta { margin-top: 22px; padding: 14px; border: 1px solid var(--ink); background: #fff; font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.cta .btn { text-decoration: none; display: inline-block; }
+
+/* ---------- tour ---------- */
+.tour-card {
+  position: fixed; z-index: 100; width: min(360px, 94vw); background: var(--ink); color: var(--sheet);
+  padding: 14px 16px; border-radius: 3px; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+.tour-card[data-pos="bl"] { left: 16px; bottom: 16px; }
+.tour-card[data-pos="tl"] { left: 16px; top: 120px; }
+body.tour-dlg .tour-card { left: 50%; bottom: 12px; top: auto; transform: translateX(-50%); width: min(720px, 94vw); }
+.tour-card h3 { font: 600 19px/1.25 var(--serif); margin: 6px 0 6px; border: 0; padding: 0; }
+.tour-card p { margin: 0 0 12px; font-size: 13.5px; line-height: 1.5; color: #e8e3d8; }
+.tour-card .kicker { color: #b9b3a6; }
+.tour-card .linkish { color: #b9b3a6; font-size: 12px; }
+.tour-card .btn { background: var(--sheet); color: var(--ink); border-color: var(--sheet); }
+.tour-card .btn.ghost { background: transparent; color: var(--sheet); border-color: #8a857c; }
+.tour-top { display: flex; justify-content: space-between; align-items: center; }
+.tour-nav { display: flex; justify-content: flex-end; gap: 8px; }
+.tour-hl { outline: 3px solid #d9a21b; outline-offset: -3px; position: relative; z-index: 1; animation: pulse 1.6s ease-in-out 2; }
+@keyframes pulse { 50% { outline-color: #f4d37a; } }
+
+@media (max-width: 860px) {
+  .topbar { flex-wrap: wrap; padding: 6px 12px; }
+  .topbar .engine { flex-basis: 100%; }
+  .pcards, .pcards.three { grid-template-columns: 1fr 1fr; }
+  .pcols { grid-template-columns: 1fr; }
+  .defs { grid-template-columns: 1fr; }
+  .brow { grid-template-columns: 1fr; gap: 2px; }
+  .tour-card[data-pos="tl"] { top: auto; bottom: 16px; }
+  body.tour-dlg dialog[open] { max-height: calc(100vh - 270px); }
+  dialog.sheet { padding: 16px; }
+}
+
+@media (max-width: 860px) {
+  .rail { order: 1; }
+  .corrections { order: 2; border-bottom: 1px solid var(--rule); }
+  .center { order: 3; }
+}

@@ -29,6 +29,8 @@ over MCP, and a Slack export importer.
   read rates. A daily changelog sends 105 false alarms per 100 briefs.
 - **Sharper every run:** on the same held-out sprint, false alarms fall 11.1 → 9.5 → 8.0 per 100 briefs
   with 0, 1 and 2 prior sprints of evidence.
+- **Unseen orgs:** on 40 more generated orgs it had never seen, four sprints of evidence cut false alarms from 22.2 to 15.9 per 100 briefs
+  (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved).
 - **Agents:** a support agent answering 31 customer questions gets 29% right from its own knowledge base and 94% with Unstale's correction block (+116 tokens, 0 outdated answers). Dumping every message gets 90% at 5.8x the tokens; vector RAG over every message gets 97% but needs the bot to index every internal channel.
 - **HydraDB:** the benchmark runs on HydraDB, and a pure-Python twin agrees with it brief for brief
   (168 of 168 briefs identical on 0.3.0; 308 of 308 on 0.4.0).

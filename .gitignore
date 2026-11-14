@@ -17,3 +17,4 @@ data/state.json
 
 .vercel
 .vercel/
+data/tmp-kuzu/

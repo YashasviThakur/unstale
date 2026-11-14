@@ -27,9 +27,18 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
 |---|---|
 | Hand-written team (Northwind), LLM extraction | precision **1.00**, recall **0.92**, 0 LLM tokens per brief. The best LLM baseline reaches F1 0.38 at 3,188 tokens per brief |
 | 20 generated orgs, 5,210 messages, reading the engine can't see | F1 **0.75** against 0.67 for the original engine; false alarms down **68%** (6.8 per 100 briefs vs 21.4; a daily changelog sends 105.5) |
-| Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint |
+| Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint. On **40 further orgs it had never seen**, four sprints of evidence cut false alarms 22.2 → 15.9 per 100 briefs (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved) |
 | Support agent answering customers | 29% correct from its own knowledge base; **94%** with Unstale's correction block added (+116 tokens), with **0** outdated answers. It fixes all 22 questions the knowledge base got wrong |
 | HydraDB vs the Python twin | 168 of 168 briefs identical in the parity check on 0.3.0, and 308 of 308 on 0.4.0 (one org, seed 1); two full benchmark orgs (516 messages, three sprints each, feedback written to the graph) run on HydraDB reproduce the twin's numbers exactly |
+
+## Try it
+
+- **Live:** the link is in [docs/SUBMISSION.md](docs/SUBMISSION.md). Click **60-second tour** in the top bar, or open **Proof**
+  (every number, read from the result files) and **Pitch**. Click any fact chip to see **the graph behind it**: people, the messages
+  they saw, the fact's versions, and the missing edge that makes someone stale.
+- **One command, real HydraDB:** `docker build -t unstale . && docker run --rm -p 7860:7860 unstale`, then open
+  http://localhost:7860. One container runs MinIO, the open-source HydraDB 0.4.0 engine and the app, and rebuilds the graph at start
+  from the committed extraction cache, so it needs no API key.
 
 ## What it does
 
@@ -224,11 +233,16 @@ Full answers: [`eval/agent.json`](eval/agent.json).
 
 ## Live demo
 
-https://unstale.vercel.app serves the Northwind team. Vercel cannot run a HydraDB server, so the hosted copy runs
-the same engine on SelfGraph's embedded Kuzu store (`UNSTALE_STORE=kuzu`) and rebuilds the graph on a cold start
-from the dataset and the committed extraction cache. Same code, same traversals: Northwind scores precision 1.00,
-recall 0.917 on both stores. The HydraDB deployment is the one below. The hosted copy keeps no state between
-cold starts, and "check before sending" needs a Groq key, so only the demo drafts (cached) work there.
+The primary deployment is a Hugging Face Space built from this repo's [`Dockerfile`](Dockerfile): MinIO, the open-source HydraDB 0.4.0
+engine and the app in one container (publish your own with `sh deploy/space.sh <hf-username>`). The graph is rebuilt at start from the
+dataset and the committed extraction cache.
+
+A second copy runs on Vercel for instant loads. Vercel cannot run a HydraDB server, so that copy runs the same engine on SelfGraph's
+embedded Kuzu store (`UNSTALE_STORE=kuzu`); the app says so in its top bar. Same code, same traversals: Northwind scores precision 1.00,
+recall 0.917 on both stores.
+
+Public demos switch off sending, cap feedback (so visitors don't change each other's graph) and keep no state between restarts.
+"Check before sending" needs a Groq key, so on the public demos only the preset drafts (cached) work.
 
 ## Run it
 
