@@ -105,7 +105,7 @@ function graphBlock(g, focus) {
     ${who ? `<p class="gnote">${miss && who.stale ? `<strong>${esc(who.name)}</strong> has no edge to the message that changed this fact, so the latest version they hold is <strong>${esc(fmtVal(who.believes))}</strong>. That absence is the signal.`
       : who.in_sync ? `<strong>${esc(who.name)}</strong> saw the change, so they hold the current value.` : `<strong>${esc(who.name)}</strong> has not seen anything about this fact.`}</p>` : `<p class="gnote small muted">Click a person to follow their edges.</p>`}
     <div class="gvs"><strong>On a vector store</strong> a search for this topic returns the same ${g.messages.length} messages, ranked by similarity. Nothing in them says who read which one, so it can't tell ${who ? esc(who.name) : "the people who missed it"} from the person who made the change. Measured on our labelled team: F1 0.13.</div>
-    <details class="gcy"><summary>The query behind it · ${g.graph_queries} graph reads, ${g.ms} ms on ${label}</summary><pre>${esc(g.cypher)}</pre>
+    <details class="gcy"><summary>The query behind it · ${g.graph_queries} graph reads${g.cached_reads ? ` (+${g.cached_reads} from memory)` : ""}, ${g.ms} ms on ${label}</summary><pre>${esc(g.cypher)}</pre>
       <p class="small muted">Run once per person. SAW edges are written when a message is ingested; fact versions are SelfGraph relations with <code>max_count: 1</code>, so a new value supersedes the old one and keeps it readable.</p></details>`;
 }
 

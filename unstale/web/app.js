@@ -145,7 +145,7 @@ async function loadBrief() {
   $("corr-title").textContent = n
     ? `${n} thing${n > 1 ? "s" : ""} ${who} believe${p.kind === "agent" || n ? "s" : ""} that ${n > 1 ? "are" : "is"} no longer true`
     : `${who === "this agent" ? "This agent is" : `${who} is`} up to date`;
-  $("corr-meta").textContent = `${b.graph_queries} graph reads, ${b.ms} ms, ${b.llm_tokens} LLM tokens.`;
+  $("corr-meta").textContent = `${b.graph_queries} graph reads${b.cached_reads ? ` (+${b.cached_reads} from memory)` : ""}, ${b.ms} ms, ${b.llm_tokens} LLM tokens.`;
   if (!n) {
     $("corr-list").innerHTML = `<div class="clean">Nothing ${who === "this agent" ? "it has" : "they have"} seen about their work has changed since.</div>`;
   } else {

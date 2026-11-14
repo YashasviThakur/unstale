@@ -50,6 +50,20 @@ async def init_state() -> None:
                 await eng.ingest(m, extract_message(m, ds, by_id.get(m["thread"]) if m.get("thread") else None))
         eng.remember_threads()
         STATE.update(ds=ds, eng=eng, claims=await eng.all_claims(), live=0, feedback=0)
+        asyncio.get_running_loop().create_task(prewarm())
+
+
+async def prewarm() -> None:
+    """Read every person's traversal once, so the first clicks are served from memory."""
+    try:
+        e = STATE["eng"]
+        for p in STATE["ds"]["people"]:
+            await e.scope(p["id"])
+            await e._saw_rows(p["id"])
+        for s in STATE["ds"]["subjects"]:
+            await e.subject_versions(s["id"])
+    except Exception:  # noqa: BLE001  (warming is an optimisation, never a failure)
+        pass
 
 
 @asynccontextmanager
@@ -183,7 +197,7 @@ async def brief(pid: str, as_of: str) -> dict:
     if pid not in people():
         raise HTTPException(404, "unknown person")
     t0 = time.perf_counter()
-    q0 = eng().stats.queries
+    q0, c0 = eng().stats.queries, eng().stats.cached
     model = await eng().read_model(as_of)
     items = await eng().diff(pid, as_of, model=model)
     ms = (time.perf_counter() - t0) * 1000
@@ -208,7 +222,7 @@ async def brief(pid: str, as_of: str) -> dict:
                              if it.believed_strength == "weak" else 1.0},
         })
     return {"person": pid, "as_of": as_of, "items": out, "ms": round(ms, 1),
-            "graph_queries": eng().stats.queries - q0, "llm_tokens": 0}
+            "graph_queries": eng().stats.queries - q0, "cached_reads": eng().stats.cached - c0, "llm_tokens": 0}
 
 
 @app.get("/api/team")
@@ -350,7 +364,7 @@ async def fact_graph(slot: str, as_of: str) -> dict:
     The ``missing`` list is the point: people with no SAW edge to the message that changed the fact.
     """
     subject, attribute = slot.split("|", 1)
-    t0, q0 = time.perf_counter(), eng().stats.queries
+    t0, q0, c0 = time.perf_counter(), eng().stats.queries, eng().stats.cached
     t = rules.parse_ts(as_of)
     vers = [v for v in await eng().versions(subject, attribute) if rules.parse_ts(v.since) <= t]
     cur = Engine.pick(vers, as_of)
@@ -398,7 +412,8 @@ async def fact_graph(slot: str, as_of: str) -> dict:
             "title": f"{next((x['name'] for x in ds()['subjects'] if x['id'] == subject), subject)}: {label(attribute)}",
             "versions": version_nodes, "messages": msg_nodes, "people": people_out, "asserts": asserts, "saw": saw,
             "missing": missing, "cypher": as_hydradb(EXPOSURES_CYPHER), "store": eng().settings.store,
-            "graph_queries": eng().stats.queries - q0, "ms": round((time.perf_counter() - t0) * 1000, 1)}
+            "graph_queries": eng().stats.queries - q0, "cached_reads": eng().stats.cached - c0,
+            "ms": round((time.perf_counter() - t0) * 1000, 1)}
 
 
 def as_hydradb(q: str) -> str:

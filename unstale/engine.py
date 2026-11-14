@@ -96,6 +96,7 @@ class Stats:
     query_ms: float = 0.0
     writes: int = 0
     write_ms: float = 0.0
+    cached: int = 0
 
 
 # The traversal behind every correction: what a person saw, and which claims those messages assert.
@@ -126,6 +127,7 @@ class Engine:
     _scope_cache: dict[str, dict[str, int]] = field(default_factory=dict)
     _versions_cache: dict[str, dict[str, list[Version]]] = field(default_factory=dict)
     _evidence: list[Evidence] | None = None
+    _rows_cache: dict[str, list] = field(default_factory=dict)   # person -> SAW/ASSERTS rows (cleared on ingest)
     _owns: set[tuple[str, str]] = field(default_factory=set)
     mode: str = "learned"      # learned | v1 (every channel member read it) | strong (only interactions count)
 
@@ -167,6 +169,7 @@ class Engine:
     async def _facts(self, facts: dict, **kw) -> Any:
         t0 = time.perf_counter()
         res = await self.graph.insert.facts(facts, **kw)
+        self._rows_cache.clear()
         self.stats.writes += len(facts.get("entities", [])) + len(facts.get("relations", []))
         self.stats.write_ms += (time.perf_counter() - t0) * 1000
         return res
@@ -179,6 +182,15 @@ class Engine:
         self.stats.queries += 1
         self.stats.query_ms += (time.perf_counter() - t0) * 1000
         return res.rows
+
+    async def _saw_rows(self, person: str) -> list[dict]:
+        """Everything a person saw and the claims in it, one traversal. Kept until the next ingest."""
+        if person in self._rows_cache:
+            self.stats.cached += 1
+            return self._rows_cache[person]
+        rows = await self._cypher(EXPOSURES_CYPHER, {"p": person})
+        self._rows_cache[person] = rows
+        return rows
 
     async def load_directory(self) -> None:
         ds = self.ds
@@ -391,10 +403,7 @@ class Engine:
 
     async def beliefs(self, person: str, as_of: str, slots: set[str] | None = None) -> dict[str, Belief]:
         """What ``person`` believes: newest claim (by effective time) on every message they saw."""
-        rows = await self._cypher(
-            "MATCH (p:Entity)-[s:RELATES]->(m:Entity)-[a:RELATES]->(c:Entity) "
-            "WHERE p.sid = $p AND p.ns = $ns AND s.etype = 'SAW' AND a.etype = 'ASSERTS' "
-            "RETURN c.doc AS claim, s.doc AS saw", {"p": person})
+        rows = await self._saw_rows(person)
         t = rules.parse_ts(as_of)
         out: dict[str, Belief] = {}
         for r in rows:
@@ -419,7 +428,7 @@ class Engine:
         A message seen twice (weakly as a channel member, then strongly by replying in its thread)
         counts once, with the strongest exposure in effect at ``as_of``.
         """
-        rows = await self._cypher(EXPOSURES_CYPHER, {"p": person})
+        rows = await self._saw_rows(person)
         t = rules.parse_ts(as_of)
         best: dict[str, tuple[dict, str, str]] = {}
         for r in rows:
