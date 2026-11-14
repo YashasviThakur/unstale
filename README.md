@@ -37,7 +37,7 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
   (every number, read from the result files) and **Pitch**. Click any fact chip to see **the graph behind it**: people, the messages
   they saw, the fact's versions, and the missing edge that makes someone stale.
 - **One command, real HydraDB:** `docker build -t unstale . && docker run --rm -p 7860:7860 unstale`, then open
-  http://localhost:7860. One container runs MinIO, the open-source HydraDB 0.4.0 engine and the app, and rebuilds the graph at start
+  http://localhost:7860. One container runs the open-source HydraDB 0.4.0 engine and the app, and rebuilds the graph at start
   from the committed extraction cache, so it needs no API key.
 
 ## What it does
@@ -233,11 +233,11 @@ Full answers: [`eval/agent.json`](eval/agent.json).
 
 ## Live demo
 
-The primary deployment is a Hugging Face Space built from this repo's [`Dockerfile`](Dockerfile): MinIO, the open-source HydraDB 0.4.0
-engine and the app in one container (publish your own with `sh deploy/space.sh <hf-username>`). The graph is rebuilt at start from the
-dataset and the committed extraction cache.
+The real-HydraDB deployment is this repo's [`Dockerfile`](Dockerfile): the open-source HydraDB 0.4.0 engine and the app in one
+container, with the graph rebuilt at start from the dataset and the committed extraction cache. It runs on any host that takes a Dockerfile
+(it needs about 130 MB of memory): choose a Docker runtime, a free instance, and this repo.
 
-A second copy runs on Vercel for instant loads. Vercel cannot run a HydraDB server, so that copy runs the same engine on SelfGraph's
+A second copy runs on Vercel, which is always up and loads instantly. Vercel cannot run a HydraDB server, so that copy runs the same engine on SelfGraph's
 embedded Kuzu store (`UNSTALE_STORE=kuzu`); the app says so in its top bar. Same code, same traversals: Northwind scores precision 1.00,
 recall 0.917 on both stores.
 
@@ -251,9 +251,9 @@ reports is cached in `data/cache/llm` and committed, so ingest, eval and the age
 without a key; the benchmark needs no LLM at all.
 
 ```bash
-# 1. HydraDB (open-source engine) + MinIO
+# 1. HydraDB (open-source engine, local-directory object store)
 cd infra
-python -c "import secrets; print(f'HYDRA_TOKEN={secrets.token_hex(24)}\nMINIO_PASSWORD={secrets.token_hex(16)}')" > .env
+python -c "import secrets; print(f'HYDRA_TOKEN={secrets.token_hex(24)}')" > .env
 docker compose --env-file .env up -d
 cd ..
 
@@ -324,7 +324,7 @@ Tools: `corrections(person)`, `check_before_sending(author, text, channel?)`,
 
 ## Built on HydraDB
 
-- **HydraDB open-source engine v0.4.0** (Docker, pinned image `ghcr.io/hydra-db/hydradb:0.4.0`, MinIO for object storage) holds the whole graph:
+- **HydraDB open-source engine v0.4.0** (Docker, pinned image `ghcr.io/hydra-db/hydradb:0.4.0`) holds the whole graph:
   directory, messages, claims, who-saw-what, fact versions and read evidence.
 - **SelfGraph** (HydraDB's graph SDK) writes and versions the facts: each fact attribute is capped
   at one current value per subject (`max_count: 1`, `contradiction="supersede"`), so a newer update
@@ -387,7 +387,7 @@ scripts/          ingest, eval, baselines, bench, agent_eval, extraction check
 tests/            rules, exposure model, generator, Slack import round trip
 docs/             go-to-market, demo script, benchmark chart
 examples/         catalog for the Slack importer
-infra/            docker compose for HydraDB + MinIO
+infra/            docker compose for HydraDB
 ```
 
 ## License

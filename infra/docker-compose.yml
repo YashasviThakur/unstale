@@ -1,32 +1,9 @@
 name: ${UNSTALE_STACK:-unstale-demo}
 
-# Local HydraDB (open-source engine) backed by MinIO, since MERGE writes need
-# conditional PUTs that the plain local-filesystem object store lacks.
-# Secrets come from infra/.env (gitignored).
+# Local HydraDB (open-source engine, 0.4.0) on its built-in local-directory object store.
+# (Earlier versions of this file ran MinIO next to it; HydraDB 0.4.0 doesn't need it, and MinIO no longer
+# publishes Docker Hub images.) The token comes from infra/.env (gitignored).
 services:
-  minio:
-    image: minio/minio:latest
-    command: server /data --console-address ":9001"
-    ports:
-      - "19000:9000"
-      - "19001:9001"
-    environment:
-      MINIO_ROOT_USER: unstale
-      MINIO_ROOT_PASSWORD: ${MINIO_PASSWORD}
-    volumes:
-      - minio-data:/data
-
-  minio-init:
-    image: minio/mc:latest
-    depends_on:
-      - minio
-    entrypoint: /bin/sh
-    environment:
-      MINIO_PASSWORD: ${MINIO_PASSWORD}
-    command: >
-      -c "until mc alias set local http://minio:9000 unstale $$MINIO_PASSWORD; do sleep 1; done &&
-          mc mb -p local/unstale-graph"
-
   hydradb-init:
     image: busybox:latest
     volumes:
@@ -35,13 +12,11 @@ services:
       HYDRA_TOKEN: ${HYDRA_TOKEN}
     entrypoint: /bin/sh
     command: >
-      -c "mkdir -p /data/cache && printf '%s\n' \"$$HYDRA_TOKEN\" > /data/auth-token && chown -R 10001:10001 /data"
+      -c "mkdir -p /data/cache /data/store && printf '%s\n' \"$$HYDRA_TOKEN\" > /data/auth-token && chown -R 10001:10001 /data"
 
   hydradb:
     image: ghcr.io/hydra-db/hydradb:0.4.0
     depends_on:
-      minio-init:
-        condition: service_completed_successfully
       hydradb-init:
         condition: service_completed_successfully
     ports:
@@ -51,13 +26,8 @@ services:
     volumes:
       - hydradb-data:/data
     environment:
-      CLOUD_PROVIDER: aws
-      AWS_BUCKET_NAME: unstale-graph
-      AWS_DEFAULT_REGION: us-east-1
-      AWS_ENDPOINT: http://minio:9000
-      AWS_ALLOW_HTTP: "true"
-      AWS_ACCESS_KEY_ID: unstale
-      AWS_SECRET_ACCESS_KEY: ${MINIO_PASSWORD}
+      CLOUD_PROVIDER: local
+      LOCAL_PATH: /data/store
       GRAPH_NAMESPACE: default
       GRAPH_ID: default
       GRAPH_CELL_ID: cell-0
@@ -72,5 +42,4 @@ services:
       RUST_LOG: info
 
 volumes:
-  minio-data:
   hydradb-data:

@@ -1,20 +1,14 @@
 #!/bin/sh
-# Start MinIO, HydraDB, then the Unstale API in one container. Everything lives under $DATA and is rebuilt on start.
+# Start HydraDB (local-directory object store), then the Unstale API, in one container.
+# Everything lives under $DATA and is rebuilt on start.
 set -e
 DATA="${DATA_DIR:-/tmp/unstale-data}"
 rand() { head -c "$1" /dev/urandom | od -An -tx1 | tr -d ' \n'; }
-export MINIO_ROOT_USER=unstale MINIO_ROOT_PASSWORD="$(rand 16)"
 TOKEN="$(rand 24)"
-mkdir -p "$DATA/minio" "$DATA/hydra/cache"
+mkdir -p "$DATA/store" "$DATA/hydra/cache"
 printf '%s\n' "$TOKEN" > "$DATA/hydra/auth-token"
 
-minio server "$DATA/minio" --address 127.0.0.1:9000 --console-address 127.0.0.1:9001 > "$DATA/minio.log" 2>&1 &
-until mc alias set local http://127.0.0.1:9000 unstale "$MINIO_ROOT_PASSWORD" > /dev/null 2>&1; do sleep 1; done
-mc mb -p local/unstale-graph > /dev/null
-
-env CLOUD_PROVIDER=aws AWS_BUCKET_NAME=unstale-graph AWS_DEFAULT_REGION=us-east-1 \
-    AWS_ENDPOINT=http://127.0.0.1:9000 AWS_ALLOW_HTTP=true \
-    AWS_ACCESS_KEY_ID=unstale AWS_SECRET_ACCESS_KEY="$MINIO_ROOT_PASSWORD" \
+env CLOUD_PROVIDER=local LOCAL_PATH="$DATA/store" \
     GRAPH_NAMESPACE=default GRAPH_ID=default GRAPH_CELL_ID=cell-0 GRAPH_CELLS=cell-0 GRAPH_NODE_ID=node-0 \
     GRAPH_BOLT_NODE_ADDRESSES=node-0=127.0.0.1:7687 GRAPH_ADVERTISED_BOLT_ADDR=127.0.0.1:7687 \
     GRAPH_DATA_CACHE_DIR="$DATA/hydra/cache" GRAPH_AUTH_TOKEN_FILE="$DATA/hydra/auth-token" \

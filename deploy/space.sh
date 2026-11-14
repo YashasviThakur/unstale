@@ -32,7 +32,7 @@ short_description: Who is working from an old version of the truth. On open-sour
 
 Search tells you what is true. Unstale tells you who doesn't know yet.
 
-This Space runs the whole stack in one container: MinIO, the open-source **HydraDB 0.4.0** engine and the Unstale API and UI.
+This Space runs the whole stack in one container: the open-source **HydraDB 0.4.0** engine and the Unstale API and UI.
 The graph is rebuilt from the dataset at start.
 
 Source, benchmark and write-up: https://github.com/YashasviThakur/unstale
