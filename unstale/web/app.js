@@ -20,8 +20,8 @@ function fmtVal(v) {
   if (m) return `${fmtDay(`${m[1]}T12:00:00Z`)}, ${m[2]} UTC`;
   return v;
 }
-const AV = [["#ffe1d6", "#8a2e12"], ["#ddebff", "#1b3f8a"], ["#e3f3dc", "#2d6a1f"], ["#f1e2ff", "#5b2a8a"],
-  ["#fff0c9", "#7a5400"], ["#d9f2f0", "#10625c"], ["#fbddeb", "#8a1f55"], ["#e8e8e2", "#44474d"]];
+const AV = [["#d6ebff", "#0f4c8a"], ["#d4f5e3", "#116b45"], ["#e0e7ff", "#3730a3"], ["#cff4f0", "#0b6a63"],
+  ["#e2f4c9", "#4a6b12"], ["#ffe9c7", "#8a5300"], ["#fbddeb", "#8a1f55"], ["#e5e9f0", "#3c4a60"]];
 function avStyle(id) {
   let h = 0; for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
   const [bg, fg] = AV[h % AV.length];
@@ -98,7 +98,7 @@ function renderViewers() {
   (S.team?.people || []).forEach((r) => { counts[r.person] = r.stale.length; });
   $("viewer-list").innerHTML = S.meta.people.map((p) => `
     <button class="viewer ${p.kind === "agent" ? "agent" : ""} ${p.id === S.viewer ? "on" : ""}" data-id="${p.id}" title="${esc(p.role)}">
-      <span class="initials" style="${p.kind === "agent" ? "background:#0e1013;color:#ffd43b" : avStyle(p.id)}">${p.kind === "agent" ? "AI" : initials(p.name)}</span>
+      <span class="initials" style="${p.kind === "agent" ? "background:#0b2545;color:#5ee0a0" : avStyle(p.id)}">${p.kind === "agent" ? "AI" : initials(p.name)}</span>
       <span>${esc(p.kind === "agent" ? p.name : p.name.split(" ")[0])}</span>
       <span class="count">${counts[p.id] ? counts[p.id] : ""}</span>
     </button>`).join("");
@@ -134,7 +134,8 @@ async function loadFeed() {
         ${esc(c.label)}: <span class="v">${esc(fmtVal(c.value))}</span></span>`).join("");
     const where = m.kind === "slack" ? m.where : `${m.where}${m.to.length ? ` to ${m.to.join(", ")}` : ""}`;
     const seen = (m.seen_by || []).filter((x) => person(x.person));
-    const stack = seen.slice(0, 7).map((x) => avatar(x.person, x.strength === "weak" ? "sm weak" : "sm")).join("");
+    const strong = seen.filter((x) => x.strength !== "weak"), weak = seen.length - strong.length;
+    const stack = strong.slice(0, 6).map((x) => avatar(x.person, "sm")).join("");
     html += `
       <article class="msg">
         ${avatar(m.author)}
@@ -146,7 +147,7 @@ async function loadFeed() {
           ${m.reactions.length ? `<div class="meta">Reacted: ${esc(m.reactions.join(", "))}</div>` : ""}
           ${claims ? `<div class="claims">${claims}</div>` : ""}
           ${echo ? `<div class="note-echo">This message repeated a fact that had already changed.</div>` : ""}
-          ${seen.length ? `<div class="seen" title="Read receipts from the graph: solid means they interacted, dashed means assumed from channel membership"><span class="stack">${stack}</span><span class="lab">${seen.length > 7 ? `+${seen.length - 7} · ` : ""}seen by ${seen.length}</span></div>` : ""}
+          ${seen.length ? `<div class="seen" title="Read receipts from the graph. Avatars interacted with it (posted, replied, reacted, were mentioned or emailed). The rest are only assumed to have read it because they are in the channel."><span class="stack">${stack}</span><span class="lab">${strong.length ? `seen by ${strong.length}` : "no one interacted"}${weak ? ` · ${weak} assumed` : ""}</span></div>` : ""}
         </div>
       </article>`;
   }

@@ -84,9 +84,9 @@ function graphSvg(g, focus) {
       <text class="n2" x="${VX + 10}" y="${y + 12}">v${i + 1} · ${v.current ? "current" : "replaced " + esc(fmtDay(v.until || v.since))}</text></g>`);
   });
   const defs = `<defs>
-    <marker id="arrow-ok" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#2c6449"/></marker>
-    <marker id="arrow-old" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#a8291f"/></marker>
-    <marker id="arrow-dark" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#1f1d1a"/></marker></defs>`;
+    <marker id="arrow-ok" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0f8a5f"/></marker>
+    <marker id="arrow-old" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#cc3b4b"/></marker>
+    <marker id="arrow-dark" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#0b2545"/></marker></defs>`;
   return `<svg class="fgraph" viewBox="0 0 ${W} ${H}" role="img" aria-label="Graph of who saw which version of ${esc(g.title)}">${defs}${parts.join("")}</svg>`;
 }
 
