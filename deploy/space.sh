@@ -15,7 +15,7 @@ cp data/northwind.json "$STAGE/data/"
 cp -r data/cache/llm "$STAGE/data/cache/"
 cp eval/*.json "$STAGE/eval/"
 rm -f "$STAGE/deploy/space.sh"
-sed -i "s/$//" "$STAGE/deploy/start.sh"
+tr -d '' < "$STAGE/deploy/start.sh" > "$STAGE/start.tmp" && mv "$STAGE/start.tmp" "$STAGE/deploy/start.sh"
 cat > "$STAGE/README.md" <<'CARD'
 ---
 title: Unstale
