@@ -66,6 +66,8 @@ async def prewarm() -> None:
             await e._saw_rows(p["id"])
         for s in STATE["ds"]["subjects"]:
             await e.subject_versions(s["id"])
+        for mid in STATE["claims"]:
+            await e.who_saw(mid)
     except Exception:  # noqa: BLE001  (warming is an optimisation, never a failure)
         pass
 
@@ -191,7 +193,8 @@ async def meta() -> dict:
             "people": d["people"], "channels": d["channels"], "subjects": d["subjects"],
             "attributes": {k: v.get("label", k) for k, v in d["attributes"].items()},
             "checkpoints": checkpoints(d), "drafts": d["drafts"],
-            "last_ts": max(m["ts"] for m in d["messages"])}
+            "last_ts": max(m["ts"] for m in d["messages"]),
+            "changes": sorted({cl["ts"] for cls in STATE["claims"].values() for cl in cls if cl["kind"] == "update"})}
 
 
 @app.get("/api/feed")
@@ -206,7 +209,11 @@ async def feed(viewer: str, as_of: str, channel: str | None = None) -> dict:
             continue
         if channel and channel != "inbox" and m.get("channel") != channel:
             continue
-        out.append(message_out(m, as_of))
+        mo = message_out(m, as_of)
+        if mo["claims"]:       # who saw a message that states a fact: the receipts under it
+            mo["seen_by"] = [{"person": pid, "strength": st} for pid, st, ts in await eng().who_saw(m["id"])
+                             if rules.parse_ts(ts) <= t]
+        out.append(mo)
     return {"messages": out}
 
 
@@ -574,6 +581,11 @@ async def proof() -> dict:
 
 
 @app.get("/")
+async def landing() -> FileResponse:
+    return FileResponse(WEB / "landing.html")
+
+
+@app.get("/app")
 async def index() -> FileResponse:
     return FileResponse(WEB / "index.html")
 

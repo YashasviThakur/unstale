@@ -128,6 +128,7 @@ class Engine:
     _versions_cache: dict[str, dict[str, list[Version]]] = field(default_factory=dict)
     _evidence: list[Evidence] | None = None
     _rows_cache: dict[str, list] = field(default_factory=dict)   # person -> SAW/ASSERTS rows (cleared on ingest)
+    _who_cache: dict[str, list] = field(default_factory=dict)    # message -> who saw it (cleared on any write)
     _owns: set[tuple[str, str]] = field(default_factory=set)
     mode: str = "learned"      # learned | v1 (every channel member read it) | strong (only interactions count)
 
@@ -170,6 +171,7 @@ class Engine:
         t0 = time.perf_counter()
         res = await self.graph.insert.facts(facts, **kw)
         self._rows_cache.clear()
+        self._who_cache.clear()
         self.stats.writes += len(facts.get("entities", [])) + len(facts.get("relations", []))
         self.stats.write_ms += (time.perf_counter() - t0) * 1000
         return res
@@ -477,11 +479,20 @@ class Engine:
         self._scope_cache[person] = out
         return out
 
-    async def who_saw(self, mid: str) -> dict[str, str]:
+    async def who_saw(self, mid: str) -> list[tuple[str, str, str]]:
+        """Everyone with a SAW edge to a message: (person, strength, when they saw it). Kept until the next write."""
+        if mid in self._who_cache:
+            self.stats.cached += 1
+            return self._who_cache[mid]
         rows = await self._cypher(
             "MATCH (p:Entity)-[s:RELATES]->(m:Entity) WHERE m.sid = $m AND m.ns = $ns AND s.etype = 'SAW' "
             "RETURN p.sid AS p, s.doc AS saw", {"m": f"message:{mid}"})
-        return {r["p"]: json.loads(json.loads(r["saw"])["properties_json"])["strength"] for r in rows}
+        out = []
+        for r in rows:
+            pr = json.loads(json.loads(r["saw"])["properties_json"])
+            out.append((r["p"], pr["strength"], pr["ts"]))
+        self._who_cache[mid] = out
+        return out
 
     async def diff(self, person: str, as_of: str, model: ReadModel | None = None,
                    threshold: float = THRESHOLD, exps: dict[str, list[Exposure]] | None = None) -> list[StaleItem]:

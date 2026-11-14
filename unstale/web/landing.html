@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Unstale: who's still on the old version?</title>
+  <meta name="description" content="Unstale keeps every fact's history and who saw which version, then tells you who is behind, why they missed it, and who to tell. Built on open-source HydraDB.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Unstale: who's still on the old version?">
+  <meta property="og:description" content="A versioned graph of every fact and who saw which version. F1 0.96 vs 0.13 for vector search, zero LLM tokens per brief.">
+  <meta property="og:image" content="/static/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="/static/og.png">
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/landing.css">
+</head>
+<body>
+  <header class="nav" id="top">
+    <a class="logo" href="/" aria-label="Unstale home">
+      <svg width="30" height="30" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#0E1013"/><rect x="6" y="9" width="11" height="3.4" rx="1.7" fill="#FF6B5E"/><rect x="6" y="15.6" width="16" height="3.4" rx="1.7" fill="#4ADE80"/></svg>
+      <span>Unstale</span>
+    </a>
+    <nav aria-label="Page">
+      <a href="#how">How it works</a>
+      <a href="#proof">Proof</a>
+      <a href="#agents">For agents</a>
+      <a href="#pricing">Pricing</a>
+      <a href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <a class="btn dark" href="/app">Open the live demo</a>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><i></i> Built on open-source HydraDB</p>
+        <h1>Who's <mark>still</mark> on the old version?</h1>
+        <p class="sub">Search tells you what is true. Unstale keeps every fact's history <em>and who saw which version</em>, so it can tell you who is behind, why they missed it, and who to tell.</p>
+        <div class="cta-row">
+          <a class="btn dark lg" href="/app">Open the live demo <span aria-hidden="true">→</span></a>
+          <a class="btn line lg" href="/app?tour=1">Take the 60-second tour</a>
+        </div>
+        <p class="micro">Zero LLM tokens to compute a brief · F1 0.96 where vector search scores 0.13 · <a href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">read the code</a></p>
+      </div>
+
+      <div class="win" role="img" aria-label="A belief diff for Maya: she believes release 2.4 ships Mon 29 Jun, but it moved to Fri 3 Jul in a channel she is not in. Three people never saw the change.">
+        <div class="win-bar">
+          <span class="fn">belief-diff</span>
+          <span class="who-time">Maya Lopez · Mon 29 Jun 08:55</span>
+          <span class="live"><i></i> behind on 4</span>
+        </div>
+        <div class="win-body">
+          <div class="hh r1">@@ release 2.4 · ship date @@</div>
+          <div class="ln del r2"><span class="no">12</span><span class="g">−</span><span class="t">Mon 29 Jun</span><span class="note">Maya saw it · #general · Mon 22 Jun</span></div>
+          <div class="ln add r3"><span class="no">12</span><span class="g">+</span><span class="t">Fri 3 Jul</span><span class="note">changed · #release · Fri 26 Jun · Priya Raman</span></div>
+          <div class="hh r4">@@ team plan · price @@</div>
+          <div class="ln del r5"><span class="no">31</span><span class="g">−</span><span class="t">$39/seat/month</span><span class="note">Maya saw it · #sales</span></div>
+          <div class="ln add r6"><span class="no">31</span><span class="g">+</span><span class="t">$49/seat/month</span><span class="note">changed · #pricing · Lena Fischer</span></div>
+        </div>
+        <div class="receipts r7">
+          <div class="rc-head"><span>Who saw the change</span><span class="mono">release 2.4 · ship date</span></div>
+          <div class="rc-row">
+            <div class="rc ok"><i class="av" style="background:#ffe1d6;color:#8a2e12">PR</i><b>Priya</b></div>
+            <div class="rc ok"><i class="av" style="background:#ddebff;color:#1b3f8a">AM</i><b>Arjun</b></div>
+            <div class="rc ok"><i class="av" style="background:#e3f3dc;color:#2d6a1f">SK</i><b>Sara</b></div>
+            <div class="rc ok"><i class="av" style="background:#fff0c9;color:#7a5400">DP</i><b>Dev</b></div>
+            <div class="rc no"><i class="av" style="background:#f1e2ff;color:#5b2a8a">ML</i><b>Maya</b></div>
+            <div class="rc no"><i class="av" style="background:#d9f2f0;color:#10625c">TB</i><b>Tom</b></div>
+            <div class="rc no"><i class="av" style="background:#fbddeb;color:#8a1f55">LF</i><b>Lena</b></div>
+          </div>
+          <div class="rc-foot"><span>4 saw it</span><span class="bad">3 never did</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- THE GAP -->
+    <section class="band gap" id="gap">
+      <div class="gap-head">
+        <p class="label">The gap</p>
+        <h2>Nobody was careless. The change happened somewhere they weren't looking.</h2>
+        <p class="lead">Poor communication costs US businesses up to $12,506 per employee a year (Grammarly and The Harris Poll). The expensive slice is narrow and recognisable. Here are three from our demo team, Northwind Labs.</p>
+      </div>
+      <div class="incidents">
+        <article class="inc">
+          <div class="inc-top"><b>Team plan price</b><span class="mono">changed in #pricing · Thu 25 Jun</span></div>
+          <div class="ln del"><span class="g">−</span><span class="t">$39/seat/month</span></div>
+          <div class="ln add"><span class="g">+</span><span class="t">$49/seat/month</span></div>
+          <p class="inc-say">Tom's renewal email to a customer: <q>your Team plan renewal stays at $39/seat/month</q></p>
+          <div class="behind"><span class="rc no"><i class="av" style="background:#d9f2f0;color:#10625c">TB</i></span><span class="rc no"><i class="av" style="background:#f1e2ff;color:#5b2a8a">ML</i></span><span class="rc no"><i class="av ai">AI</i></span><span class="behind-t">Tom, Maya and the support bot are still on $39</span></div>
+        </article>
+        <article class="inc">
+          <div class="inc-top"><b>Release 2.4 ship date</b><span class="mono">changed in #release · Fri 26 Jun</span></div>
+          <div class="ln del"><span class="g">−</span><span class="t">Mon 29 Jun</span></div>
+          <div class="ln add"><span class="g">+</span><span class="t">Fri 3 Jul</span></div>
+          <p class="inc-say">Maya, five minutes before posting: <q>Told Jordan 2.4 goes live today and SSO is in it!</q></p>
+          <div class="behind"><span class="rc no"><i class="av" style="background:#f1e2ff;color:#5b2a8a">ML</i></span><span class="behind-t">Maya is not in #release</span></div>
+        </article>
+        <article class="inc">
+          <div class="inc-top"><b>Refund window</b><span class="mono">changed in #pricing · Wed 1 Jul</span></div>
+          <div class="ln del"><span class="g">−</span><span class="t">30 days</span></div>
+          <div class="ln add"><span class="g">+</span><span class="t">14 days</span></div>
+          <p class="inc-say">The support agent, to a customer: <q>You can get a full refund within 30 days</q></p>
+          <div class="behind"><span class="rc no"><i class="av ai">AI</i></span><span class="rc no"><i class="av" style="background:#d9f2f0;color:#10625c">TB</i></span><span class="behind-t">The bot never reads #pricing</span></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- VS VECTOR -->
+    <section class="band vs" id="vs">
+      <div class="vs-head">
+        <p class="label">Why a graph</p>
+        <h2>Search finds the right messages. It can't say who read which.</h2>
+      </div>
+      <div class="vs-grid">
+        <div class="vs-card">
+          <p class="vs-title">A vector search for <i>"What is the Team plan price?"</i></p>
+          <table>
+            <tr><td class="mono">0.79</td><td><b>Lena Fischer</b> #sales <span class="muted">Mon 22 Jun</span></td><td><span class="vtag old">$39 old</span></td></tr>
+            <tr><td class="mono">0.78</td><td><b>Lena Fischer</b> #pricing <span class="muted">Thu 25 Jun</span></td><td><span class="vtag cur">$49 current</span></td></tr>
+            <tr><td class="mono">0.78</td><td><b>Lena Fischer</b> #support-kb <span class="muted">Mon 22 Jun</span></td><td><span class="vtag old">$39 old</span></td></tr>
+          </table>
+          <p class="vs-foot">Right messages, old value and new, ranked by similarity. Did Maya see the new one? <b>No way to know.</b></p>
+          <p class="vs-score"><b>0.13</b> F1 on our labelled team</p>
+        </div>
+        <div class="vs-card dark">
+          <p class="vs-title">The same question, on the graph</p>
+          <div class="ppl">
+            <div class="pp bad"><i class="av" style="background:#f1e2ff;color:#5b2a8a">ML</i><b>Maya</b><span>never saw the change</span><em>behind</em></div>
+            <div class="pp bad"><i class="av" style="background:#d9f2f0;color:#10625c">TB</i><b>Tom</b><span>never saw the change</span><em>behind</em></div>
+            <div class="pp bad"><i class="av ai">AI</i><b>Support bot</b><span>doesn't read #pricing</span><em>behind</em></div>
+            <div class="pp ok"><i class="av" style="background:#fbddeb;color:#8a1f55">LF</i><b>Lena</b><span>changed it herself</span><em>current</em></div>
+          </div>
+          <p class="vs-foot">One traversal over who saw which message. No model call.</p>
+          <p class="vs-score"><b>0.96</b> F1 on the same team</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="band how" id="how">
+      <div class="how-head">
+        <p class="label">How it works</p>
+        <h2>Versioned facts and read receipts, in one graph.</h2>
+      </div>
+      <div class="how-grid">
+        <article>
+          <p class="mono tag">write</p>
+          <h3>Facts keep their history</h3>
+          <p>Every fact ("Release 2.4 ships on…") is a relation capped at one current value. A newer statement retires the old one and keeps it as history, so any question can be asked <code>as_of</code> any moment.</p>
+        </article>
+        <article>
+          <p class="mono tag">read</p>
+          <h3>Every read leaves a receipt</h3>
+          <p>A <code>SAW</code> edge connects each person or agent to each message they read: solid if they interacted, dashed if we only know they're in the channel. People's answers teach the graph who really reads what.</p>
+        </article>
+        <article>
+          <p class="mono tag">diff</p>
+          <h3>A brief is a traversal</h3>
+          <p>What you believe is the newest version on a message you saw. Compare it with the current version and you have your corrections, ranked by how close they are to your work, with a confidence. No model call.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- PRODUCT -->
+    <section class="band product" id="product">
+      <div class="prod-head">
+        <p class="label">The product</p>
+        <h2>From "who's behind?" to "who should I tell?"</h2>
+      </div>
+      <div class="rows">
+        <article class="row">
+          <div class="row-copy">
+            <h3>Corrections, written as diffs</h3>
+            <p>Each person gets a short list of exactly what they're wrong about: the old value, the new one, the message they got it from, the message that changed it, and why they missed it. A button says "news to me" and the graph learns.</p>
+          </div>
+          <figure class="shot"><img src="/static/shots/corrections.png" alt="The Unstale app showing Maya is behind on four facts, each as a red and green diff" loading="lazy" width="1803" height="915"></figure>
+        </article>
+        <article class="row flip">
+          <div class="row-copy">
+            <h3>The graph behind every fact</h3>
+            <p>Click any fact to see who saw which message, which version each message states, and the missing edge that makes someone stale. Next to it: what a real vector search returns for the same question.</p>
+          </div>
+          <figure class="shot"><img src="/static/shots/graph.png" alt="A graph of people, messages and fact versions with a dotted yellow edge showing Maya never saw the change" loading="lazy" width="1803" height="915"></figure>
+        </article>
+        <article class="row">
+          <div class="row-copy">
+            <h3>Fix it, with a what-if</h3>
+            <p>Unstale says who still needs to hear a change, which channel reaches them, who needs an @mention because they rarely read it, and drafts the message. Then it shows the corrections that would be left, without writing anything.</p>
+          </div>
+          <figure class="shot"><img src="/static/shots/fix.png" alt="A plan to post in two channels, a draft message, and the predicted drop in who is out of date" loading="lazy" width="1803" height="915"></figure>
+        </article>
+      </div>
+    </section>
+
+    <!-- AGENTS -->
+    <section class="band agents" id="agents">
+      <div class="agents-copy">
+        <p class="label light">For agents</p>
+        <h2>Your agents are readers too.</h2>
+        <p>An agent only knows what it was given. Every change in a channel it doesn't read is a wrong answer waiting for a customer. Connect it and it can ask what in its context is out of date, before it answers.</p>
+        <p class="agents-stat"><b>29% → 94%</b> correct answers from a support agent, using only its own sources plus Unstale's correction block (+116 tokens).</p>
+      </div>
+      <div class="term" role="img" aria-label="Terminal: adding the Unstale MCP server and asking what the support bot believes that is no longer true">
+        <div class="term-bar"><span></span><span></span><span></span><em>claude</em></div>
+        <pre><span class="c">$</span> claude mcp add --transport http unstale \
+    https://unstale.onrender.com/mcp
+
+<span class="c">&gt;</span> What does agent:support-bot believe
+  that is no longer true?
+
+<span class="o">3 outdated beliefs for agent:support-bot:</span>
+<span class="d">- Team plan price:</span> believes $39/seat/month,
+  now $49/seat/month (100% sure). This agent
+  doesn't read #pricing, so its context
+  never got the change.
+<span class="d">- Monthly plan refunds:</span> believes 30 days,
+  now 14 days (100% sure).
+<span class="d">- Payments API v1 status:</span> believes
+  supported, now deprecated (100% sure).</pre>
+      </div>
+    </section>
+
+    <!-- PROOF -->
+    <section class="band proof" id="proof">
+      <div class="proof-head">
+        <p class="label">Proof</p>
+        <h2>Measured, not claimed.</h2>
+        <p class="lead">Ground truth is hidden from the engine: every message carries its true claims and who really read it. These are the numbers from the result files in the repo.</p>
+      </div>
+      <div class="ledger" id="ledger" aria-live="polite"><p class="muted">Loading the results…</p></div>
+      <div class="curve-card" id="curve-card"></div>
+      <p class="proof-foot"><a class="btn line" href="/app?proof=1&amp;notour=1">Open the full Proof panel in the app</a> <span class="muted">Limits are written out there: the data is simulated, and recall tops out near 0.69.</span></p>
+    </section>
+
+    <!-- HYDRADB -->
+    <section class="band db" id="db">
+      <div class="db-copy">
+        <p class="label light">Built on HydraDB</p>
+        <h2>The graph does the work.</h2>
+        <ul>
+          <li><b>Versioned facts.</b> SelfGraph caps each attribute at one current value; a new statement supersedes the old and keeps it readable.</li>
+          <li><b>Read receipts as edges.</b> <code>SAW</code> edges with a strength, written at ingest, traversed in Cypher.</li>
+          <li><b>Time travel.</b> Every read takes <code>as_of</code>, including what the graph had learned by then.</li>
+          <li><b>Self-hostable.</b> One container, open-source HydraDB 0.4.0, about 130 MB of memory.</li>
+        </ul>
+      </div>
+      <div class="code">
+        <pre><span class="k">schema</span> = {
+  <span class="s">"relations"</span>: [{ <span class="s">"type"</span>: <span class="s">"SHIPS_ON"</span>,
+                  <span class="s">"from"</span>: { <span class="s">"max_count"</span>: 1 } }]
+}
+SelfGraph(store=HydraDBStore(uri), schema=schema,
+          contradiction=<span class="s">"supersede"</span>)
+
+<span class="m">// who saw what, and what those messages say</span>
+<span class="k">MATCH</span> (p:Entity)-[s:RELATES]-&gt;(m:Entity)
+      -[a:RELATES]-&gt;(c:Entity)
+<span class="k">WHERE</span> p.sid = $p <span class="k">AND</span> s.etype = <span class="s">'SAW'</span>
+  <span class="k">AND</span> a.etype = <span class="s">'ASSERTS'</span>
+<span class="k">RETURN</span> c.doc <span class="k">AS</span> claim, s.doc <span class="k">AS</span> saw</pre>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="band pricing" id="pricing">
+      <div class="pricing-head">
+        <p class="label">Who pays</p>
+        <h2>Priced where a wrong statement has a customer on the other end.</h2>
+        <p class="lead">First customer: a Slack-first B2B company of 50 to 500 people, with a revenue team and a support agent downstream of product and pricing decisions. The buyer owns what reps and bots tell customers. Pricing below is a hypothesis to test with design partners.</p>
+      </div>
+      <div class="tiers">
+        <article><p class="mono tag">Free</p><h3>$0</h3><p>One team, up to 15 people and one agent.</p></article>
+        <article class="hot"><p class="mono tag">Team</p><h3>$6 <small>per person / month</small></h3><p>Briefs, pre-send checks, fix-it plans and feedback learning.</p></article>
+        <article><p class="mono tag">Agents</p><h3>$20 <small>per agent / month</small></h3><p>The MCP correction layer, with a volume of checks included.</p></article>
+      </div>
+      <div class="cta-row center">
+        <a class="btn dark lg" href="/app">Open the live demo <span aria-hidden="true">→</span></a>
+        <a class="btn line lg" href="https://github.com/YashasviThakur/unstale/issues/new?title=Design%20partner%3A%20&body=Team%20size%3A%0AWhere%20decisions%20are%20made%20(Slack%2FTeams%2Femail)%3A%0AWhat%20goes%20stale%20for%20you%3A" target="_blank" rel="noopener">Be a design partner</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="foot-l">
+      <a class="logo" href="/"><svg width="24" height="24" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#0E1013"/><rect x="6" y="9" width="11" height="3.4" rx="1.7" fill="#FF6B5E"/><rect x="6" y="15.6" width="16" height="3.4" rx="1.7" fill="#4ADE80"/></svg><span>Unstale</span></a>
+      <p>Built for the HydraDB hackathon, November 2026.</p>
+    </div>
+    <div class="foot-r">
+      <a href="/app">Live demo</a>
+      <a href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/YashasviThakur/unstale/blob/main/docs/GTM.md" target="_blank" rel="noopener">Go-to-market</a>
+      <a href="https://github.com/hydra-db/hydradb" target="_blank" rel="noopener">HydraDB</a>
+    </div>
+  </footer>
+
+  <script src="/static/landing.js"></script>
+</body>
+</html>

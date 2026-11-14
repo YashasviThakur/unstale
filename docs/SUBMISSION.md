@@ -55,7 +55,7 @@ our labelled team, vector RAG scores F1 0.13.
 
 ## Links
 
-- **Live app, on real open-source HydraDB 0.4.0:** https://unstale.onrender.com (free instance: the first visit after a quiet spell can take up to a minute to wake)
+- **Live app, on real open-source HydraDB 0.4.0:** https://unstale.onrender.com (landing page; the app itself is https://unstale.onrender.com/app) (free instance: the first visit after a quiet spell can take up to a minute to wake)
 - **Live app, instant copy:** https://unstale.vercel.app (always up; runs the same engine on SelfGraph's embedded Kuzu store because Vercel can't run a HydraDB server, and says so in its top bar; Northwind scores precision 1.00 / recall 0.917 on both)
 - **Run it yourself, real HydraDB, one command:** `docker build -t unstale . && docker run --rm -p 7860:7860 unstale`
 - Repo: https://github.com/YashasviThakur/unstale

@@ -20,12 +20,26 @@ function fmtVal(v) {
   if (m) return `${fmtDay(`${m[1]}T12:00:00Z`)}, ${m[2]} UTC`;
   return v;
 }
+const AV = [["#ffe1d6", "#8a2e12"], ["#ddebff", "#1b3f8a"], ["#e3f3dc", "#2d6a1f"], ["#f1e2ff", "#5b2a8a"],
+  ["#fff0c9", "#7a5400"], ["#d9f2f0", "#10625c"], ["#fbddeb", "#8a1f55"], ["#e8e8e2", "#44474d"]];
+function avStyle(id) {
+  let h = 0; for (const c of String(id)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const [bg, fg] = AV[h % AV.length];
+  return `background:${bg};color:${fg}`;
+}
+function avatar(id, cls = "") {
+  const p = person(id), agent = p && p.kind === "agent";
+  const text = cls.includes("weak") ? "" : agent ? "AI" : esc(initials(p ? p.name : String(id)));
+  return `<span class="av ${cls} ${agent ? "agent" : ""}" style="${avStyle(id)}" title="${esc(p ? p.name : id)}${cls.includes("weak") ? " (assumed: in the channel)" : " (interacted)"}">${text}</span>`;
+}
 function initials(name) { return name.split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase(); }
 function person(id) { return S.meta.people.find((p) => p.id === id); }
 function firstName(id) { const p = person(id); return p ? p.name.split(" ")[0] : id; }
 
 function openDlg(dlg) {
   if (!dlg.open) dlg.show();
+  dlg.setAttribute("tabindex", "-1");
+  dlg.focus({ preventScroll: true });
   dlg.scrollTop = 0;
   $("scrim").classList.remove("hidden");
 }
@@ -57,6 +71,8 @@ function buildSteps() {
     return `<button data-ts="${cp}">${lab}</button>`;
   }).join("");
   $("ticks").querySelectorAll("button").forEach((b) => b.onclick = () => setTime(b.dataset.ts));
+  const span = end - start;      // a dot wherever a fact changed: the moments that leave someone behind
+  $("marks").innerHTML = (S.meta.changes || []).map((ts) => `<i style="left:${((d(ts).getTime() - start) / span) * 100}%" title="a fact changed ${esc(fmtTs(ts))}"></i>`).join("");
 }
 function setTime(ts) {
   S.asOf = ts;
@@ -69,6 +85,7 @@ function setTime(ts) {
 }
 function renderClock() {
   $("clock-label").textContent = fmtTs(S.asOf);
+  const sc = $("scrub"); sc.style.setProperty("--p", `${(+sc.value / Math.max(1, +sc.max)) * 100}%`);
   $("ticks").querySelectorAll("button").forEach((b) => b.classList.toggle("on", b.dataset.ts === S.asOf));
   const atEnd = d(S.asOf).getTime() >= d(S.meta.last_ts).getTime();
   $("btn-send").disabled = !atEnd || !!(S.meta && S.meta.hosted);
@@ -81,7 +98,7 @@ function renderViewers() {
   (S.team?.people || []).forEach((r) => { counts[r.person] = r.stale.length; });
   $("viewer-list").innerHTML = S.meta.people.map((p) => `
     <button class="viewer ${p.kind === "agent" ? "agent" : ""} ${p.id === S.viewer ? "on" : ""}" data-id="${p.id}" title="${esc(p.role)}">
-      <span class="initials">${p.kind === "agent" ? "AI" : initials(p.name)}</span>
+      <span class="initials" style="${p.kind === "agent" ? "background:#0e1013;color:#ffd43b" : avStyle(p.id)}">${p.kind === "agent" ? "AI" : initials(p.name)}</span>
       <span>${esc(p.kind === "agent" ? p.name : p.name.split(" ")[0])}</span>
       <span class="count">${counts[p.id] ? counts[p.id] : ""}</span>
     </button>`).join("");
@@ -116,17 +133,20 @@ async function loadFeed() {
         title="${c.outdated ? `Out of date. Now: ${esc(fmtVal(c.now))}` : "Current"}${c.kind === "echo" ? ". Repeated an older value." : ""}">
         ${esc(c.label)}: <span class="v">${esc(fmtVal(c.value))}</span></span>`).join("");
     const where = m.kind === "slack" ? m.where : `${m.where}${m.to.length ? ` to ${m.to.join(", ")}` : ""}`;
+    const seen = (m.seen_by || []).filter((x) => person(x.person));
+    const stack = seen.slice(0, 7).map((x) => avatar(x.person, x.strength === "weak" ? "sm weak" : "sm")).join("");
     html += `
       <article class="msg">
-        <div class="ts">${fmtTime(m.ts)}</div>
+        ${avatar(m.author)}
         <div>
-          <span class="who">${esc(m.author_name)}</span><span class="where">${esc(where)}</span>
-          ${m.thread ? `<span class="thread">in thread</span>` : ""}
+          <div class="mhead"><span class="who">${esc(m.author_name)}</span><span class="where">${esc(where)}</span><span class="ts">${fmtTime(m.ts)}</span>
+            ${m.thread ? `<span class="thread">in thread</span>` : ""}</div>
           ${m.subject_line ? `<div class="small muted">${esc(m.subject_line)}</div>` : ""}
           <div class="body">${esc(m.text)}</div>
           ${m.reactions.length ? `<div class="meta">Reacted: ${esc(m.reactions.join(", "))}</div>` : ""}
           ${claims ? `<div class="claims">${claims}</div>` : ""}
           ${echo ? `<div class="note-echo">This message repeated a fact that had already changed.</div>` : ""}
+          ${seen.length ? `<div class="seen" title="Read receipts from the graph: solid means they interacted, dashed means assumed from channel membership"><span class="stack">${stack}</span><span class="lab">${seen.length > 7 ? `+${seen.length - 7} · ` : ""}seen by ${seen.length}</span></div>` : ""}
         </div>
       </article>`;
   }
@@ -143,7 +163,7 @@ async function loadBrief() {
   const who = p.kind === "agent" ? "this agent" : p.name.split(" ")[0];
   $("corr-kicker").textContent = p.kind === "agent" ? "Corrections for an agent" : "Corrections";
   $("corr-title").textContent = n
-    ? `${n} thing${n > 1 ? "s" : ""} ${who} believe${p.kind === "agent" || n ? "s" : ""} that ${n > 1 ? "are" : "is"} no longer true`
+    ? `${who === "this agent" ? "This agent is" : `${who} is`} behind on ${n} thing${n > 1 ? "s" : ""}`
     : `${who === "this agent" ? "This agent is" : `${who} is`} up to date`;
   $("corr-meta").textContent = `${b.graph_queries + b.cached_reads} graph read${b.graph_queries + b.cached_reads === 1 ? "" : "s"}${b.cached_reads ? ` (${b.cached_reads} already in memory)` : ""}, ${b.ms} ms, ${b.llm_tokens} LLM tokens.`;
   if (!n) {
@@ -151,16 +171,18 @@ async function loadBrief() {
   } else {
     $("corr-list").innerHTML = b.items.map((it) => `
       <div class="card">
-        <div class="topic">${esc(it.subject)} <span class="lab">${esc(it.label)}</span>
+        <div class="card-top">
+          <div class="topic">${esc(it.subject)} <span class="lab">${esc(it.label)}</span></div>
           <span class="hop">${it.hops === 0 ? "yours" : "linked to your work"}</span>
-          <span class="conf ${it.confidence >= 0.9 ? "hi" : it.confidence >= 0.7 ? "mid" : "lo"}" title="Chance this is still what they believe">${Math.round(it.confidence * 100)}%</span></div>
-        <div class="vals">
-          <span class="k">You think</span><span class="old">${esc(fmtVal(it.believed))}</span>
-          <span class="k">Now</span><span class="new">${esc(fmtVal(it.current))}</span>
+          <span class="conf ${it.confidence >= 0.9 ? "hi" : it.confidence >= 0.7 ? "mid" : "lo"}" title="Chance this is still what they believe">${Math.round(it.confidence * 100)}%</span>
+        </div>
+        <div class="hunk" role="group" aria-label="What they believe and what is true now">
+          <div class="ln del"><span class="g">−</span><span class="v">${esc(fmtVal(it.believed))}</span><span class="tag">${p.kind === "agent" ? "it believes" : "you think"}</span></div>
+          <div class="ln add"><span class="g">+</span><span class="v">${esc(fmtVal(it.current))}</span><span class="tag">now</span></div>
         </div>
         <div class="trail">
-          <div>You saw it: ${esc(it.you_saw.author)}, ${esc(it.you_saw.where)}, ${esc(fmtDay(it.you_saw.ts))}. <q>${esc(it.you_saw.text)}</q></div>
-          <div>Changed: ${esc(it.change.author)}, ${esc(it.change.where)}, ${esc(fmtDay(it.change.ts))}. <q>${esc(it.change.text)}</q></div>
+          <div class="tr"><b>${p.kind === "agent" ? "It saw" : "You saw it"}</b> ${esc(it.you_saw.author)} · ${esc(it.you_saw.where)} · ${esc(fmtDay(it.you_saw.ts))}<q>${esc(it.you_saw.text)}</q></div>
+          <div class="tr"><b>Changed</b> ${esc(it.change.author)} · ${esc(it.change.where)} · ${esc(fmtDay(it.change.ts))}<q>${esc(it.change.text)}</q></div>
           <div class="why">${esc(it.why || "")}${it.echo ? ` ${esc(it.echo)}, which is where you picked up the old value.` : ""}</div>
           ${it.believed_via.strength === "weak" ? `<div class="via">Assumed seen: you're in #${esc(it.believed_via.channel)}, and the graph thinks you read about ${Math.round(it.believed_via.read_rate * 100)}% of it.</div>` : ""}
         </div>
@@ -387,10 +409,11 @@ $("btn-copy").onclick = () => navigator.clipboard?.writeText($("agent-context").
 
 function engineBadge() {
   const hydra = S.meta.store === "hydradb";
-  const real = S.meta.real_url ? `<a href="${esc(S.meta.real_url)}" target="_blank" rel="noopener">Open the same app on real HydraDB</a>` : "see the repo";
+  const real = S.meta.real_url ? ` <a href="${esc(S.meta.real_url)}" target="_blank" rel="noopener">Open the real-HydraDB build</a>` : "";
+  $("engine-badge").classList.toggle("copy", !hydra);
   $("engine-badge").innerHTML = hydra
-    ? `<b>Graph:</b> open-source HydraDB 0.4.0`
-    : `<b>Graph:</b> SelfGraph on embedded Kuzu <span class="muted">(instant copy; the full build runs on HydraDB: ${real})</span>`;
+    ? `<b>Graph</b> open-source HydraDB 0.4.0`
+    : `<b>Graph</b> SelfGraph on Kuzu <span class="muted">· instant copy.</span>${real}`;
   $("btn-mcp").classList.toggle("hidden", !S.meta.mcp);
   $("graph-note").textContent = (hydra ? `HydraDB namespace ${S.meta.namespace}.` : "Instant copy on SelfGraph's embedded Kuzu store; the full build runs on HydraDB.") +
     " Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.";
@@ -414,7 +437,7 @@ document.querySelectorAll("dialog").forEach((dl) => dl.addEventListener("close",
     $("corr-meta").textContent = e.message;
     return;
   }
-  $("orgname").textContent = `Demo team: ${S.meta.name}.`;
+  $("orgname").textContent = S.meta.name;
   engineBadge();
   buildSteps();
   renderViewers();
@@ -423,5 +446,7 @@ document.querySelectorAll("dialog").forEach((dl) => dl.addEventListener("close",
   setTime("2026-06-29T08:00:00Z");
   let seen = false;
   try { seen = !!localStorage.getItem("unstale-tour-seen"); } catch (e) { /* private mode */ }
-  if (!seen && !location.search.includes("notour")) setTimeout(() => tourStart(), 900);
+  const q = new URLSearchParams(location.search);
+  if (q.has("proof")) openProof();
+  else if (q.has("tour") || (!seen && !q.has("notour"))) setTimeout(() => tourStart(), 900);
 })();

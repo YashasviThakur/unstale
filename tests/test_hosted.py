@@ -129,3 +129,20 @@ def test_a_reported_miss_teaches_the_graph_and_the_suspicion_shows(client):
     assert r["evidence"] == 1 and r["rates"][0]["rate"] < 0.5
     b = client.get("/api/brief/person:dev", params={"as_of": END}).json()
     assert [m["slot"] for m in b["maybe"]] == ["service:payments|OWNED_BY"] and b["items"] == []
+
+
+def test_landing_and_app_are_separate_pages(client):
+    home = client.get("/")
+    assert home.status_code == 200 and "Who's" in home.text and "/static/landing.css" in home.text
+    app = client.get("/app")
+    assert app.status_code == 200 and 'id="viewer-list"' in app.text and "/static/app.css" in app.text
+    for path in ("/static/landing.js", "/static/shots/corrections.png", "/static/og.png"):
+        assert client.get(path).status_code == 200
+
+
+def test_feed_carries_read_receipts_and_meta_carries_change_markers(client):
+    feed = client.get("/api/feed", params={"viewer": "person:maya", "as_of": END}).json()["messages"]
+    stated = [m for m in feed if m["claims"]]
+    assert stated and all(m["seen_by"] for m in stated)
+    assert all({"person", "strength"} <= set(s) for s in stated[0]["seen_by"])
+    assert client.get("/api/meta").json()["changes"]

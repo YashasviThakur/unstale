@@ -64,14 +64,14 @@ function graphSvg(g, focus) {
     const y = pos.p[p.id];
     const cls = p.stale ? "stale" : p.in_sync ? "sync" : "none";
     parts.push(`<g class="node person ${cls}${focus && p.id === focus ? " focus" : ""}" data-p="${esc(p.id)}" tabindex="0" role="button" aria-label="Show ${esc(p.name)}'s path">
-      <rect x="${PX}" y="${y - 19}" width="${PW}" height="38" rx="2"/>
+      <rect x="${PX}" y="${y - 19}" width="${PW}" height="38" rx="8"/>
       <text class="n1" x="${PX + 10}" y="${y - 3}">${esc(p.kind === "agent" ? p.name : p.name)}</text>
       <text class="n2" x="${PX + 10}" y="${y + 11}">${p.believes ? "thinks " + esc(fmtVal(p.believes)) : "never saw it"}</text></g>`);
   });
   msgs.forEach((m) => {
     const y = pos.m[m.id], isNow = g.versions.some((v) => v.message === m.id && v.current);
     parts.push(`<g class="node msg ${m.kind}${isNow ? " now" : ""}"><title>${esc(m.author)} ${esc(m.where)}: ${esc(m.text)}</title>
-      <rect x="${MX}" y="${y - 24}" width="${MW}" height="48" rx="2"/>
+      <rect x="${MX}" y="${y - 24}" width="${MW}" height="48" rx="8"/>
       <text class="n1" x="${MX + 10}" y="${y - 7}">${esc(m.author)}, ${esc(m.where)}</text>
       <text class="n2" x="${MX + 10}" y="${y + 8}">${esc(fmtDay(m.ts))} · ${m.kind === "update" ? "states" : m.kind === "echo" ? "repeats an old value" : "restates"} ${esc(fmtVal(m.value))}</text>
       <text class="n3" x="${MX + 10}" y="${y + 20}">${esc(m.id)}${isNow ? " · the change" : ""}</text></g>`);
@@ -79,7 +79,7 @@ function graphSvg(g, focus) {
   g.versions.forEach((v, i) => {
     const y = pos.v[v.id];
     parts.push(`<g class="node ver ${v.current ? "cur" : "old"}">
-      <rect x="${VX}" y="${y - 22}" width="${VW}" height="44" rx="2"/>
+      <rect x="${VX}" y="${y - 22}" width="${VW}" height="44" rx="8"/>
       <text class="n1" x="${VX + 10}" y="${y - 4}">${esc(fmtVal(v.shown))}</text>
       <text class="n2" x="${VX + 10}" y="${y + 12}">v${i + 1} · ${v.current ? "current" : "replaced " + esc(fmtDay(v.until || v.since))}</text></g>`);
   });

@@ -14,40 +14,42 @@
   <link rel="icon" href="/static/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Public+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/style.css">
-  <link rel="stylesheet" href="/static/extra.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
-  <div class="topbar">
+  <header class="app-head">
+    <a class="logo" href="/" aria-label="Unstale home">
+      <svg class="mark" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect width="28" height="28" rx="8" fill="#0E1013"/><rect x="6" y="9" width="11" height="3.4" rx="1.7" fill="#FF6B5E"/><rect x="6" y="15.6" width="16" height="3.4" rx="1.7" fill="#4ADE80"/></svg>
+      <span class="word">Unstale</span>
+    </a>
+    <span id="orgname" class="team-chip"></span>
     <span id="engine-badge" class="engine">Starting the graph...</span>
     <span class="spacer"></span>
-    <button type="button" id="btn-tour" class="tb primary">60-second tour</button>
-    <button type="button" id="btn-mcp" class="tb hidden">Connect your agent</button>
-    <button type="button" id="btn-proof" class="tb">Proof</button>
-    <button type="button" id="btn-pitch" class="tb">Pitch</button>
-    <a class="tb" href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
-  </div>
+    <nav class="nav" aria-label="Sections">
+      <button type="button" id="btn-tour" class="tb primary">60-second tour</button>
+      <button type="button" id="btn-mcp" class="tb hidden">Connect your agent</button>
+      <button type="button" id="btn-proof" class="tb">Proof</button>
+      <button type="button" id="btn-pitch" class="tb">Pitch</button>
+      <a class="tb" href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </header>
 
-  <header class="masthead">
-    <div class="brand">
-      <h1>Unstale</h1>
-      <p class="dek">Who is working from an old version of the truth. <span id="orgname"></span></p>
+  <section class="stage" aria-label="Who and when">
+    <div class="viewers">
+      <span class="kicker">Viewing as</span>
+      <div id="viewer-list" class="viewer-list"></div>
     </div>
     <div class="clock">
       <div class="clock-row">
         <span class="kicker">Time</span>
         <strong id="clock-label">...</strong>
       </div>
+      <div id="marks" class="marks" aria-hidden="true"></div>
       <input id="scrub" type="range" min="0" max="100" step="1" aria-label="Scenario time">
       <div id="ticks" class="ticks"></div>
     </div>
-  </header>
-
-  <nav class="viewers" aria-label="View as">
-    <span class="kicker">Viewing as</span>
-    <div id="viewer-list" class="viewer-list"></div>
-  </nav>
+  </section>
 
   <main class="desk">
     <aside class="rail">
