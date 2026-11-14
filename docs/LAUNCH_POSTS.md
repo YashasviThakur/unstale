@@ -7,7 +7,7 @@ HydraDB's account is **@hydra_db** (X) and HydraDB on LinkedIn.
 - Walkthrough: `<VIDEO_LINK>`
 - Repo: https://github.com/YashasviThakur/unstale
 
-Screenshots worth attaching: the graph view of a stale fact (click a fact chip, then the missing red edge) and the learning curve in the Proof panel.
+Screenshots are in docs/media (recapture from the HydraDB Space once it is live, so the badge reads HydraDB). Worth attaching: the graph view of a stale fact (click a fact chip, then the missing red edge) and the learning curve in the Proof panel.
 Attach the 45 s ink-wash film or the 99 s features film to the first post (video gets more reach than
 a link). Post the thread, then reply to a few teams who build agents or run RevOps.
 
