@@ -98,6 +98,13 @@ class Stats:
     write_ms: float = 0.0
 
 
+def kuzu_dialect(q: str) -> str:
+    """HydraDB's generic Entity/RELATES graph, spelled the way SelfGraph's Kuzu store names it (N/R, id)."""
+    for alias in re.findall(r"\((\w+):Entity\)", q):
+        q = re.sub(r"(?<![A-Za-z0-9_])" + alias + r"[.]sid(?![A-Za-z0-9_])", alias + ".id", q)
+    return q.replace(":Entity", ":N").replace(":RELATES", ":R")
+
+
 @dataclass
 class Engine:
     graph: SelfGraph
@@ -120,14 +127,19 @@ class Engine:
                    settings: Settings | None = None) -> "Engine":
         s = settings or Settings.load()
         ns = namespace or current_namespace(s)
-        if not s.hydra_token:
-            raise RuntimeError("No HydraDB token: set UNSTALE_HYDRA_TOKEN or create infra/.env")
+        if s.store == "kuzu":
+            from selfgraph import KuzuStore  # noqa: PLC0415  (hosted demo only; HydraDB is the engine)
+            store = KuzuStore(s.kuzu_path)
+        else:
+            if not s.hydra_token:
+                raise RuntimeError("No HydraDB token: set UNSTALE_HYDRA_TOKEN or create infra/.env")
+            store = HydraDBStore(s.hydra_uri, auth=s.hydra_token)
         schema = {
             "relations": [
                 {"type": attr, "from": {"max_count": 1}} for attr in ds["attributes"]
             ],
         }
-        graph = SelfGraph(store=HydraDBStore(s.hydra_uri, auth=s.hydra_token), schema=schema,
+        graph = SelfGraph(store=store, schema=schema,
                           schema_mode="off", contradiction="supersede", namespace=ns)
         await graph.__aenter__()
         eng = cls(graph=graph, ds=ds, namespace=ns, settings=s)
@@ -153,6 +165,8 @@ class Engine:
 
     async def _cypher(self, q: str, params: dict) -> list[dict]:
         t0 = time.perf_counter()
+        if self.settings.store == "kuzu":
+            q = kuzu_dialect(q)
         res = await self.graph.run_cypher(q, {"ns": self.namespace, **params})
         self.stats.queries += 1
         self.stats.query_ms += (time.perf_counter() - t0) * 1000

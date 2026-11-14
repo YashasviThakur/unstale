@@ -49,6 +49,7 @@ our labelled team, vector RAG scores F1 0.13.
 
 ## Links
 
+- Live app: https://unstale.vercel.app (hosted on SelfGraph's embedded Kuzu store, because Vercel can't run a HydraDB server; same engine code and queries, Northwind scores precision 1.00 / recall 0.917 on both. The HydraDB build is the one in `infra/docker-compose.yml`.)
 - Repo: https://github.com/YashasviThakur/unstale
 - Demo video: (add after recording)
 - Go-to-market: docs/GTM.md

@@ -222,6 +222,14 @@ model (`openai/gpt-oss-120b`, [`scripts/agent_eval.py`](scripts/agent_eval.py)).
 
 Full answers: [`eval/agent.json`](eval/agent.json).
 
+## Live demo
+
+https://unstale.vercel.app serves the Northwind team. Vercel cannot run a HydraDB server, so the hosted copy runs
+the same engine on SelfGraph's embedded Kuzu store (`UNSTALE_STORE=kuzu`) and rebuilds the graph on a cold start
+from the dataset and the committed extraction cache. Same code, same traversals: Northwind scores precision 1.00,
+recall 0.917 on both stores. The HydraDB deployment is the one below. The hosted copy keeps no state between
+cold starts, and "check before sending" needs a Groq key, so only the demo drafts (cached) work there.
+
 ## Run it
 
 Needs Docker, Python 3.11+, and a Groq API key (free tier is enough). Every LLM reply this README

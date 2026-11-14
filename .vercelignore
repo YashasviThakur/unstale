@@ -1,0 +1,15 @@
+.venv
+.git
+.github
+.claude
+docs
+eval
+examples
+scripts
+tests
+infra
+data/cache/fastembed
+data/cache/hf
+data/generated
+data/tmp-kuzu
+*.log

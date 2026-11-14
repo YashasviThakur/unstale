@@ -14,3 +14,6 @@ data/cache/*
 !data/cache/llm/
 data/state.json
 .claude/
+
+.vercel
+.vercel/

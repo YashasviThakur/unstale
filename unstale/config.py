@@ -45,6 +45,8 @@ class Settings:
     groq_key: str | None
     groq_model: str
     weak_exposure: bool
+    store: str = "hydradb"
+    kuzu_path: str = "/tmp/unstale.kuzu"
 
     @classmethod
     def load(cls) -> "Settings":
@@ -55,4 +57,6 @@ class Settings:
             groq_key=setting("GROQ_API_KEY"),
             groq_model=setting("UNSTALE_LLM_MODEL", "openai/gpt-oss-120b"),
             weak_exposure=(setting("UNSTALE_WEAK_EXPOSURE", "1") != "0"),
+            store=setting("UNSTALE_STORE", "hydradb"),
+            kuzu_path=setting("UNSTALE_KUZU_PATH", "/tmp/unstale.kuzu"),
         )

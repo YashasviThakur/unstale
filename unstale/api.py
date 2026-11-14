@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import asyncio
 import json
 import time
 from contextlib import asynccontextmanager
@@ -18,8 +19,9 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import rules
-from .config import dataset_path
+from .config import Settings, dataset_path
 from .engine import Engine, agent_context, check_draft
+from .extract import extract_message
 from .llm import USAGE, LLMError
 from .timeline import checkpoints
 
@@ -27,19 +29,48 @@ WEB = Path(__file__).parent / "web"
 STATE: dict[str, Any] = {}
 
 
+_INIT = asyncio.Lock()
+
+
+async def init_state() -> None:
+    """Open the engine once per process. With the embedded store (the hosted demo) the graph does not
+    outlive the process, so it is rebuilt here from the dataset and the committed extraction cache."""
+    async with _INIT:
+        if "eng" in STATE:
+            return
+        ds = json.loads(dataset_path().read_text(encoding="utf-8"))
+        eng = await Engine.open(ds, namespace="northwind-hosted" if eng_embedded() else None)
+        if eng_embedded():
+            await eng.load_directory()
+            by_id = {m["id"]: m for m in ds["messages"]}
+            for m in ds["messages"]:
+                await eng.ingest(m, extract_message(m, ds, by_id.get(m["thread"]) if m.get("thread") else None))
+        eng.remember_threads()
+        STATE.update(ds=ds, eng=eng, claims=await eng.all_claims(), live=0)
+
+
+def eng_embedded() -> bool:
+    return Settings.load().store != "hydradb"
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    ds = json.loads(dataset_path().read_text(encoding="utf-8"))
-    eng = await Engine.open(ds)
-    eng.remember_threads()
-    STATE.update(ds=ds, eng=eng, claims=await eng.all_claims(), live=0)
+    await init_state()
     try:
         yield
     finally:
-        await eng.close()
+        await STATE["eng"].close()
 
 
 app = FastAPI(title="Unstale", lifespan=lifespan)
+
+
+@app.middleware("http")
+async def ready(request, call_next):
+    """Serverless hosts may skip lifespan events; make sure the engine exists before any route runs."""
+    if "eng" not in STATE:
+        await init_state()
+    return await call_next(request)
 
 
 def ds() -> dict:
@@ -125,7 +156,7 @@ async def warm(as_of: str) -> None:
 @app.get("/api/meta")
 async def meta() -> dict:
     d = ds()
-    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace,
+    return {"name": d["name"], "start": d["start"], "end": d["end"], "namespace": eng().namespace, "store": eng().settings.store,
             "people": d["people"], "channels": d["channels"], "subjects": d["subjects"],
             "attributes": {k: v.get("label", k) for k, v in d["attributes"].items()},
             "checkpoints": checkpoints(d), "drafts": d["drafts"],

@@ -339,7 +339,7 @@ $("btn-copy").onclick = () => navigator.clipboard?.writeText($("agent-context").
 (async function init() {
   S.meta = await api("/api/meta");
   $("orgname").textContent = `Demo team: ${S.meta.name}.`;
-  $("graph-note").textContent = `HydraDB namespace ${S.meta.namespace}. Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.`;
+  $("graph-note").textContent = (S.meta.store === "hydradb" ? `HydraDB namespace ${S.meta.namespace}.` : `Hosted demo on SelfGraph's embedded Kuzu store (the full build runs on HydraDB; see the repo).`) + " Facts are versioned by SelfGraph; beliefs are traversals over who saw which message.";
   buildSteps();
   renderViewers();
   renderChannels();
