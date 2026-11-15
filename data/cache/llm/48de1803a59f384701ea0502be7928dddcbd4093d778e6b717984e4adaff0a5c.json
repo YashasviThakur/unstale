@@ -1,0 +1,1 @@
+{"reply": {"text": "hey team, staging migration hit a deadlock on the invoices table \ud83d\ude15 investigating."}, "prompt_tokens": 243, "completion_tokens": 41, "model": "openai/gpt-oss-120b"}

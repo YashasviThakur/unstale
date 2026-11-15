@@ -1,0 +1,1 @@
+{"reply": {"text": "Hey there, did you hear the one about the programmer who walked into a bar? He couldn't find the right 'code' to order a drink! Anyway, migration is fixed on staging. I also bumped webhook retries from 3 to 5 attempts."}, "prompt_tokens": 253, "completion_tokens": 82, "model": "openai/gpt-oss-120b"}

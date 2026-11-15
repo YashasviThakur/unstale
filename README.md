@@ -107,6 +107,7 @@ all of it is that people act on a correction the same morning.
 | 20 generated orgs, 5,210 messages, reading the engine can't see | F1 **0.75** against 0.67 for the original engine; false alarms down **68%** (6.8 per 100 briefs vs 21.4; a daily changelog sends 105.5) |
 | Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint. On **40 further orgs it had never seen**, four sprints of evidence cut false alarms 22.2 → 15.9 per 100 briefs (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved). A control fed the same number of answers with coin-flip verdicts doesn't improve (59.5 → 57.7) |
 | Does acting on it remove stale days? | At its default threshold Unstale removes **72%** of stale person-days at **6.8** false alarms per 100 briefs. The version that assumed everyone in a channel read it removes the same 72% at 21.4, three times the noise. The most sensitive setting removes 84% at 27. A daily changelog removes 95%, at 105.5 false alarms per 100 briefs |
+| Messy wording | Every message rewritten casually, tersely and rambling, extractor unchanged: claim F1 0.94 to 0.95; the corrections keep precision 1.00 and lose recall only on terse and casual text (0.92 → 0.78 and 0.71) |
 | Under load | 20 concurrent users, 60 s, feedback writes to HydraDB while serving: 3,546 requests, **0 errors**, p50 208 ms |
 | Support agent answering customers | 29% correct from its own knowledge base; **94%** with Unstale's correction block added (+116 tokens), with **0** outdated answers. It fixes all 22 questions the knowledge base got wrong |
 | HydraDB vs the Python twin | 168 of 168 briefs identical in the parity check on 0.3.0, and 308 of 308 on 0.4.0 (one org, seed 1); two full benchmark orgs (516 messages, three sprints each, feedback written to the graph) run on HydraDB reproduce the twin's numbers exactly |
@@ -462,6 +463,14 @@ Things we learned about HydraDB while building (measured on 0.3.0; the Northwind
   leave, echoes, corrections, reverts), and the learned model was not tuned to it: its prior is 0.8
   while the generator's average read rate is about 0.6. It is still not real data; the Slack importer
   is the path to that.
+- **Messy wording costs recall, not precision.** Every Northwind message was rewritten by a model in three styles (casual,
+  terse, rambling) that keep every fact, and the unchanged extractor read them
+  ([eval/robustness.json](eval/robustness.json), `python scripts/robustness.py`, then `scripts/robustness_e2e.py`).
+  Claim extraction stays at F1 0.94 to 0.95 (precision 0.91 to 0.97, recall 0.92 to 0.97), against 1.00 as written. The
+  corrections built on those claims keep **precision 1.00** in every style, and recall goes 0.92 as written, 0.92 rambling,
+  **0.78 terse, 0.71 casual**: a terse "Use Payments API v1" or a casual "annual plans still 30" is where a fact gets dropped.
+  Some of the misses are the rewrite drifting from the original facts, which counts against us. The dataset is still small,
+  and the only way to know what your team's wording costs is to run it on your own export.
 - **Facts must map to a vocabulary.** Unstale shows the LLM a fixed list of fact types per subject
   type. That is what makes two messages about the same fact land on the same node, and it is also a
   schema someone has to own. SelfGraph's ontology features are the natural next step.

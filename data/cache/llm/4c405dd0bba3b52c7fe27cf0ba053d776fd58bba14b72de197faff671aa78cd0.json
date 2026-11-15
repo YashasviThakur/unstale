@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "service:payments", "attribute": "WEBHOOK_RETRIES", "value": "3"}]}, "prompt_tokens": 1069, "completion_tokens": 69, "model": "openai/gpt-oss-120b"}

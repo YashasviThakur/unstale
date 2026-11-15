@@ -1,0 +1,1 @@
+{"reply": {"text": "Webhook retries on payments service: 3 attempts, exponential backoff."}, "prompt_tokens": 249, "completion_tokens": 56, "model": "openai/gpt-oss-120b"}

@@ -606,6 +606,7 @@ async def proof() -> dict:
             "bench": {k: summary.get(k) for k in ("orgs", "sprints_per_org", "messages", "people", "briefs_per_method",
                                                    "total", "same_sprint_after_n_prior_sprints", "calibration")},
             "curve": curve, "agent": agent.get("summary", {}), "frontier": _load("frontier-twin.json"),
+            "robustness": {k: v for k, v in _load("robustness.json").items() if k != "rows"},
             "load": json.loads((EVAL / "load.json").read_text(encoding="utf-8")) if (EVAL / "load.json").exists() else []}
 
 

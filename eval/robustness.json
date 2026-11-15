@@ -1,0 +1,3339 @@
+{
+ "messages": 45,
+ "claims_in_key": 39,
+ "model": "openai/gpt-oss-120b",
+ "styles": {
+  "original": {
+   "precision": 1.0,
+   "recall": 1.0,
+   "f1": 1.0,
+   "messages_exactly_right": 45,
+   "messages": 45,
+   "chit_chat_messages": 16,
+   "chit_chat_with_invented_claim": 0,
+   "tp": 39,
+   "fp": 0,
+   "fn": 0
+  },
+  "casual": {
+   "precision": 0.973,
+   "recall": 0.923,
+   "f1": 0.947,
+   "messages_exactly_right": 41,
+   "messages": 45,
+   "chit_chat_messages": 16,
+   "chit_chat_with_invented_claim": 0,
+   "tp": 36,
+   "fp": 1,
+   "fn": 3
+  },
+  "terse": {
+   "precision": 0.925,
+   "recall": 0.949,
+   "f1": 0.937,
+   "messages_exactly_right": 40,
+   "messages": 45,
+   "chit_chat_messages": 16,
+   "chit_chat_with_invented_claim": 1,
+   "tp": 37,
+   "fp": 3,
+   "fn": 2
+  },
+  "rambling": {
+   "precision": 0.905,
+   "recall": 0.974,
+   "f1": 0.938,
+   "messages_exactly_right": 40,
+   "messages": 45,
+   "chit_chat_messages": 16,
+   "chit_chat_with_invented_claim": 2,
+   "tp": 38,
+   "fp": 4,
+   "fn": 1
+  }
+ },
+ "rows": [
+  {
+   "id": "m001",
+   "style": "original",
+   "text": "Morning all! Plan for the next two weeks: 2.4 ships Monday June 29. Headliners are SSO and the new invoices page.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m001",
+   "style": "casual",
+   "text": "morning all! plan for next 2 weeks: 2.4 ships mon june 29. headliners are sso & the new invoices page \ud83d\ude0a",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m001",
+   "style": "terse",
+   "text": "2.4 ships Mon Jun 29. Headliners: SSO, new invoices page.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m001",
+   "style": "rambling",
+   "text": "Hey folks, hope you grabbed a coffee this morning\u2014my cat tried to steal my mug again! Anyway, the plan for the next two weeks: 2.4 ships Monday June 29. Headliners are SSO and the new invoices page.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m002",
+   "style": "original",
+   "text": "Reminder that payments questions (webhooks, invoices, the v2 migration) come to me.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m002",
+   "style": "casual",
+   "text": "hey, just a heads\u2011up: any payment stuff (webhooks, invoices, v2 migration) ping me \ud83d\ude4f",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "got": [],
+   "ok": false
+  },
+  {
+   "id": "m002",
+   "style": "terse",
+   "text": "Payments questions (webhooks, invoices, v2 migration) \u2192 me",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m002",
+   "style": "rambling",
+   "text": "Hey team, did you hear the one about the accountant who tried to bake a cake? He kept counting the layers! Anyway, just a reminder that payments questions (webhooks, invoices, the v2 migration) come to me.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:arjun"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m003",
+   "style": "original",
+   "text": "Release train for 2.4 is booked. Deploy window is 16:00 UTC and code freeze is Thursday June 25, end of day.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m003",
+   "style": "casual",
+   "text": "hey team, release train 2.4 is booked \ud83d\ude82 deploy window 16:00 utc, code freeze thursday june 25 eod",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m003",
+   "style": "terse",
+   "text": "2.4 release train booked. Deploy 16:00\u202fUTC. Code freeze Thu Jun\u202f25\u202fEOD.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m003",
+   "style": "rambling",
+   "text": "Hey team, quick heads\u2011up\u2014Release train for 2.4 is booked. Deploy window is 16:00\u202fUTC and code freeze is Thursday June\u202f25, end of day. By the way, did you hear the one about the developer who tried to fix a bug by adding more bugs? \ud83d\ude05",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-25"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m004",
+   "style": "original",
+   "text": "Q3 renewal refresher: the Team plan stays at $39/seat/month. Business is unchanged at $79/seat/month.",
+   "want": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m004",
+   "style": "casual",
+   "text": "hey team, quick q3 renewal refresher: team plan still $39/seat/mo, business unchanged at $79/seat/mo \ud83d\ude80",
+   "want": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m004",
+   "style": "terse",
+   "text": "Q3 renewal refresher: Team $39/seat/mo; Business $79/seat/mo.",
+   "want": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m004",
+   "style": "rambling",
+   "text": "Hey there! Did you hear the one about the accountant who tried to count his coffee beans? Anyway, Q3 renewal refresher: the Team plan stays at $39/seat/month. Business is unchanged at $79/seat/month. Hope that brightens your day!",
+   "want": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:business",
+     "PRICED_AT",
+     "$79/seat/month"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m005",
+   "style": "original",
+   "text": "Knowledge base update for the support agent: Team plan is $39/seat/month. Monthly plans get a full refund within 30 days. Payments API v1 is the supported API for integrations.",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m005",
+   "style": "casual",
+   "text": "hey team, kb update for agents: team plan is $39/seat/month. monthly plans get full refund within 30 days. payments api v1 is the supported api for integrations \ud83d\ude0a",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m005",
+   "style": "terse",
+   "text": "KB update: team $39/seat/mo. 30\u2011day full refund on monthly. Use Payments API v1.",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m005",
+   "style": "rambling",
+   "text": "Hey there! \ud83c\udf1f Did you hear the one about the programmer who tried to fix a coffee machine? He kept getting a Java exception! Anyway, just a heads\u2011up: the knowledge base update for the support agent says the team plan is $39/seat/month, monthly plans get a full refund within 30 days, and Payments API v1 is the supported API for integrations. Talk about a solid combo!",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "supported"
+    ],
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$39/seat/month"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m006",
+   "style": "original",
+   "text": "Webhook retries on the payments service are set to 3 attempts with exponential backoff.",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m006",
+   "style": "casual",
+   "text": "hey team, webhook retries on the payments service are set to 3 attempts with exponential backoff \ud83d\ude43",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m006",
+   "style": "terse",
+   "text": "Webhook retries on payments service: 3 attempts, exponential backoff.",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m006",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the server that walked into a bar? Anyway, just so you know, webhook retries on the payments service are set to 3 attempts with exponential backoff. And yes, the coffee machine finally learned to make a decent latte!",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "3"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m007",
+   "style": "original",
+   "text": "Brightline signed! Contract starts July 1. They mostly care about SSO.",
+   "want": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m007",
+   "style": "casual",
+   "text": "brightline signed! contract starts july 1. they mostly care about sso \ud83d\ude0a",
+   "want": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m007",
+   "style": "terse",
+   "text": "Brightline signed; contract 7/1. Focus: SSO.",
+   "want": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m007",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the programmer who walked into a bar? Anyway, Brightline signed! Contract starts July 1. They mostly care about SSO. (Just thought I'd share a quick laugh while we're at it.)",
+   "want": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "customer:brightline",
+     "CONTRACT_START",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m008",
+   "style": "original",
+   "text": "Anyone up for lunch tomorrow? There's a new ramen place on 3rd.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m008",
+   "style": "casual",
+   "text": "any1 up for lunch tmrw? new ramen spot on 3rd \ud83d\ude0b",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m008",
+   "style": "terse",
+   "text": "Lunch tomorrow? New ramen 3rd.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m008",
+   "style": "rambling",
+   "text": "Hey team, I just saw a squirrel trying to carry a tiny espresso cup\u2014talk about ambition! Anyway, anyone up for lunch tomorrow? There's a new ramen place on 3rd.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m009",
+   "style": "original",
+   "text": "Hi Hannah, confirming our QBR on Tuesday June 30 at 10:00 UTC. Maya and I will both join.",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m009",
+   "style": "casual",
+   "text": "hey hannah, just confirming qbr tues june 30 @ 10:00 utc. maya & i will join \ud83d\ude0a",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m009",
+   "style": "terse",
+   "text": "QBR Tue Jun 30 10:00 UTC \u2013 Maya & Tom joining.",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m009",
+   "style": "rambling",
+   "text": "Hey Hannah! Quick joke: why did the calendar apply for a job? It wanted more dates! Anyway, just confirming our QBR on Tuesday June 30 at 10:00 UTC. Maya and I will both join.",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-06-30 10:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m010",
+   "style": "original",
+   "text": "Freeze moves to Friday June 26, end of day, so the invoices work can land.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m010",
+   "style": "casual",
+   "text": "freeze moves to friday june 26, eod, so the invoices work can land \ud83d\ude0a",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m010",
+   "style": "terse",
+   "text": "Freeze \u2192 Fri Jun 26 EOD; invoices work can land.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m010",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the calendar that went on a diet? Anyway, the freeze moves to Friday June 26, end of day, so the invoices work can land. Hope that gives you a chuckle!",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m011",
+   "style": "original",
+   "text": "Can we push the deploy window to 18:00 UTC? The migration dry run takes two hours.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m011",
+   "style": "casual",
+   "text": "can we push the deploy window to 18:00 utc? the migration dry run takes 2 hrs \ud83d\ude05",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m011",
+   "style": "terse",
+   "text": "Push deploy window to 18:00 UTC? Migration dry run 2h.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m011",
+   "style": "rambling",
+   "text": "Hey team, quick joke\u2014why did the server go to therapy? It had too many unresolved issues! Anyway, can we push the deploy window to 18:00 UTC? The migration dry run takes two hours.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m012",
+   "style": "original",
+   "text": "Done, deploy window is now 18:00 UTC.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m012",
+   "style": "casual",
+   "text": "done, deploy window\u2019s at 18:00 utc \ud83d\ude80",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m012",
+   "style": "terse",
+   "text": "Deploy window 18:00 UTC.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m012",
+   "style": "rambling",
+   "text": "Hey folks, quick coffee break\u2014did you hear about the programmer who quit his job? He didn\u2019t get arrays! Anyway, the deploy window is now 18:00 UTC.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "18:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m013",
+   "style": "original",
+   "text": "Scratch that. Ops review says 18:00 overlaps the EU support handover, so we're back to 16:00 UTC and the dry run starts earlier instead.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m013",
+   "style": "casual",
+   "text": "scratch that \u2013 ops says 18:00 clashes with eu support handover, so we\u2019re back to 16:00 utc \ud83d\ude05 dry run starts earlier now.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m013",
+   "style": "terse",
+   "text": "Ops review: 18:00 overlaps EU handover \u2192 revert to 16:00\u202fUTC, dry\u2011run starts earlier.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m013",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the calendar that went to therapy? It had too many overlapping issues! Anyway, Ops review says 18:00 overlaps the EU support handover, so we're back to 16:00\u202fUTC and the dry run starts earlier instead.",
+   "want": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m014",
+   "style": "original",
+   "text": "FYI for anyone touching the Kestrel account: they run their webhooks on payments API v1.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m014",
+   "style": "casual",
+   "text": "FYI for anyone touching the Kestrel account: they run their webhooks on payments API v1. \ud83d\ude80",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m014",
+   "style": "terse",
+   "text": "Kestrel account webhooks on payments API v1.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m014",
+   "style": "rambling",
+   "text": "Hey team, quick heads\u2011up (and by the way, did you hear the one about the developer who walked into a bar? He couldn't find the right API!): FYI for anyone touching the Kestrel account: they run their webhooks on payments API v1.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m015",
+   "style": "original",
+   "text": "Is the freeze still Thursday?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m015",
+   "style": "casual",
+   "text": "hey, is the freeze still thursday? \ud83e\udd14",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m015",
+   "style": "terse",
+   "text": "Freeze still Thursday?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m015",
+   "style": "rambling",
+   "text": "Hey, did you hear about the office plant that tried to file a vacation request? \ud83d\ude02 Anyway, is the freeze still Thursday?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m016",
+   "style": "original",
+   "text": "Friday now, see #release.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m016",
+   "style": "casual",
+   "text": "friday now, check #release \ud83d\ude05",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m016",
+   "style": "terse",
+   "text": "Fri now, see #release",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m016",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the programmer who walked into a bar? Anyway, Friday now, see #release.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m017",
+   "style": "original",
+   "text": "Reminder: 2.4 deploys Monday June 29. Please get your PRs reviewed by Friday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m017",
+   "style": "casual",
+   "text": "hey team \ud83d\udc40 reminder: 2.4 deploys mon june 29. get ur prs reviewed by fri",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m017",
+   "style": "terse",
+   "text": "2.4 deploy Mon Jun 29. PRs reviewed by Fri.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-26"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m017",
+   "style": "rambling",
+   "text": "Hey team, quick joke: why did the developer go broke? Because they kept committing to the wrong repo! Anyway, just a reminder: 2.4 deploys Monday June 29. Please get your PRs reviewed by Friday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m018",
+   "style": "original",
+   "text": "Hi Jordan, great news: SSO lands in 2.4 on Monday June 29, so your team can switch it on from day one.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m018",
+   "style": "casual",
+   "text": "hey jordan \ud83d\udc4d great news: sso drops in 2.4 monday june 29, so your team can flip it on day 1",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m018",
+   "style": "terse",
+   "text": "SSO lands in 2.4 Monday June 29; switch on day one.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m018",
+   "style": "rambling",
+   "text": "Hey Jordan, did you hear the one about the programmer who walked into a bar? He couldn't find the exit because he kept looking for the logout button! Anyway, great news: SSO lands in 2.4 on Monday June 29, so your team can switch it on from day one.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m019",
+   "style": "original",
+   "text": "Staging migration hit a deadlock on the invoices table. Investigating.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m019",
+   "style": "casual",
+   "text": "hey team, staging migration hit a deadlock on the invoices table \ud83d\ude15 investigating.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m019",
+   "style": "terse",
+   "text": "Staging migration deadlock on invoices table. Investigating.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m019",
+   "style": "rambling",
+   "text": "Hey team, quick funny note\u2014why did the database admin bring a ladder to work? Because the queries were too high! Anyway, Staging migration hit a deadlock on the invoices table. Investigating.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m020",
+   "style": "original",
+   "text": "Leadership signed off: the Team plan goes to $49/seat/month for all renewals from July 1. Existing contracts keep their price until renewal.",
+   "want": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m020",
+   "style": "casual",
+   "text": "leadership signed off: team plan = $49/seat/mo for all renewals from july 1. existing contracts keep their price till renewal \ud83d\ude0a",
+   "want": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m020",
+   "style": "terse",
+   "text": "Leadership signed off: Team plan $49/seat/mo for all renewals from July\u202f1. Existing contracts keep price until renewal.",
+   "want": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m020",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the accountant who tried to count his coffee beans? Anyway, leadership signed off: the Team plan goes to $49/seat/month for all renewals from July 1. Existing contracts keep their price until renewal.",
+   "want": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "got": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m021",
+   "style": "original",
+   "text": "Makes sense. Are you telling sales?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m021",
+   "style": "casual",
+   "text": "makes sense lol u telling sales? \ud83e\udd14",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m021",
+   "style": "terse",
+   "text": "Makes sense. Tell sales?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m021",
+   "style": "rambling",
+   "text": "By the way, did you hear the one about the coffee that quit its job? Anyway, makes sense. Are you telling sales?",
+   "want": [],
+   "got": [
+    [
+     "plan:team",
+     "PRICED_AT",
+     "$49/seat/month"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m022",
+   "style": "original",
+   "text": "Will do in the next sales sync.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m022",
+   "style": "casual",
+   "text": "will do in the next sales sync \ud83d\ude0a",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m022",
+   "style": "terse",
+   "text": "Next sales sync.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m022",
+   "style": "rambling",
+   "text": "By the way, did you hear the one about the marketer who tried to sell a calendar? Anyway, will do in the next sales sync.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m023",
+   "style": "original",
+   "text": "Kestrel renewal is July 15, Tom is driving it.",
+   "want": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "got": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m023",
+   "style": "casual",
+   "text": "kestrel renewal is 7/15, tom's driving it \ud83d\ude97",
+   "want": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "got": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m023",
+   "style": "terse",
+   "text": "Kestrel renewal 7/15, Tom driving.",
+   "want": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "got": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m023",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the calendar? It\u2019s always getting dates mixed up\u2014anyway, Kestrel renewal is July 15, and Tom is driving it.",
+   "want": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "got": [
+    [
+     "customer:kestrel",
+     "OWNED_BY",
+     "person:tom"
+    ],
+    [
+     "customer:kestrel",
+     "RENEWAL_DATE",
+     "2026-07-15"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m024",
+   "style": "original",
+   "text": "I'm out June 29 to July 3. Sara owns payments while I'm away, migration included. Page her, not me.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m024",
+   "style": "casual",
+   "text": "hey, i\u2019m out june 29\u2011jul 3. sara\u2019s handling payments (incl migration) while i\u2019m away. ping her, not me \ud83d\ude0a",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m024",
+   "style": "terse",
+   "text": "Out 6/29\u20117/3. Sara handles payments & migration. Page her.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m024",
+   "style": "rambling",
+   "text": "Hey, did you hear about the cat that tried to code? Anyway, I'm out June 29 to July 3. Sara owns payments while I'm away, migration included. Page her, not me.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m025",
+   "style": "original",
+   "text": "Migration failed in staging again. I don't think we can ship 2.4 on Monday. Proposing Friday July 3.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m025",
+   "style": "casual",
+   "text": "migration failed in staging again \ud83d\ude05 i don\u2019t think we can ship 2.4 on mon. proposing fri july 3",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m025",
+   "style": "terse",
+   "text": "Staging migration failed again. Can't ship 2.4 Monday. Propose Friday July\u202f3.",
+   "want": [],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m025",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the server that went to therapy? It said it couldn't handle the pressure! Anyway, migration failed in staging again. I don't think we can ship 2.4 on Monday. Proposing Friday July 3.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m026",
+   "style": "original",
+   "text": "Agreed. 2.4 moves to Friday July 3. Do not deploy Monday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m026",
+   "style": "casual",
+   "text": "agreed. 2.4 moves to fri july 3. don\u2019t deploy mon \ud83d\ude0a",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m026",
+   "style": "terse",
+   "text": "2.4 \u2192 Fri Jul 3. No deploy Mon.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m026",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the calendar that went on a diet? Anyway, Agreed. 2.4 moves to Friday July 3. Do not deploy Monday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-06-29"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m027",
+   "style": "original",
+   "text": "Rebooked the train for Friday July 3, same 16:00 UTC window. Freeze is extended to Wednesday July 1.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m027",
+   "style": "casual",
+   "text": "rebooked the train for friday july 3, same 16:00 utc window. freeze extended to wednesday july 1 \ud83d\ude0a",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m027",
+   "style": "terse",
+   "text": "Train rebooked Fri Jul 3 16:00 UTC. Freeze extended to Wed Jul 1.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m027",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the train that couldn't decide on a schedule? Anyway, the train\u2019s been rebooked for Friday July 3, same 16:00 UTC window, and the freeze is extended to Wednesday July 1.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ],
+    [
+     "release:2.4",
+     "DEPLOY_WINDOW",
+     "16:00 utc"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m028",
+   "style": "original",
+   "text": "Have a good weekend everyone!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m028",
+   "style": "casual",
+   "text": "hey all, have a good weekend! \u270c\ufe0f",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m028",
+   "style": "terse",
+   "text": "Good weekend!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m028",
+   "style": "rambling",
+   "text": "Hey folks, did you hear the one about the coffee that quit its job? Anyway, Tom says: \u201cHave a good weekend everyone!\u201d Hope your Saturday\u2019s as smooth as a fresh brew!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m029",
+   "style": "original",
+   "text": "Scope cut: SSO slips to 2.5 (late July). 2.4 ships without it.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m029",
+   "style": "casual",
+   "text": "scope cut: sso slides to 2.5 (late july). 2.4 ships w/o it \ud83d\ude05",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "got": [],
+   "ok": false
+  },
+  {
+   "id": "m029",
+   "style": "terse",
+   "text": "Scope cut: SSO to 2.5 late July. 2.4 ships without it.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m029",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the programmer who tried to fix a bug and ended up creating a feature? Anyway, here's the scoop: Scope cut: SSO slips to 2.5 (late July). 2.4 ships without it.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m030",
+   "style": "original",
+   "text": "Decision from the API review: payments API v1 is deprecated as of today and shuts off August 1. All integrations should move to v2.",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m030",
+   "style": "casual",
+   "text": "hey team: api review says payments api v1 is deprecated as of today \ud83d\udeab and will shut off aug 1. move everything to v2 asap",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m030",
+   "style": "terse",
+   "text": "API review: payments API v1 deprecated today, shuts off Aug\u202f1. Move to v2.",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m030",
+   "style": "rambling",
+   "text": "Hey team, quick heads\u2011up\u2014by the way, did you hear the one about the programmer who quit his job? He didn\u2019t get arrays! Anyway, Decision from the API review: payments API v1 is deprecated as of today and shuts off August 1. All integrations should move to v2.",
+   "want": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "got": [
+    [
+     "api:payments-v1",
+     "STATUS",
+     "deprecated"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m031",
+   "style": "original",
+   "text": "Hi Tom, could we move the QBR to Thursday July 2 at 14:00 UTC? Tuesday got crowded on our side.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m031",
+   "style": "casual",
+   "text": "hey tom, can we shift the qbr to thu july 2 @ 14:00 utc? tuesday's packed on our end \ud83d\ude05",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m031",
+   "style": "terse",
+   "text": "Move QBR to Thu Jul 2 14:00 UTC? Tue crowded.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m031",
+   "style": "rambling",
+   "text": "Hey Tom, quick joke\u2014why did the calendar apply for a job? It wanted more dates! Anyway, could we move the QBR to Thursday July 2 at 14:00 UTC? Tuesday got crowded on our side.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m032",
+   "style": "original",
+   "text": "Brightline is pumped. Told Jordan 2.4 goes live today and SSO is in it!",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m032",
+   "style": "casual",
+   "text": "brightline\u2019s pumped \ud83d\ude80 told jordan 2.4 goes live today + sso\u2019s in it!",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m032",
+   "style": "terse",
+   "text": "Brightline pumped. 2.4 live today; SSO included. Told Jordan.",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m032",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the programmer who walked into a bar? Anyway, Brightline is pumped. I told Jordan that 2.4 goes live today and SSO is in it!",
+   "want": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "got": [
+    [
+     "feature:sso",
+     "AVAILABLE_IN",
+     "2.4"
+    ],
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-06-29"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m033",
+   "style": "original",
+   "text": "No problem, Thursday July 2 at 14:00 UTC it is. I've updated the invite.",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m033",
+   "style": "casual",
+   "text": "no prob, thurs july 2 @ 14:00 utc. i updated the invite \ud83d\ude0a",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m033",
+   "style": "terse",
+   "text": "Thu Jul 2 14:00 UTC \u2013 invite updated.",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m033",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the calendar that went on a diet? Anyway, no problem, Thursday July 2 at 14:00 UTC it is. I've updated the invite.",
+   "want": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "got": [
+    [
+     "meeting:kestrel-qbr",
+     "SCHEDULED_FOR",
+     "2026-07-02 14:00 utc"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m034",
+   "style": "original",
+   "text": "Reminder: nothing deploys today. 2.4 is Friday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m034",
+   "style": "casual",
+   "text": "hey team, just a heads\u2011up: nothing deploys today \ud83d\ude45\u200d\u2642\ufe0f 2.4 rolls out on friday",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m034",
+   "style": "terse",
+   "text": "No deploy today. 2.4 Friday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m034",
+   "style": "rambling",
+   "text": "Hey team, just a quick chuckle\u2014why did the developer go broke? Because they kept committing to the wrong repo! Anyway, reminder: nothing deploys today. 2.4 is Friday.",
+   "want": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "SHIPS_ON",
+     "2026-07-03"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m035",
+   "style": "original",
+   "text": "@Arjun Kestrel says webhook retries are failing on their v1 integration, can you take a look?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m035",
+   "style": "casual",
+   "text": "hey @arjun, kestrel says webhook retries are failing on their v1 integration, can u check? \ud83e\udd14",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m035",
+   "style": "terse",
+   "text": "Arjun: Kestrel webhook retries failing v1 integration, check?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m035",
+   "style": "rambling",
+   "text": "Hey there, did you hear the one about the chicken who crossed the road to debug a webhook? Anyway, @Arjun Kestrel says webhook retries are failing on their v1 integration, can you take a look?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m036",
+   "style": "original",
+   "text": "Migration is fixed on staging. I also bumped webhook retries from 3 to 5 attempts.",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m036",
+   "style": "casual",
+   "text": "migration fixed on staging \ud83d\ude80 also bumped webhook retries from 3 to 5 attempts",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m036",
+   "style": "terse",
+   "text": "Migration fixed on staging. Webhook retries 3\u21925.",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m036",
+   "style": "rambling",
+   "text": "Hey there, did you hear the one about the programmer who walked into a bar? He couldn't find the right 'code' to order a drink! Anyway, migration is fixed on staging. I also bumped webhook retries from 3 to 5 attempts.",
+   "want": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "WEBHOOK_RETRIES",
+     "5"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m037",
+   "style": "original",
+   "text": "Office is closed on July 4th, enjoy the long weekend!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m037",
+   "style": "casual",
+   "text": "hey team, office closed july 4th \ud83d\ude4c enjoy the long weekend!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m037",
+   "style": "terse",
+   "text": "Office closed July 4 \u2013 enjoy long weekend!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m037",
+   "style": "rambling",
+   "text": "Hey there! Did you hear the one about the calendar that went on vacation? Anyway, Office is closed on July 4th, enjoy the long weekend!",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m038",
+   "style": "original",
+   "text": "@Tom saw your note. I own payments while Arjun is out, looking at Kestrel's retries now.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m038",
+   "style": "casual",
+   "text": "@tom saw ur note. i\u2019m on payments while arjun\u2019s out, checking kestrel retries now \ud83d\ude05",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m038",
+   "style": "terse",
+   "text": "Tom saw note. Own payments (Arjun out), checking Kestrel retries now.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m038",
+   "style": "rambling",
+   "text": "Hey Tom, quick joke\u2014why did the developer go broke? Because they kept using free APIs! Anyway, @Tom saw your note. I own payments while Arjun is out, looking at Kestrel's retries now.",
+   "want": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "got": [
+    [
+     "service:payments",
+     "OWNED_BY",
+     "person:sara"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m039",
+   "style": "original",
+   "text": "Customer asked about refunds. Still 30 days on monthly plans, right?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m039",
+   "style": "casual",
+   "text": "hey tom, customer asked about refunds\u2014still 30\u202fdays on monthly plans, right? \ud83e\udd14",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m039",
+   "style": "terse",
+   "text": "Refunds? 30\u2011day monthly plan still?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m039",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the coffee that filed a complaint? Anyway, the customer asked about refunds\u2014still 30 days on monthly plans, right?",
+   "want": [],
+   "got": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m040",
+   "style": "original",
+   "text": "Yes, 30 days for now.",
+   "want": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m040",
+   "style": "casual",
+   "text": "yeah, 30 days for now \ud83d\ude0a",
+   "want": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m040",
+   "style": "terse",
+   "text": "30 days for now",
+   "want": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m040",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the calendar that got a promotion? Anyway, Yes, 30 days for now.",
+   "want": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "30 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m041",
+   "style": "original",
+   "text": "Refund policy update, effective today: monthly plans get 14 days, annual plans stay at 30.",
+   "want": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m041",
+   "style": "casual",
+   "text": "hey team, quick heads\u2011up: refund policy change effective today \u2013 monthly plans now 14\u2011day window, annual plans still 30 days \ud83d\ude43",
+   "want": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "ok": false
+  },
+  {
+   "id": "m041",
+   "style": "terse",
+   "text": "Refund policy update: monthly plans 14\u2011day, annual 30\u2011day, effective today.",
+   "want": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m041",
+   "style": "rambling",
+   "text": "Hey team, quick heads\u2011up\u2014by the way, did you hear the one about the calendar? It\u2019s got a lot of dates but no sense of time! Anyway, the refund policy update, effective today: monthly plans get 14 days, annual plans stay at 30.",
+   "want": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "got": [
+    [
+     "policy:annual-refunds",
+     "WINDOW",
+     "30 days"
+    ],
+    [
+     "policy:monthly-refunds",
+     "WINDOW",
+     "14 days"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m042",
+   "style": "original",
+   "text": "Freeze is in effect from tonight, as planned. Only release blockers after this.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m042",
+   "style": "casual",
+   "text": "freeze\u2019s on from tonight as planned. only release blockers after this \ud83d\ude80",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m042",
+   "style": "terse",
+   "text": "Freeze starts tonight as planned. Release blockers only after.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m042",
+   "style": "rambling",
+   "text": "Hey team, quick joke: why did the developer go broke? Because they kept committing to the repo! Anyway, freeze is in effect from tonight, as planned. Only release blockers after this.",
+   "want": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "got": [
+    [
+     "release:2.4",
+     "CODE_FREEZE",
+     "2026-07-01"
+    ]
+   ],
+   "ok": true
+  },
+  {
+   "id": "m043",
+   "style": "original",
+   "text": "Brightline asked for SSO setup docs ahead of Friday. Who can share them?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m043",
+   "style": "casual",
+   "text": "brightline asked for sso setup docs ahead of friday. who can share them? \ud83d\ude4f",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m043",
+   "style": "terse",
+   "text": "Brightline needs SSO docs before Friday. Who can share?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m043",
+   "style": "rambling",
+   "text": "Hey team, quick joke\u2014why did the developer go broke? Because they used up all their cache! Anyway, Brightline asked for SSO setup docs ahead of Friday. Who can share them?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m044",
+   "style": "original",
+   "text": "Did sales get the new Team pricing?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m044",
+   "style": "casual",
+   "text": "hey priya, did sales get the new team pricing? \ud83e\udd14",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m044",
+   "style": "terse",
+   "text": "Sales got new Team pricing?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m044",
+   "style": "rambling",
+   "text": "Hey, did you hear about the office plant that keeps asking for water? Anyway, did sales get the new Team pricing?",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m045",
+   "style": "original",
+   "text": "Ugh, not yet. I'll post it tomorrow.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m045",
+   "style": "casual",
+   "text": "ugh not yet, i\u2019ll drop it tomorrow \ud83d\ude05",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m045",
+   "style": "terse",
+   "text": "Not yet. Posting tomorrow.",
+   "want": [],
+   "got": [],
+   "ok": true
+  },
+  {
+   "id": "m045",
+   "style": "rambling",
+   "text": "Hey, did you hear the one about the coffee that quit its job? Anyway, Ugh, not yet. I'll post it tomorrow.",
+   "want": [],
+   "got": [],
+   "ok": true
+  }
+ ],
+ "command": "python scripts/robustness.py",
+ "end_to_end": {
+  "original": {
+   "precision": 1.0,
+   "recall": 0.917,
+   "f1": 0.957,
+   "tp": 66,
+   "fp": 0,
+   "fn": 6,
+   "briefs": 80
+  },
+  "casual": {
+   "precision": 1.0,
+   "recall": 0.708,
+   "f1": 0.829,
+   "tp": 51,
+   "fp": 0,
+   "fn": 21,
+   "briefs": 80
+  },
+  "terse": {
+   "precision": 1.0,
+   "recall": 0.778,
+   "f1": 0.875,
+   "tp": 56,
+   "fp": 0,
+   "fn": 16,
+   "briefs": 80
+  },
+  "rambling": {
+   "precision": 1.0,
+   "recall": 0.917,
+   "f1": 0.957,
+   "tp": 66,
+   "fp": 0,
+   "fn": 6,
+   "briefs": 80
+  }
+ }
+}

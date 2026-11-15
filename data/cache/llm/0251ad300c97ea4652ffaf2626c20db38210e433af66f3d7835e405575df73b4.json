@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "release:2.4", "attribute": "DEPLOY_WINDOW", "value": "16:00 UTC"}, {"subject": "release:2.4", "attribute": "CODE_FREEZE", "value": "2026-06-25"}]}, "prompt_tokens": 1067, "completion_tokens": 173, "model": "openai/gpt-oss-120b"}

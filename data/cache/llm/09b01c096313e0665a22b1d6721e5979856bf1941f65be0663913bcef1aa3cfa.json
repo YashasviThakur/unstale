@@ -1,0 +1,1 @@
+{"reply": {"text": "hey team: api review says payments api v1 is deprecated as of today \ud83d\udeab and will shut off aug 1. move everything to v2 asap"}, "prompt_tokens": 258, "completion_tokens": 55, "model": "openai/gpt-oss-120b"}

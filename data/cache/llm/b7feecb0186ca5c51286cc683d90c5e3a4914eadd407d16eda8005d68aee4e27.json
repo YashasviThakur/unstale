@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "api:payments-v1", "attribute": "STATUS", "value": "deprecated"}]}, "prompt_tokens": 1107, "completion_tokens": 154, "model": "openai/gpt-oss-120b"}

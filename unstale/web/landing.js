@@ -52,6 +52,35 @@ async function fill() {
       <p>On ${cv.orgs} orgs the engine had never seen, the same final sprint is scored again with evidence from only the first <i>n</i> sprints. False alarms per 100 briefs fall from <b>${first.false_alarms_per_100_briefs}</b> to <b>${last.false_alarms_per_100_briefs}</b>.</p>
       <p>Paired change <b>${f1(d.false_alarms_per_100_briefs.mean)}</b> (95% interval ${d.false_alarms_per_100_briefs.ci95.map(f1).join(" to ")}); <b>${d.false_alarms_per_100_briefs.orgs_improved} of ${cv.orgs}</b> orgs improved. F1 moves less (+${d.f1.mean.toFixed(3)}): learning removes false alarms, while recall is capped by beliefs nothing observable reveals.</p></div>
     <div>${curveSvg(cv)}</div>`;
+  fillDays(P);
+}
+
+function frontierSvg(F) {
+  const W = 560, H = 250, L = 46, R = 20, T = 20, B = 48, pts = F.points, d = pts[0].digest;
+  const xmax = 120, ylo = 40, yhi = 100;
+  const x = (v) => L + (v / xmax) * (W - L - R), y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(p.learned.false_alarms_per_100_briefs)},${y(p.learned.stale_days_removed * 100)}`).join(" ");
+  let grid = "";
+  for (let v = ylo; v <= yhi; v += 20) grid += `<line class="cg" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ct" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v}%</text>`;
+  for (let v = 0; v <= xmax; v += 20) grid += `<text class="ct" x="${x(v)}" y="${H - 26}" text-anchor="middle">${v}</text>`;
+  const def = pts.find((p) => p.threshold === 0.5);
+  return `<svg class="curve" viewBox="0 0 ${W} ${H}" role="img" aria-label="Stale person-days removed against false alarms per 100 briefs">
+    ${grid}<path class="cline" d="${line}"/>
+    ${pts.map((p) => `<circle class="cdot" cx="${x(p.learned.false_alarms_per_100_briefs)}" cy="${y(p.learned.stale_days_removed * 100)}" r="${p === def ? 6 : 3.5}"/>`).join("")}
+    <text class="ct" x="${x(def.learned.false_alarms_per_100_briefs) + 12}" y="${y(def.learned.stale_days_removed * 100) + 22}">Unstale, default</text>
+    <circle cx="${x(d.false_alarms_per_100_briefs)}" cy="${y(d.stale_days_removed * 100)}" r="7" fill="#e07a3f"/>
+    <text class="ct" x="${x(d.false_alarms_per_100_briefs) - 10}" y="${y(d.stale_days_removed * 100) + 24}" text-anchor="end">daily changelog</text>
+    <text class="ct" x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">false alarms per 100 briefs (lower is better)</text></svg>`;
+}
+
+function fillDays(P) {
+  const F = P.frontier;
+  if (!F || !F.points) return;
+  const def = F.points.find((p) => p.threshold === 0.5), hi = F.points[0], dg = def.digest, v1 = def.v1;
+  $("days-card").innerHTML = `<div><h3>And it removes the stale days.</h3>
+      <p>A stale person-day is one person holding one outdated fact for one morning. Acting on Unstale's default briefs removes <b>${Math.round(def.learned.stale_days_removed * 100)}%</b> of them, at <b>${def.learned.false_alarms_per_100_briefs}</b> false alarms per 100 briefs. The most sensitive setting removes <b>${Math.round(hi.learned.stale_days_removed * 100)}%</b> at ${hi.learned.false_alarms_per_100_briefs}.</p>
+      <p>A daily changelog removes ${Math.round(dg.stale_days_removed * 100)}%, because it tells everyone, at <b>${dg.false_alarms_per_100_briefs}</b>. The engine that assumed everyone in a channel read it removes the same ${Math.round(v1.stale_days_removed * 100)}% as Unstale at ${v1.false_alarms_per_100_briefs}: learning who reads what is what removes the noise.</p></div>
+    <div>${frontierSvg(F)}</div>`;
 }
 const $ = (id) => document.getElementById(id);
 fill();

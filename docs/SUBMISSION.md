@@ -40,6 +40,9 @@ is how recall improves.
   100 briefs (84% at 27 on the most sensitive setting); the v1 engine removes the same 72% at 21.4; a daily changelog removes 95%
   at 105.5. A **stale-belief report** (stale person-days, missed changes, leaky channels, who lags) is the audit deliverable
   for the pilot (Report button in the app, `/api/report.md`, MCP tool `stale_report`).
+- **Messy wording:** every message rewritten casually, tersely and rambling (the facts kept), extractor unchanged. Claim F1 0.94 to
+  0.95 (1.00 as written); the corrections keep precision 1.00 and lose recall only on terse and casual text (0.92 to 0.78 and 0.71).
+  Published as a limit, with the script (`scripts/robustness.py`, `scripts/robustness_e2e.py`).
 - **Under load:** 20 concurrent users for 60 s on HydraDB 0.4.0, writing feedback to the graph while serving:
   3,546 requests, 0 errors, p50 208 ms, p95 1.0 s (`scripts/loadtest.py`, `eval/load.json`).
 - **Would it fall apart on a plain store?** Yes: remove the who-saw-which-version edges and what is left is a

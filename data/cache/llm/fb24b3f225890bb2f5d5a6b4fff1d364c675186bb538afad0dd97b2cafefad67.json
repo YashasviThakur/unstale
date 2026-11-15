@@ -1,0 +1,1 @@
+{"reply": {"text": "Hey team, quick funny note\u2014why did the database admin bring a ladder to work? Because the queries were too high! Anyway, Staging migration hit a deadlock on the invoices table. Investigating."}, "prompt_tokens": 249, "completion_tokens": 69, "model": "openai/gpt-oss-120b"}

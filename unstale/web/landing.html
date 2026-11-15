@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/landing.css?v=try5">
+  <link rel="stylesheet" href="/static/landing.css?v=try6">
 </head>
 <body>
   <header class="nav" id="top">
@@ -260,6 +260,7 @@
       </div>
       <div class="ledger" id="ledger" aria-live="polite"><p class="muted">Loading the results…</p></div>
       <div class="curve-card" id="curve-card"></div>
+      <div class="curve-card" id="days-card"></div>
       <p class="proof-foot"><a class="btn line" href="/app?proof=1&amp;notour=1">Open the full Proof panel in the app</a> <span class="muted">Limits are written out there: the data is simulated, and recall tops out near 0.69.</span></p>
     </section>
 
@@ -329,7 +330,7 @@ SelfGraph(store=HydraDBStore(uri), schema=schema,
     </div>
   </footer>
 
-  <script src="/static/landing.js?v=try1"></script>
+  <script src="/static/landing.js?v=try2"></script>
   <script src="/static/try.js?v=try3"></script>
 </body>
 </html>

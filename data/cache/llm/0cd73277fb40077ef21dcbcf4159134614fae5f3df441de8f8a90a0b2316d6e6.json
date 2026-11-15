@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "policy:monthly-refunds", "attribute": "WINDOW", "value": "14 days"}, {"subject": "policy:annual-refunds", "attribute": "WINDOW", "value": "30 days"}]}, "prompt_tokens": 1062, "completion_tokens": 161, "model": "openai/gpt-oss-120b"}

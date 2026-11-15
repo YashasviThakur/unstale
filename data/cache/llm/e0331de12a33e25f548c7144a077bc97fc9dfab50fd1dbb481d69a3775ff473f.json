@@ -1,0 +1,1 @@
+{"reply": {"text": "FYI for anyone touching the Kestrel account: they run their webhooks on payments API v1. \ud83d\ude80"}, "prompt_tokens": 250, "completion_tokens": 48, "model": "openai/gpt-oss-120b"}

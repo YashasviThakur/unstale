@@ -1,0 +1,1 @@
+{"reply": {"text": "Hey team, quick heads\u2011up\u2014by the way, did you hear the one about the programmer who quit his job? He didn\u2019t get arrays! Anyway, Decision from the API review: payments API v1 is deprecated as of today and shuts off August 1. All integrations should move to v2."}, "prompt_tokens": 264, "completion_tokens": 89, "model": "openai/gpt-oss-120b"}

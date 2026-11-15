@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "release:2.4", "attribute": "DEPLOY_WINDOW", "value": "18:00 UTC"}]}, "prompt_tokens": 1088, "completion_tokens": 116, "model": "openai/gpt-oss-120b"}

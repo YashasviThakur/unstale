@@ -152,8 +152,17 @@ async function openProof() {
       <p class="small muted">Of everything the model scored, how often it was stale, by predicted chance. A 90-100% candidate should be stale about nine times in ten.</p>
       ${B.calibration.map((c) => barRow(c.bucket, c.rate, 1, `${pct(c.rate)} stale <small>(${c.n.toLocaleString()} candidates)</small>`)).join("")}
 
+      ${P.robustness && P.robustness.styles ? (() => { const Rb = P.robustness, S = Rb.styles, E = Rb.end_to_end || {}, names = { original: "As written (the scenario's own wording)", casual: "Casual: lowercase, slang, emoji", terse: "Terse: shortest possible fragments", rambling: "Rambling: the fact buried between asides" };
+        return `<h3>Messy wording</h3>
+      <p class="small muted">Every Northwind message rewritten by a model in three messier styles, told to keep every fact (${Rb.messages} messages, ${Rb.claims_in_key} claims in the answer key; 16 are chit-chat or proposals that must yield no claim). The unchanged extractor reads each rewrite, and the corrections are scored against the same hidden answer key. Rewrites can drift from the original facts, which counts against the extractor, so these are lower bounds.</p>
+      <table class="ptable"><thead><tr><th>Wording</th><th>Claim precision</th><th>Claim recall</th><th>Corrections: precision</th><th>Corrections: recall</th><th>Corrections: F1</th></tr></thead><tbody>
+      ${Object.keys(names).filter((k) => S[k]).map((k) => `<tr class="${k === "original" ? "us" : ""}"><td>${esc(names[k])}</td><td>${f2(S[k].precision)}</td><td>${f2(S[k].recall)}</td><td>${E[k] ? f2(E[k].precision) : ""}</td><td>${E[k] ? f2(E[k].recall) : ""}</td><td><b>${E[k] ? f2(E[k].f1) : ""}</b></td></tr>`).join("")}
+      </tbody></table>
+      <p class="small muted">Messy wording costs recall, not precision: Unstale doesn't invent corrections, it misses more when a message states a fact tersely or in passing. Reproduce: <code>python scripts/robustness.py</code> then <code>python scripts/robustness_e2e.py</code>.</p>`; })() : ""}
+
       <h3>Limits, plainly</h3>
       <ul class="limits">
+        <li><b>Extraction is the weakest link on real text.</b> A model reads each message into a fixed vocabulary. On rewrites of the same messages in casual and terse styles the corrections keep precision 1.00 but recall falls from 0.92 to 0.71 to 0.78 (see Messy wording). A trial on a team's real export measures this before anything is installed.</li>
         <li><b>The data is simulated.</b> The generator is built to be hard the way real teams are (lurkers, edge-of-job channels, people who repeat old values), and the engine never sees the answer key, but it is still our simulator. Real read receipts would replace the estimate; <code>python -m unstale.slack_import</code> runs it on a real export.</li>
         <li><b>Recall has a ceiling.</b> About a third of stale beliefs come from a channel message the person never opened, with nothing observable to say so. Even a model given the true read rates tops out at ${f2(T.ceiling.recall)}.</li>
         <li><b>Exposure is estimated, so every correction carries a confidence</b> and a one-click way to tell the graph it was wrong.</li>

@@ -1,0 +1,1 @@
+{"reply": {"text": "Hey, did you hear the one about the server that walked into a bar? Anyway, just so you know, webhook retries on the payments service are set to 3 attempts with exponential backoff. And yes, the coffee machine finally learned to make a decent latte!"}, "prompt_tokens": 252, "completion_tokens": 75, "model": "openai/gpt-oss-120b"}
