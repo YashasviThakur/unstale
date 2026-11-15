@@ -577,7 +577,8 @@ async def proof() -> dict:
                 for k, v in base.items()}},
             "bench": {k: summary.get(k) for k in ("orgs", "sprints_per_org", "messages", "people", "briefs_per_method",
                                                    "total", "same_sprint_after_n_prior_sprints", "calibration")},
-            "curve": curve, "agent": agent.get("summary", {})}
+            "curve": curve, "agent": agent.get("summary", {}),
+            "load": json.loads((EVAL / "load.json").read_text(encoding="utf-8")) if (EVAL / "load.json").exists() else []}
 
 
 @app.get("/")

@@ -18,8 +18,61 @@ one versioned graph on HydraDB:
 The difference between the two is the product: a short list of exactly the things you are wrong
 about, why you missed each one, and a check that stops you repeating them.
 
-Built for the HydraDB Hackathon (Nov 14-16, 2026), Track 2: the context layer for agents.
+Built for the HydraDB Hackathon (Nov 14-16, 2026), Track 2: the context layer for agents. The hackathon's own
+Track 2 video says it plainly: *"stale data is wrong data."* Every tool in the space works on what is true now.
+Unstale works on who is still wrong, person by person and agent by agent.
 Go-to-market: [docs/GTM.md](docs/GTM.md).
+
+## Judge it in 60 seconds
+
+Live, on the open-source HydraDB 0.4.0 engine: **https://unstale.onrender.com/app**. It is kept awake for judging
+(`.github/workflows/keep-awake.yml`).
+
+1. **60-second tour** (top bar) walks the whole product.
+2. The brief opens on **Maya, Mon 29 Jun 08:00**: four things she believes that are no longer true, each with the
+   message she got the old value from, the one that changed it, why she missed it, and how sure Unstale is.
+3. **Click any fact chip.** The graph behind it: who saw which version, and the missing `SAW` edge that makes
+   someone stale. Next to it, the five messages a real vector search returns for the same question. They're the
+   right messages, but nothing in them says who read them.
+4. **Fix it** on a card: who still needs to hear the change, which channel reaches them, who needs an @mention,
+   a draft, and the corrections that would be left.
+5. **Check before sending → Try: Maya's slack.** Her real message, one minute before she sent it: both outdated
+   facts flagged, and the readers who would pick up the old values.
+6. **Proof** (top bar): every number in this README, read from the result files, with the command that makes it.
+7. Your own agent: `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`, then ask it what
+   Tom still believes.
+
+## The questions the judges asked, answered
+
+The organisers' FAQ asks four things of the engineering. Each answer below points at the file that holds the number.
+
+| Judging question | Answer | Evidence |
+|---|---|---|
+| **Right metrics:** did you measure what matters, not a vanity number? | Stale-belief **precision** (is each correction real? that is what decides whether anyone keeps it switched on), **recall** (of the facts people hold in an outdated version, how many we find), **false alarms per 100 briefs** (corrections about things the person already knew), and **LLM tokens per brief** (zero: a brief is a traversal). The ground truth is hidden from the engine. | [eval/results.json](eval/results.json), [eval/BENCH-twin.md](eval/BENCH-twin.md) |
+| **Continual learning over a baseline:** real improvement, not a one-off? | Baseline: the same engine with no learned evidence. On **40 orgs it never saw**, the same held-out sprint, scored after 0 to 4 earlier sprints of feedback: false alarms per 100 briefs 22.2 → **15.9** (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved), precision 0.82 → 0.86. **Control:** the same people answering the same corrections with coin-flip verdicts stays at 59.5 → 57.7 (change −1.8, interval −5.3 to +1.3: no real change). The learning comes from what people say, not from having more evidence. | [eval/curve-twin.json](eval/curve-twin.json) |
+| **Impact of HydraDB and the graph:** would it fall apart on a plain store? | **Yes.** Take one piece of the graph away at a time (table below): without the who-saw-which-version edges you are left with a changelog, F1 0.12 and 105 false alarms per 100 briefs; a vector store over the same messages scores F1 0.13. | [below](#would-it-fall-apart-on-a-plain-store) |
+| **Holds up under load?** | 20 concurrent users for 60 s against HydraDB 0.4.0 in Docker on a laptop, with "news to me" feedback written to the graph while it serves: **3,546 requests, 0 errors**, 59 per second, p50 208 ms, p95 1.0 s. | [eval/load.json](eval/load.json), `scripts/loadtest.py` |
+
+## Would it fall apart on a plain store?
+
+Remove one piece of the graph at a time (20 generated orgs, 5,210 messages, 5,496 briefs per row):
+
+| What is left | F1 | False alarms per 100 briefs |
+|---|---|---|
+| **The whole graph**: versioned facts, `SAW` edges with strength, learned read evidence, who owns what | **0.75** | **6.8** |
+| Without the learned `ReadEvidence` (every channel member is assumed to have read everything) | 0.67 | 21.4 |
+| Without channel-membership `SAW` edges (only posts, replies, mentions and reactions count) | 0.52 | 39.3 |
+| Without any `SAW` edges: a changelog of every change to the things you own | 0.12 | 105.5 |
+| Without fact versions | nothing to compare: no outdated belief can be named | |
+| No graph at all: a vector store over the same messages, plus an LLM (Northwind) | 0.13 | 18 told-what-they-knew in 16 briefs |
+
+The answer needs three things at once: which version of a fact is current, who saw which version, and who is
+responsible for what. A document or vector store holds the messages but none of those three relations.
+
+The engine's pure-Python twin ([`unstale/reference.py`](unstale/reference.py)) is a **test oracle**, not an
+alternative: it holds the same graph in dictionaries so the Cypher can be checked brief for brief (308 of 308
+identical on 0.4.0). It rebuilds everything in memory on every run, with no persistence, no `as_of` reads and no
+concurrent writers. It proves the traversals are right; it isn't a way to run the product.
 
 ## Results at a glance
 
@@ -27,13 +80,16 @@ Go-to-market: [docs/GTM.md](docs/GTM.md).
 |---|---|
 | Hand-written team (Northwind), LLM extraction | precision **1.00**, recall **0.92**, 0 LLM tokens per brief. The best LLM baseline reaches F1 0.38 at 3,188 tokens per brief |
 | 20 generated orgs, 5,210 messages, reading the engine can't see | F1 **0.75** against 0.67 for the original engine; false alarms down **68%** (6.8 per 100 briefs vs 21.4; a daily changelog sends 105.5) |
-| Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint. On **40 further orgs it had never seen**, four sprints of evidence cut false alarms 22.2 → 15.9 per 100 briefs (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved) |
+| Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint. On **40 further orgs it had never seen**, four sprints of evidence cut false alarms 22.2 → 15.9 per 100 briefs (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved). A control fed the same number of answers with coin-flip verdicts doesn't improve (59.5 → 57.7) |
+| Under load | 20 concurrent users, 60 s, feedback writes to HydraDB while serving: 3,546 requests, **0 errors**, p50 208 ms |
 | Support agent answering customers | 29% correct from its own knowledge base; **94%** with Unstale's correction block added (+116 tokens), with **0** outdated answers. It fixes all 22 questions the knowledge base got wrong |
 | HydraDB vs the Python twin | 168 of 168 briefs identical in the parity check on 0.3.0, and 308 of 308 on 0.4.0 (one org, seed 1); two full benchmark orgs (516 messages, three sprints each, feedback written to the graph) run on HydraDB reproduce the twin's numbers exactly |
 
 ## Try it
 
-- **Live:** https://unstale.onrender.com (landing page; the app is at `/app`; real HydraDB; a free instance, so the first visit after a quiet spell can take a minute) or https://unstale.vercel.app (instant copy). Open the demo at `/app`, click **60-second tour**, or open **Proof**
+- **Live, on real HydraDB:** https://unstale.onrender.com (landing page; the app is at `/app`). A GitHub Action pings it
+  every 10 minutes so it stays awake. Backup only: https://unstale.vercel.app runs the same code on SelfGraph's
+  embedded Kuzu store, because Vercel can't run a HydraDB server, and says so in its top bar. Open the demo at `/app`, click **60-second tour**, or open **Proof**
   (every number, read from the result files) and **Pitch**. Click any fact chip to see **the graph behind it**: people, the messages
   they saw, the fact's versions, and the missing edge that makes someone stale.
 - **One command, real HydraDB:** `docker build -t unstale . && docker run --rm -p 7860:7860 unstale`, then open

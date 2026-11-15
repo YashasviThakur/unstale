@@ -1,0 +1,63 @@
+[
+ {
+  "label": "local laptop, HydraDB 0.4.0 container, reads + feedback writes",
+  "url": "http://127.0.0.1:8765",
+  "store": "hydradb",
+  "users": 20,
+  "seconds": 60.2,
+  "writes": true,
+  "requests": 3546,
+  "rps": 58.9,
+  "errors": 0,
+  "error_rate": 0.0,
+  "p50_ms": 208,
+  "p95_ms": 1025,
+  "p99_ms": 1575,
+  "by_endpoint": {
+   "brief": {
+    "n": 1303,
+    "p50_ms": 195,
+    "p95_ms": 872,
+    "mean_ms": 295
+   },
+   "check": {
+    "n": 303,
+    "p50_ms": 208,
+    "p95_ms": 951,
+    "mean_ms": 319
+   },
+   "feedback": {
+    "n": 352,
+    "p50_ms": 214,
+    "p95_ms": 1016,
+    "mean_ms": 334
+   },
+   "fix": {
+    "n": 334,
+    "p50_ms": 204,
+    "p95_ms": 991,
+    "mean_ms": 343
+   },
+   "graph": {
+    "n": 402,
+    "p50_ms": 241,
+    "p95_ms": 1153,
+    "mean_ms": 387
+   },
+   "slot": {
+    "n": 402,
+    "p50_ms": 227,
+    "p95_ms": 1151,
+    "mean_ms": 382
+   },
+   "team": {
+    "n": 450,
+    "p50_ms": 227,
+    "p95_ms": 1169,
+    "mean_ms": 383
+   }
+  },
+  "errors_by_endpoint": {},
+  "at": "2026-11-15T13:21:59Z"
+ }
+]

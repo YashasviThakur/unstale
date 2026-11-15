@@ -1,0 +1,1 @@
+{"reply": {"claims": [{"subject": "plan:team", "attribute": "PRICED_AT", "value": "$39/seat/month"}, {"subject": "api:payments-v1", "attribute": "STATUS", "value": "supported"}]}, "prompt_tokens": 1074, "completion_tokens": 171, "model": "openai/gpt-oss-120b"}

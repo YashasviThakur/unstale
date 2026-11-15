@@ -97,6 +97,12 @@ That report is the sales call.
 - **Team:** $6 per person per month, priced like a Slack add-on, for briefs, pre-send checks and feedback learning.
 - **Agents:** $20 per agent per month, for the MCP correction layer, with a volume of checks included and usage pricing above it.
 
+**The first paid step is an audit, not a seat licence** (also a hypothesis): run Unstale on a team's last quarter of
+Slack export and deliver the stale-belief report: who was working from which outdated price, date or policy, from
+when, and where it came from. A flat fee for the report, credited against the first year if they switch it on. Then a
+four-week pilot on live data, judged on one number agreed up front: outdated statements caught before they reached
+a customer, with the users' own "news to me" rate as the precision check. If it catches none, the pilot is free.
+
 The agent line is where usage scales: one company runs a handful of people per team but can run
 dozens of agents, each checking before every answer.
 

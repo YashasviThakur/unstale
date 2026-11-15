@@ -190,6 +190,9 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
     rng = random.Random(seed * 1009)
     feedback: list[Evidence] = []
     fb_by_sprint: dict[int, list[Evidence]] = defaultdict(list)
+    # Control: the same people answer the same corrections, but each verdict is a coin flip.
+    rng_ctl = random.Random(seed * 4241)
+    fb_ctl_by_sprint: dict[int, list[Evidence]] = defaultdict(list)
     totals = {m: defaultdict(int) for m in METHODS}
     per_sprint = {m: [defaultdict(int) for _ in range(sprints)] for m in METHODS}
     calib = defaultdict(lambda: [0, 0])     # decile -> [stale, total], learned model
@@ -239,6 +242,8 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
                                 verdict = "neither" if tb is None else ("knew" if rules.same(tb.value, current) else "news")
                                 new_fb += evidence_from_verdict(pid, verdict, current, believed,
                                                                 exps.get(slot, []), cp)
+                                fb_ctl_by_sprint[k] += evidence_from_verdict(
+                                    pid, rng_ctl.choice(["news", "knew"]), current, believed, exps.get(slot, []), cp)
                 digest = {s for s in changed if s.split("|", 1)[0] in sc}
                 tally(totals["digest"], want, digest)
                 tally(per_sprint["digest"][k], want, digest)
@@ -249,37 +254,41 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
 
     # Sharper every run: score the last sprint again with evidence from only the first n sprints
     # (plus what it learns online inside the sprint), for n = 0 .. sprints-1.
-    runs = []
+    runs, runs_ctl = [], []
     a, b = ds["sprints"][-1]
     for n in range(sprints):
         cut = ds["sprints"][n - 1][1] if n else ds["start"]
-        base_ev = [e for e in implicit if e.ts <= cut] + [e for j in range(n) for e in fb_by_sprint[j]]
-        online: list[Evidence] = []
-        rng2 = random.Random(seed * 7919 + n)
-        t = defaultdict(int)
-        for cp in mornings(a, b):
-            gt = truth.stale_report(ds, cp)
-            world = truth.simulate(ds, cp)
-            model = ReadModel(base_ev + [e for e in implicit if a <= e.ts <= cp] + online)
-            for p in ds["people"]:
-                pid = p["id"]
-                exps = test_cache[(pid, cp)]
-                items = await brief(be, pid, cp, exps, model, threshold)
-                tally(t, {x["slot"] for x in gt[pid]}, {s for s, *_ in items})
-                if p["kind"] == "person":
-                    for slot, believed, current, _ in items:
-                        if rng2.random() > RESPONSE_RATE:
-                            continue
-                        tb = world.beliefs.get(pid, {}).get(slot)
-                        verdict = "neither" if tb is None else ("knew" if rules.same(tb.value, current) else "news")
-                        online += evidence_from_verdict(pid, verdict, current, believed, exps.get(slot, []), cp)
-        runs.append(dict(t))
+        for arm, fb_src, out in (("real", fb_by_sprint, runs), ("control", fb_ctl_by_sprint, runs_ctl)):
+            base_ev = [e for e in implicit if e.ts <= cut] + [e for j in range(n) for e in fb_src[j]]
+            online: list[Evidence] = []
+            rng2 = random.Random(seed * 7919 + n)
+            rng3 = random.Random(seed * 6373 + n)
+            t = defaultdict(int)
+            for cp in mornings(a, b):
+                gt = truth.stale_report(ds, cp)
+                world = truth.simulate(ds, cp)
+                model = ReadModel(base_ev + [e for e in implicit if a <= e.ts <= cp] + online)
+                for p in ds["people"]:
+                    pid = p["id"]
+                    exps = test_cache[(pid, cp)]
+                    items = await brief(be, pid, cp, exps, model, threshold)
+                    tally(t, {x["slot"] for x in gt[pid]}, {s for s, *_ in items})
+                    if p["kind"] == "person":
+                        for slot, believed, current, _ in items:
+                            if rng2.random() > RESPONSE_RATE:
+                                continue
+                            tb = world.beliefs.get(pid, {}).get(slot)
+                            verdict = "neither" if tb is None else ("knew" if rules.same(tb.value, current) else "news")
+                            if arm == "control":
+                                verdict = rng3.choice(["news", "knew"])
+                            online += evidence_from_verdict(pid, verdict, current, believed, exps.get(slot, []), cp)
+            out.append(dict(t))
     await be.close()
     return {"seed": seed, "backend": be.name, "people": len(ds["people"]), "channels": len(ds["channels"]),
             "messages": len(ds["messages"]), "ingest_s": round(ingest_s, 1),
             "totals": {m: dict(v) for m, v in totals.items()},
             "per_sprint": {m: [dict(x) for x in v] for m, v in per_sprint.items()},
-            "runs": runs, "calibration": {str(k): v for k, v in calib.items()},
+            "runs": runs, "runs_control": runs_ctl, "calibration": {str(k): v for k, v in calib.items()},
             "feedback_evidence": len(feedback), "implicit_evidence": len(implicit), "briefs": briefs_out}
 
 
@@ -432,7 +441,31 @@ def bootstrap_curve(rows: list[dict], sprints: int, boot: int = 2000, seed: int 
         a, b = prf(r["runs"][0]), prf(r["runs"][last])
         better += b["false_alarms_per_100_briefs"] < a["false_alarms_per_100_briefs"]
     out["false_alarms_per_100_briefs"]["orgs_improved"] = better
-    return {"orgs": len(rows), "bootstrap_resamples": boot, "curve": pts, "paired_delta_last_vs_zero": out}
+
+    # The control: same answers on the same corrections, coin-flip verdicts. If learning came from noise or from
+    # merely having more evidence, this curve would fall too.
+    def stats_ctl(sample: list[dict], n: int) -> dict:
+        t = defaultdict(int)
+        for r in sample:
+            for k2, v in r["runs_control"][n].items():
+                t[k2] += v
+        return prf(t)
+
+    control = [{"prior_sprints": n, **stats_ctl(rows, n)} for n in range(sprints)]
+    d_ctl, d_gap = [], []
+    for _ in range(boot):
+        sample = [rows[rng.randrange(len(rows))] for _ in rows]
+        c0, cl = stats_ctl(sample, 0), stats_ctl(sample, last)
+        d_ctl.append(cl["false_alarms_per_100_briefs"] - c0["false_alarms_per_100_briefs"])
+        d_gap.append(stats(sample, last)["false_alarms_per_100_briefs"] - cl["false_alarms_per_100_briefs"])
+    d_ctl.sort()
+    d_gap.sort()
+    ci = lambda xs: [round(xs[int(0.025 * boot)], 3), round(xs[int(0.975 * boot) - 1], 3)]  # noqa: E731
+    return {"orgs": len(rows), "bootstrap_resamples": boot, "curve": pts, "paired_delta_last_vs_zero": out,
+            "control_coin_flip_feedback": {
+                "curve": control,
+                "false_alarms_delta_last_vs_zero": {"mean": round(sum(d_ctl) / boot, 3), "ci95": ci(d_ctl)},
+                "real_minus_control_false_alarms_at_last": {"mean": round(sum(d_gap) / boot, 3), "ci95": ci(d_gap)}}}
 
 
 async def parity(seeds: list[int], sprints: int, threshold: float) -> bool:
@@ -481,12 +514,16 @@ async def main_async(a) -> None:
               f"vs v1 F1 {v['f1']:.2f}; ingest {r['ingest_s']}s; {time.perf_counter() - t0:.0f}s total", flush=True)
     if a.curve:
         c = bootstrap_curve(rows, a.sprints)
+        c["command"] = f"python scripts/bench.py --first {a.first} --orgs {a.orgs} --sprints {a.sprints} --curve"
         OUT.mkdir(exist_ok=True)
         (OUT / "curve-twin.json").write_text(json.dumps(c, indent=1), encoding="utf-8")
         for pt in c["curve"]:
             print(f"n={pt['prior_sprints']}: false alarms {pt['false_alarms_per_100_briefs']} {pt['false_alarms_ci']}, "
                   f"F1 {pt['f1']} {pt['f1_ci']}, P {pt['precision']}")
         print(json.dumps(c["paired_delta_last_vs_zero"]))
+        for pt in c["control_coin_flip_feedback"]["curve"]:
+            print(f"control n={pt['prior_sprints']}: false alarms {pt['false_alarms_per_100_briefs']}, F1 {pt['f1']}, P {pt['precision']}")
+        print(json.dumps({k: v for k, v in c["control_coin_flip_feedback"].items() if k != "curve"}))
         return
     s = summarise(rows, a.sprints, a.threshold, "HydraDB" if a.hydradb else "Python twin, parity-checked against HydraDB")
     if a.no_write:

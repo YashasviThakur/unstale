@@ -12,21 +12,25 @@ function barRow(label, value, max, text, cls = "", sub = "") {
 
 function curveSvg(c) {
   const pts = c.curve, W = 640, H = 270, L = 52, R = 24, T = 20, B = 52;
-  const lo = Math.floor(Math.min(...pts.map((p) => p.false_alarms_ci[0])) / 5) * 5;
-  const hi = Math.ceil(Math.max(...pts.map((p) => p.false_alarms_ci[1])) / 5) * 5;
+  const ctl = (c.control_coin_flip_feedback || {}).curve || [];
+  const lo = Math.floor(Math.min(...pts.map((p) => p.false_alarms_ci[0]), ...ctl.map((p) => p.false_alarms_per_100_briefs)) / 5) * 5;
+  const hi = Math.ceil(Math.max(...pts.map((p) => p.false_alarms_ci[1]), ...ctl.map((p) => p.false_alarms_per_100_briefs)) / 5) * 5;
+  const step = hi - lo > 30 ? 10 : 5;
   const x = (n) => L + (n / (pts.length - 1)) * (W - L - R);
   const y = (v) => T + (1 - (v - lo) / (hi - lo)) * (H - T - B);
   const band = pts.map((p, i) => `${x(i)},${y(p.false_alarms_ci[1])}`).join(" ") + " " +
     [...pts].reverse().map((p, i) => `${x(pts.length - 1 - i)},${y(p.false_alarms_ci[0])}`).join(" ");
   const line = pts.map((p, i) => `${i ? "L" : "M"}${x(i)},${y(p.false_alarms_per_100_briefs)}`).join(" ");
   const grid = [];
-  for (let v = lo; v <= hi; v += 5) grid.push(`<line class="cg" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ct" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`);
+  for (let v = lo; v <= hi; v += step) grid.push(`<line class="cg" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ct" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v}</text>`);
   const base = pts[0].false_alarms_per_100_briefs;
   return `<svg class="curve" viewBox="0 0 ${W} ${H}" role="img" aria-label="False alarms per 100 briefs by prior sprints of evidence">
     ${grid.join("")}
     <polygon class="cband" points="${band}"/>
     <line class="cbase" x1="${L}" x2="${W - R}" y1="${y(base)}" y2="${y(base)}"/>
     <text class="ct" x="${W - R}" y="${y(base) - 6}" text-anchor="end">baseline: no prior evidence</text>
+    ${ctl.length ? `<path class="cline" style="stroke-dasharray:6 5;opacity:.55" d="${ctl.map((p, i) => `${i ? "L" : "M"}${x(i)},${y(p.false_alarms_per_100_briefs)}`).join(" ")}"/>
+      <text class="ct" x="${W - R}" y="${y(ctl[ctl.length - 1].false_alarms_per_100_briefs) - 8}" text-anchor="end">control: same answers, coin-flip verdicts</text>` : ""}
     <path class="cline" d="${line}"/>
     ${pts.map((p, i) => `<circle class="cdot" cx="${x(i)}" cy="${y(p.false_alarms_per_100_briefs)}" r="4"/>
       <text class="cval" x="${x(i)}" y="${y(p.false_alarms_per_100_briefs) - 10}" text-anchor="middle">${p.false_alarms_per_100_briefs}</text>
@@ -92,6 +96,12 @@ async function openProof() {
         <div class="pcard"><b>${d.false_alarms_per_100_briefs.orgs_improved} of ${cv.orgs}</b><span>orgs got fewer false alarms. Precision ${f2(first.precision)} → ${f2(last.precision)}, F1 ${f2(first.f1)} → ${f2(last.f1)} (+${d.f1.mean.toFixed(3)} [${d.f1.ci95.map((x) => x.toFixed(3)).join(", ")}])</span></div>
         <div class="pcard"><b>${B.same_sprint_after_n_prior_sprints.map((x) => f1(x.false_alarms_per_100_briefs)).join(" → ")}</b><span>the same effect in the 20-org benchmark above, with 0, 1, 2 prior sprints</span></div>
       </div>
+      ${cv.control_coin_flip_feedback ? (() => { const k = cv.control_coin_flip_feedback, kc = k.curve, g = k.real_minus_control_false_alarms_at_last, dk = k.false_alarms_delta_last_vs_zero;
+        return `<div class="pcards three">
+        <div class="pcard"><b>${f1(kc[0].false_alarms_per_100_briefs)} → ${f1(kc[kc.length - 1].false_alarms_per_100_briefs)}</b><span>the control: the same people answer the same corrections, but every verdict is a coin flip (change ${f1(dk.mean)} [${dk.ci95.map(f1).join(", ")}])</span></div>
+        <div class="pcard"><b>${f1(g.mean)} <small>[${g.ci95.map(f1).join(", ")}]</small></b><span>false alarms per 100 briefs, real answers minus coin-flip answers, after ${last.prior_sprints} sprints</span></div>
+        <div class="pcard"><b>The lesson</b><span>More evidence does not help on its own. What people say about their own corrections is what teaches the graph.</span></div>
+      </div>`; })() : ""}
       <p class="small muted">Baseline is the same engine with no prior evidence. F1 moves less than precision: learning removes false alarms, while recall is capped by beliefs nothing observable reveals. Reproduce: <code>python scripts/bench.py --curve --orgs 40 --first 101 --sprints 5</code>.</p>
 
       <h3>4. Agents</h3>
@@ -99,7 +109,14 @@ async function openProof() {
       ${agRows.map(([k, n]) => barRow(esc(n), ag[k].accuracy, 1, `${pct(ag[k].accuracy)} correct`, k === "unstale" ? "us" : "", `${ag[k].prompt_tokens_per_answer.toLocaleString()} prompt tokens · ${ag[k].outdated_answers} outdated answers`)).join("")}
       <p class="small muted">Vector RAG does well here because it was allowed to search every channel in the company. That is a permissions decision most teams will not make for a customer-facing bot. With the access it already has, the agent is right ${pct(ag.own.accuracy)} of the time and confidently outdated ${ag.own.outdated_answers} times; Unstale's block fixes that with no new access. Reproduce: <code>python scripts/agent_eval.py</code>.</p>
 
-      <h3>5. Calibration</h3>
+      ${(P.load || []).length ? `<h3>5. Under load</h3>
+      <p class="small muted">Concurrent users looping over what visitors and agents do: briefs, the team table, fact history, the graph view, Fix it and the pre-send check. The local run also writes "news to me / I knew this" feedback to HydraDB while it serves, which clears the per-person caches so the next reads go back to the graph.</p>
+      <table class="ptable"><thead><tr><th>Where</th><th>Users</th><th>Requests</th><th>Per second</th><th>p50</th><th>p95</th><th>Errors</th></tr></thead><tbody>
+      ${P.load.map((r) => `<tr><td>${esc(r.label)}</td><td>${r.users}</td><td>${r.requests.toLocaleString()}</td><td>${r.rps}</td><td>${r.p50_ms} ms</td><td>${r.p95_ms} ms</td><td>${r.errors}</td></tr>`).join("")}
+      </tbody></table>
+      <p class="small muted">Reproduce: <code>python scripts/loadtest.py --url URL --users 20 --seconds 60 [--writes]</code>. The public demo refuses writes from the load test so visitors keep their feedback quota.</p>` : ""}
+
+      <h3>${(P.load || []).length ? 6 : 5}. Calibration</h3>
       <p class="small muted">Of everything the model scored, how often it was stale, by predicted chance. A 90-100% candidate should be stale about nine times in ten.</p>
       ${B.calibration.map((c) => barRow(c.bucket, c.rate, 1, `${pct(c.rate)} stale <small>(${c.n.toLocaleString()} candidates)</small>`)).join("")}
 

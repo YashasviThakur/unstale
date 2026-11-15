@@ -34,7 +34,12 @@ is how recall improves.
 - **Sharper every run:** on the same held-out sprint, false alarms fall 11.1 → 9.5 → 8.0 per 100 briefs
   with 0, 1 and 2 prior sprints of evidence.
 - **Unseen orgs:** on 40 more generated orgs it had never seen, four sprints of evidence cut false alarms from 22.2 to 15.9 per 100 briefs
-  (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved).
+  (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved). Control: the same number of answers with
+  coin-flip verdicts doesn't improve (59.5 → 57.7, change not significant), so the learning comes from what people say.
+- **Under load:** 20 concurrent users for 60 s on HydraDB 0.4.0, writing feedback to the graph while serving:
+  3,546 requests, 0 errors, p50 208 ms, p95 1.0 s (`scripts/loadtest.py`, `eval/load.json`).
+- **Would it fall apart on a plain store?** Yes: remove the who-saw-which-version edges and what is left is a
+  changelog (F1 0.12, 105 false alarms per 100 briefs); a vector store over the same messages scores F1 0.13.
 - **Agents:** a support agent answering 31 customer questions gets 29% right from its own knowledge base and 94% with Unstale's correction block (+116 tokens, 0 outdated answers). Dumping every message gets 90% at 5.8x the tokens; vector RAG over every message gets 97% but needs the bot to index every internal channel.
 - **HydraDB:** the benchmark runs on HydraDB, and a pure-Python twin agrees with it brief for brief
   (168 of 168 briefs identical on 0.3.0; 308 of 308 on 0.4.0).
