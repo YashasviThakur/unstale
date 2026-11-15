@@ -40,7 +40,7 @@ Live, on the open-source HydraDB 0.4.0 engine: **https://unstale.onrender.com/ap
    facts flagged, and the readers who would pick up the old values.
 6. **Proof** (top bar): every number in this README, read from the result files, with the command that makes it.
 7. Your own agent: `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`, then ask it what
-   Tom still believes.
+   Tom still believes. A recorded session with the official MCP client: [docs/MCP_SESSION.md](docs/MCP_SESSION.md).
 
 ## The questions the judges asked, answered
 
