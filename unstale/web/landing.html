@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/landing.css">
+  <link rel="stylesheet" href="/static/landing.css?v=try4">
 </head>
 <body>
   <header class="nav" id="top">
@@ -42,7 +42,7 @@
         <p class="sub">Search tells you what is true. Unstale keeps every fact's history <em>and who saw which version</em>, so it can tell you who is behind, why they missed it, and who to tell.</p>
         <div class="cta-row">
           <a class="btn dark lg" href="/app">Open the live demo <span aria-hidden="true">→</span></a>
-          <a class="btn line lg" href="/app?tour=1">Take the 60-second tour</a>
+          <a class="btn line lg" href="#try">Try it right here</a>
         </div>
         <p class="micro">Zero LLM tokens to compute a brief · F1 0.96 where vector search scores 0.13 · <a href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">read the code</a></p>
       </div>
@@ -73,6 +73,33 @@
             <div class="rc no"><i class="av" style="background:#fbddeb;color:#8a1f55">LF</i><b>Lena</b></div>
           </div>
           <div class="rc-foot"><span>4 saw it</span><span class="bad">3 never did</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRY IT: live, on the hosted HydraDB graph -->
+    <section class="band try" id="try">
+      <div class="try-head">
+        <p class="label">Try it on the live graph</p>
+        <h2>Pick anyone. See what they're wrong about.</h2>
+        <p class="lead">Every answer below is computed now, by a traversal over the open-source HydraDB graph behind this page. No model call, no canned screenshot.</p>
+      </div>
+      <div class="try-grid">
+        <div class="try-controls">
+          <p class="tc-label">Who</p>
+          <div class="chips" id="try-who" role="radiogroup" aria-label="Person to check"></div>
+          <p class="tc-label">When</p>
+          <div class="chips" id="try-when" role="radiogroup" aria-label="Morning to check"></div>
+          <div class="tc-note">Northwind Labs: 7 people and a support agent, 45 messages over 8 working days.</div>
+          <button type="button" class="btn line try-check" id="try-check">Check Maya's message before she sends it</button>
+        </div>
+        <div class="try-out">
+          <div class="win try-win" aria-live="polite">
+            <div class="win-bar"><span class="fn">belief-diff</span><span class="who-time" id="try-title">loading…</span><span class="live" id="try-badge"></span></div>
+            <div class="win-body" id="try-body"><div class="try-empty">Asking the graph…</div></div>
+            <div class="try-stats" id="try-stats"></div>
+          </div>
+          <div class="try-vs" id="try-vs" hidden></div>
         </div>
       </div>
     </section>
@@ -297,6 +324,7 @@ SelfGraph(store=HydraDBStore(uri), schema=schema,
     </div>
   </footer>
 
-  <script src="/static/landing.js"></script>
+  <script src="/static/landing.js?v=try1"></script>
+  <script src="/static/try.js?v=try3"></script>
 </body>
 </html>

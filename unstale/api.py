@@ -228,9 +228,11 @@ def sim_from(raw: str | None) -> list[dict]:
 
 
 @app.get("/api/brief/{pid}")
-async def brief(pid: str, as_of: str, sim: str | None = None) -> dict:
+async def brief(pid: str, as_of: str, sim: str | None = None, fresh: int = 0) -> dict:
     if pid not in people():
         raise HTTPException(404, "unknown person")
+    if fresh:   # skip the warm per-person cache so the reads below go to the graph (the landing page's live try-it)
+        eng()._rows_cache.pop(pid, None)
     t0 = time.perf_counter()
     q0, c0 = eng().stats.queries, eng().stats.cached
     model = await eng().read_model(as_of)
