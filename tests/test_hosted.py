@@ -50,6 +50,30 @@ def test_graph_shows_the_missing_edge(client):
     assert "SAW" in g["cypher"]
 
 
+def test_report_agrees_with_the_team_table(client):
+    r = client.get("/api/report").json()
+    team = client.get("/api/team", params={"as_of": r["end"]}).json()
+    held = sum(len(p["stale"]) for p in team["people"])
+    h = r["headline"]
+    assert h["still_stale_at_end"] == held == 13           # the same beliefs the Team tab lists at the end
+    assert h["changes_missed"] == len(r["changes"]) and h["stale_person_days"] > 0
+    # the parts are rounded to 0.1 each, so they add up to the total within that rounding
+    assert abs(sum(c["stale_person_days"] for c in r["changes"]) - h["stale_person_days"]) < 0.05 * len(r["changes"]) + 1e-6
+    assert abs(sum(x["stale_person_days"] for x in r["people_rows"]) - h["stale_person_days"]) < 0.05 * len(r["people_rows"]) + 1e-6
+    assert {c["where"] for c in r["channels"]} >= {"#pricing", "#release"}
+    assert all(0 <= c["leak_rate"] <= 1 for c in r["channels"])
+    maya = next(x for x in r["people_rows"] if x["person"] == "person:maya")
+    assert maya["beliefs"] == 5 and maya["still_stale"] == 5
+    dev = next(x for x in r["people_rows"] if x["person"] == "person:dev")
+    assert dev["stale_person_days"] == 0
+
+
+def test_report_downloads_as_markdown(client):
+    r = client.get("/api/report.md")
+    assert r.status_code == 200 and "attachment" in r.headers["content-disposition"]
+    assert r.text.startswith("# Stale-belief report: Northwind Labs") and "## Where changes leak out" in r.text
+
+
 def test_proof_reads_the_result_files(client):
     p = client.get("/api/proof").json()
     assert p["northwind"]["unstale"]["precision"] == 1.0
@@ -106,7 +130,7 @@ def test_remote_mcp_serves_the_tools(client):
         return client.post("/mcp", headers=h, json={"jsonrpc": "2.0", "id": i, "method": method, "params": params or {}}).json()
 
     tools = {t["name"] for t in rpc(1, "tools/list")["result"]["tools"]}
-    assert {"corrections", "who_to_notify", "who_believes", "check_before_sending", "give_feedback"} <= tools
+    assert {"corrections", "who_to_notify", "who_believes", "check_before_sending", "give_feedback", "stale_report"} <= tools
     out = rpc(2, "tools/call", {"name": "who_to_notify", "arguments": {"subject": "plan:team", "attribute": "PRICED_AT"}})
     text = out["result"]["content"][0]["text"]
     assert "Post in #general" in text and "Support agent" in text

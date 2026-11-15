@@ -84,8 +84,16 @@ themselves).
 | Slack export import, one command | Built (`python -m unstale.slack_import`) | Self-serve trial on your own history |
 | MCP server: `corrections`, `check_before_sending`, `who_believes`, `give_feedback` | Built | MCP registries, agent frameworks |
 | Web desk (brief, team view, fact history, pre-send check, feedback) | Built | Demo and admin view |
+| **Stale-belief report**: stale person-days, missed changes, leaky channels, who lags, as a page or Markdown (`/api/report.md`; sample: [AUDIT_REPORT_NORTHWIND.md](AUDIT_REPORT_NORTHWIND.md)) | Built | The audit deliverable: the sales call |
 | Slack app: morning DM, message-action check, feedback buttons | Next | Slack Marketplace |
 | Read receipts from Teams chats, email opens, agent context logs | Next | Sharpens exposure where it exists |
+
+The deliverable of that import is the **stale-belief report** (see the Report button in the app, or the sample in
+[AUDIT_REPORT_NORTHWIND.md](AUDIT_REPORT_NORTHWIND.md)). For the demo team it reads: 5 of 8 people and agents worked
+from an outdated fact, 58 stale person-days in 9 days, 9 of the 12 changes missed by someone, 13 of the 14 outdated
+beliefs never corrected, and every change posted in #pricing and #eng-payments missed by someone. That is what a RevOps
+lead pays to see, before they pay for anything else. The pilot metric (outdated statements caught per week) is its
+forward-looking half.
 
 The import path matters for a trial: a RevOps lead can run Unstale on last quarter's export and see
 "these 11 people were working from an old price on these dates" before anyone installs anything.

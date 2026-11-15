@@ -302,3 +302,9 @@ footer p { margin: 10px 0 0; font-size: 13.5px; color: var(--ink-3); }
   .try-win .why, .vs-btn { margin-left: 18px; padding-left: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .chip { transition: none; } }
+
+/* audit-first offer under the tiers */
+.audit { max-width: 760px; margin: 44px auto 0; padding: 22px 26px; border: 1.5px dashed var(--line); border-radius: 16px; background: var(--card); text-align: left; }
+.audit .tag { margin: 0 0 8px; }
+.audit p { margin: 0 0 14px; color: var(--ink-2); font-size: 15.5px; }
+.audit b { color: var(--ink); }

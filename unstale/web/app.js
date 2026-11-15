@@ -421,6 +421,7 @@ function engineBadge() {
 }
 
 $("btn-tour").onclick = () => tourStart();
+$("btn-report").onclick = () => openReport();
 $("btn-proof").onclick = () => openProof();
 $("btn-pitch").onclick = () => openPitch();
 $("btn-mcp").onclick = () => openMcp();
@@ -430,7 +431,8 @@ document.querySelectorAll("dialog").forEach((dl) => dl.addEventListener("close",
   if (!document.querySelector("dialog[open]")) $("scrim").classList.add("hidden");
 }));
 
-(async function init() {
+// Start after every script has run (fix.js and panels.js come after this file): a fast /api/meta must not win the race.
+document.addEventListener("DOMContentLoaded", async function init() {
   try {
     S.meta = await api("/api/meta");
   } catch (e) {
@@ -449,5 +451,6 @@ document.querySelectorAll("dialog").forEach((dl) => dl.addEventListener("close",
   try { seen = !!localStorage.getItem("unstale-tour-seen"); } catch (e) { /* private mode */ }
   const q = new URLSearchParams(location.search);
   if (q.has("proof")) openProof();
+  else if (q.has("report")) openReport();
   else if (q.has("tour") || (!seen && !q.has("notour"))) setTimeout(() => tourStart(), 900);
-})();
+});

@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/static/app.css">
+  <link rel="stylesheet" href="/static/app.css?v=r3">
 </head>
 <body>
   <header class="app-head">
@@ -29,6 +29,7 @@
     <nav class="nav" aria-label="Sections">
       <button type="button" id="btn-tour" class="tb primary">60-second tour</button>
       <button type="button" id="btn-mcp" class="tb hidden">Connect your agent</button>
+      <button type="button" id="btn-report" class="tb">Report</button>
       <button type="button" id="btn-proof" class="tb">Proof</button>
       <button type="button" id="btn-pitch" class="tb">Pitch</button>
       <a class="tb" href="https://github.com/YashasviThakur/unstale" target="_blank" rel="noopener">GitHub</a>
@@ -114,6 +115,12 @@
     <div id="fix-body"></div>
   </dialog>
 
+  <dialog id="report-dialog" class="sheet" aria-label="Stale-belief report">
+    <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
+    <h2 class="sheet-title">Stale-belief report</h2>
+    <div id="report-body"></div>
+  </dialog>
+
   <dialog id="proof-dialog" class="sheet" aria-label="Proof">
     <form method="dialog" class="dialog-close"><button class="btn ghost small">Close</button></form>
     <h2 class="sheet-title">Proof</h2>
@@ -139,10 +146,10 @@
     <div class="tour-nav"><button type="button" id="tour-prev" class="btn ghost small">Back</button><button type="button" id="tour-next" class="btn small">Next</button></div>
   </aside>
 
-  <script src="/static/app.js"></script>
-  <script src="/static/graph.js"></script>
-  <script src="/static/fix.js"></script>
-  <script src="/static/panels.js"></script>
-  <script src="/static/tour.js"></script>
+  <script src="/static/app.js?v=r3"></script>
+  <script src="/static/graph.js?v=r3"></script>
+  <script src="/static/fix.js?v=r3"></script>
+  <script src="/static/panels.js?v=r3"></script>
+  <script src="/static/tour.js?v=r3"></script>
 </body>
 </html>

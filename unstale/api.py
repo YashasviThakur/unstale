@@ -15,11 +15,11 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
-from . import rules
+from . import report as report_mod, rules
 from .config import ROOT as ROOT_DIR, Settings, dataset_path, setting
 from .engine import EXPOSURES_CYPHER, Engine, agent_context, check_draft
 from .exposure import THRESHOLD, stale_probability
@@ -68,6 +68,7 @@ async def prewarm() -> None:
             await e.subject_versions(s["id"])
         for mid in STATE["claims"]:
             await e.who_saw(mid)
+        await stale_report()
     except Exception:  # noqa: BLE001  (warming is an optimisation, never a failure)
         pass
 
@@ -347,6 +348,31 @@ async def assumed(person: str, as_of: str) -> dict:
     return {"person": person, "items": out[:6]}
 
 
+async def stale_report() -> dict:
+    """Replay every morning of the dataset; cached until feedback or a new message changes the graph."""
+    key = (STATE["feedback"], STATE["live"])
+    hit = STATE.get("report")
+    if hit and hit[0] == key:
+        return hit[1]
+    t0 = time.perf_counter()
+    r = await report_mod.build(eng(), ds(), show=show, label=label, name=name, where=where)
+    r["computed_ms"] = round((time.perf_counter() - t0) * 1000)
+    STATE["report"] = (key, r)
+    return r
+
+
+@app.get("/api/report")
+async def report() -> dict:
+    """The stale-belief report: stale person-days, the changes that were missed, where they leak, who lags."""
+    return await stale_report()
+
+
+@app.get("/api/report.md", response_class=PlainTextResponse)
+async def report_markdown() -> PlainTextResponse:
+    return PlainTextResponse(report_mod.markdown(await stale_report(), pretty), media_type="text/markdown; charset=utf-8",
+                             headers={"Content-Disposition": 'attachment; filename="stale-belief-report.md"'})
+
+
 @app.get("/api/team")
 async def team(as_of: str, sim: str | None = None) -> dict:
     rows = []
@@ -579,7 +605,7 @@ async def proof() -> dict:
                 for k, v in base.items()}},
             "bench": {k: summary.get(k) for k in ("orgs", "sprints_per_org", "messages", "people", "briefs_per_method",
                                                    "total", "same_sprint_after_n_prior_sprints", "calibration")},
-            "curve": curve, "agent": agent.get("summary", {}),
+            "curve": curve, "agent": agent.get("summary", {}), "frontier": _load("frontier-twin.json"),
             "load": json.loads((EVAL / "load.json").read_text(encoding="utf-8")) if (EVAL / "load.json").exists() else []}
 
 

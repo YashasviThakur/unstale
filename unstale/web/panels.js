@@ -39,6 +39,28 @@ function curveSvg(c) {
     <text class="ct" transform="translate(13 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">false alarms per 100 briefs (lower is better)</text></svg>`;
 }
 
+
+/* Stale person-days removed against notification noise: Unstale at several alert thresholds, and the changelog. */
+function frontierSvg(F) {
+  const W = 640, H = 290, L = 54, R = 28, T = 24, B = 54, pts = F.points;
+  const xs = pts.map((p) => p.learned.false_alarms_per_100_briefs).concat(pts[0].digest.false_alarms_per_100_briefs);
+  const xmax = Math.ceil(Math.max(...xs) / 20) * 20, ylo = 40, yhi = 100;
+  const x = (v) => L + (v / xmax) * (W - L - R), y = (v) => T + (1 - (v - ylo) / (yhi - ylo)) * (H - T - B);
+  const line = pts.map((p, i) => `${i ? "L" : "M"}${x(p.learned.false_alarms_per_100_briefs)},${y(p.learned.stale_days_removed * 100)}`).join(" ");
+  const d = pts[0].digest, def = pts.find((p) => p.threshold === 0.5) || pts[0];
+  let grid = "";
+  for (let v = ylo; v <= yhi; v += 20) grid += `<line class="cg" x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}"/><text class="ct" x="${L - 8}" y="${y(v) + 4}" text-anchor="end">${v}%</text>`;
+  for (let v = 0; v <= xmax; v += 20) grid += `<text class="ct" x="${x(v)}" y="${H - 30}" text-anchor="middle">${v}</text>`;
+  return `<svg class="curve" viewBox="0 0 ${W} ${H}" role="img" aria-label="Stale person-days removed against false alarms per 100 briefs">
+    ${grid}<path class="cline" d="${line}"/>
+    ${pts.map((p) => `<circle class="cdot" cx="${x(p.learned.false_alarms_per_100_briefs)}" cy="${y(p.learned.stale_days_removed * 100)}" r="${p === def ? 6 : 3.5}"/>
+      ${[[0.2, 10, -10, "start"], [0.5, 14, 22, "start"], [0.9, 12, 24, "start"]].filter((l) => l[0] === p.threshold).map((l) => `<text class="ct" x="${x(p.learned.false_alarms_per_100_briefs) + l[1]}" y="${y(p.learned.stale_days_removed * 100) + l[2]}" text-anchor="${l[3]}">${l[0] === 0.5 ? "default: alert at 50% sure" : `alert at ${Math.round(l[0] * 100)}% sure`}</text>`).join("")}`).join("")}
+    <circle cx="${x(d.false_alarms_per_100_briefs)}" cy="${y(d.stale_days_removed * 100)}" r="7" fill="#e07a3f"/>
+    <text class="ct" x="${x(d.false_alarms_per_100_briefs) - 10}" y="${y(d.stale_days_removed * 100) + 24}" text-anchor="end">daily changelog: ${Math.round(d.stale_days_removed * 100)}% at ${d.false_alarms_per_100_briefs}</text>
+    <text class="ct" x="${(L + W - R) / 2}" y="${H - 6}" text-anchor="middle">false alarms per 100 briefs: corrections about things the person already knew (lower is better)</text>
+    <text class="ct" transform="translate(13 ${(T + H - B) / 2}) rotate(-90)" text-anchor="middle">stale person-days removed</text></svg>`;
+}
+
 async function openProof() {
   const body = $("proof-body"), dlg = $("proof-dialog");
   openDlg(dlg);
@@ -88,7 +110,17 @@ async function openProof() {
       </tbody></table>
       <p class="small muted">Reproduce: <code>python scripts/bench.py</code> (the engine on HydraDB reproduces the twin brief for brief: <code>--hydradb --parity 2</code>).</p>
 
-      <h3>3. It gets sharper every run</h3>
+      ${P.frontier && P.frontier.points ? (() => { const F = P.frontier, def = F.points.find((p) => p.threshold === 0.5), hi = F.points[0], dg = def.digest, ratio = dg.false_alarms_per_100_briefs / def.learned.false_alarms_per_100_briefs;
+        return `<h3>3. Does acting on it remove stale days?</h3>
+      <p class="small muted">A stale person-day is one person holding one outdated fact for one morning (${F.points[0].stale_days.toLocaleString()} in these ${F.orgs} orgs). If a person acts on a correction the morning they get it, every later morning of that belief goes away. This is the outcome a manager pays for, measured against the cost: notifications about things people already knew.</p>
+      ${frontierSvg(F)}
+      <div class="pcards three">
+        <div class="pcard"><b>${Math.round(def.learned.stale_days_removed * 100)}% at ${def.learned.false_alarms_per_100_briefs}</b><span>of stale person-days removed, at false alarms per 100 briefs: Unstale at its default alert threshold</span></div>
+        <div class="pcard"><b>${Math.round(hi.learned.stale_days_removed * 100)}% at ${hi.learned.false_alarms_per_100_briefs}</b><span>the most sensitive setting (alert at ${Math.round(hi.threshold * 100)}%): for a team that would rather over-check</span></div>
+        <div class="pcard"><b>${Math.round(dg.stale_days_removed * 100)}% at ${dg.false_alarms_per_100_briefs}</b><span>a daily changelog tells everyone in scope, so it removes the most, with ${f1(ratio)}x Unstale's default noise. Every false alarm teaches people to ignore it</span></div>
+      </div>
+      <p class="small muted">Assumes people act on the correction the same morning. Unstale's reach is bounded by what is observable: beliefs from a channel message nobody can see was opened stay hidden. Reproduce: <code>python scripts/bench.py --sweep</code>.</p>`; })() : ""}
+      <h3>${P.frontier && P.frontier.points ? 4 : 3}. It gets sharper every run</h3>
       <p class="small muted">${cv.orgs} further orgs the engine had never seen (seeds 101-140, five sprints each). The same final sprint is scored again with evidence from only the first <i>n</i> sprints: people's "news to me / I knew this" answers, plus echoes and restatements.</p>
       ${curveSvg(cv)}
       <div class="pcards three">
@@ -104,19 +136,19 @@ async function openProof() {
       </div>`; })() : ""}
       <p class="small muted">Baseline is the same engine with no prior evidence. F1 moves less than precision: learning removes false alarms, while recall is capped by beliefs nothing observable reveals. Reproduce: <code>python scripts/bench.py --curve --orgs 40 --first 101 --sprints 5</code>.</p>
 
-      <h3>4. Agents</h3>
+      <h3>${P.frontier && P.frontier.points ? 5 : 4}. Agents</h3>
       <p class="small muted">A support agent reads its own knowledge-base channel; prices, refund windows and API status change elsewhere. A customer asks about each fact it is responsible for (${ag.own.questions} questions, 4 generated orgs and Northwind).</p>
       ${agRows.map(([k, n]) => barRow(esc(n), ag[k].accuracy, 1, `${pct(ag[k].accuracy)} correct`, k === "unstale" ? "us" : "", `${ag[k].prompt_tokens_per_answer.toLocaleString()} prompt tokens · ${ag[k].outdated_answers} outdated answers`)).join("")}
       <p class="small muted">Vector RAG does well here because it was allowed to search every channel in the company. That is a permissions decision most teams will not make for a customer-facing bot. With the access it already has, the agent is right ${pct(ag.own.accuracy)} of the time and confidently outdated ${ag.own.outdated_answers} times; Unstale's block fixes that with no new access. Reproduce: <code>python scripts/agent_eval.py</code>.</p>
 
-      ${(P.load || []).length ? `<h3>5. Under load</h3>
+      ${(P.load || []).length ? `<h3>${P.frontier && P.frontier.points ? 6 : 5}. Under load</h3>
       <p class="small muted">Concurrent users looping over what visitors and agents do: briefs, the team table, fact history, the graph view, Fix it and the pre-send check. The local run also writes "news to me / I knew this" feedback to HydraDB while it serves, which clears the per-person caches so the next reads go back to the graph.</p>
       <table class="ptable"><thead><tr><th>Where</th><th>Users</th><th>Requests</th><th>Per second</th><th>p50</th><th>p95</th><th>Errors</th></tr></thead><tbody>
       ${P.load.map((r) => `<tr><td>${esc(r.label)}</td><td>${r.users}</td><td>${r.requests.toLocaleString()}</td><td>${r.rps}</td><td>${r.p50_ms} ms</td><td>${r.p95_ms} ms</td><td>${r.errors}</td></tr>`).join("")}
       </tbody></table>
       <p class="small muted">Reproduce: <code>python scripts/loadtest.py --url URL --users 20 --seconds 60 [--writes]</code>. The public demo refuses writes from the load test so visitors keep their feedback quota.</p>` : ""}
 
-      <h3>${(P.load || []).length ? 6 : 5}. Calibration</h3>
+      <h3>${(P.frontier && P.frontier.points ? 1 : 0) + ((P.load || []).length ? 6 : 5)}. Calibration</h3>
       <p class="small muted">Of everything the model scored, how often it was stale, by predicted chance. A 90-100% candidate should be stale about nine times in ten.</p>
       ${B.calibration.map((c) => barRow(c.bucket, c.rate, 1, `${pct(c.rate)} stale <small>(${c.n.toLocaleString()} candidates)</small>`)).join("")}
 
@@ -212,4 +244,42 @@ function openMcp() {
     </ul>
     <p class="small muted">People are ids like <code>person:maya</code> and <code>agent:support-bot</code>; times run 22 Jun to 1 Jul 2026 and default to the end. Tools: corrections, who_to_notify, who_believes, check_before_sending (preset drafts only on the public demo), give_feedback (capped). Source: <code>unstale/mcp_server.py</code>.</p>`;
   openDlg($("mcp-dialog"));
+}
+
+
+/* The stale-belief report: replays every morning and counts, with the engine's own traversals. */
+async function openReport() {
+  const body = $("report-body"), dlg = $("report-dialog");
+  openDlg(dlg);
+  if (body.dataset.ready) return;
+  body.innerHTML = `<p class="muted">Replaying every morning of the team's history...</p>`;
+  let R;
+  try { R = await api("/api/report"); } catch (e) { body.innerHTML = `<p class="muted">Couldn't build the report: ${esc(e.message)}</p>`; return; }
+  body.dataset.ready = "1";
+  const h = R.headline, maxD = Math.max(...R.changes.map((c) => c.stale_person_days), 1), maxP = Math.max(...R.people_rows.map((x) => x.stale_person_days), 1);
+  const corrected = h.resolved_beliefs, held = h.still_stale_at_end;
+  body.innerHTML = `
+    <p class="lede">What a RevOps or support lead gets when Unstale reads a team's history: ${esc(R.name)}, ${R.days} days, ${R.mornings} mornings replayed.
+      Computed from the graph in ${R.computed_ms >= 1000 ? (R.computed_ms / 1000).toFixed(1) + " s" : R.computed_ms + " ms"}, no LLM.</p>
+    <div class="pcards">
+      <div class="pcard"><b>${f1(h.stale_person_days)}</b><span>stale person-days: one person holding one outdated fact for one day</span></div>
+      <div class="pcard"><b>${h.changes_missed} of ${h.changes}</b><span>changes were missed by someone</span></div>
+      <div class="pcard"><b>${h.people_affected} of ${R.people}</b><span>people and agents worked from an outdated fact${h.agents_affected ? ` (including ${h.agents_affected} AI agent)` : ""}</span></div>
+      <div class="pcard"><b>${held} of ${held + corrected}</b><span>outdated beliefs were still held at the end. Nobody corrected them</span></div>
+    </div>
+    <h3>The changes that were missed, most costly first</h3>
+    ${R.changes.map((c) => barRow(`${esc(c.subject)}: ${esc(c.label)}`, c.stale_person_days, maxD, `${f1(c.stale_person_days)} person-days`, "",
+      `${esc(fmtVal(c.old || ""))} → ${esc(fmtVal(c.new))} · ${esc(c.where || "")}${c.by ? ` · ${esc(c.by)}` : ""} · behind: ${c.people.map(esc).join(", ")}`)).join("")}
+    <h3>Where changes leak out</h3>
+    <table class="ptable"><thead><tr><th>Posted in</th><th>Changes posted</th><th>Missed by someone</th><th>Leak rate</th><th>People who missed one</th><th>Stale person-days</th></tr></thead><tbody>
+      ${R.channels.map((c) => `<tr><td><b>${esc(c.where)}</b></td><td>${c.changes_posted}</td><td>${c.changes_missed}</td><td><b>${Math.round(c.leak_rate * 100)}%</b></td><td>${c.people_missed}</td><td>${f1(c.stale_person_days)}</td></tr>`).join("")}
+    </tbody></table>
+    <p class="small muted">A channel with a high leak rate is where the people who need a change aren't. That is where a process change, or a Unstale nudge, pays first.</p>
+    <h3>Who lags</h3>
+    ${R.people_rows.filter((x) => x.beliefs).map((x) => barRow(`${esc(x.name)}${x.kind === "agent" ? " (agent)" : ""}`, x.stale_person_days, maxP, `${f1(x.stale_person_days)} person-days`, "",
+      `${esc(x.role)} · ${x.beliefs} outdated ${x.beliefs === 1 ? "belief" : "beliefs"}, ${x.still_stale} still held, longest ${f1(x.longest_days)} days`)).join("")}
+    <p class="small muted">${R.people_rows.filter((x) => !x.beliefs).map((x) => esc(x.name)).join(", ")} were never behind.</p>
+    <p class="small muted">Estimated, not observed: Slack doesn't say who read a message, so every count carries the confidence the morning brief shows (at least 50%).
+      This is the document the audit-first pilot delivers on a team's last quarter of Slack export.
+      <a href="/api/report.md" download>Download it as Markdown</a>.</p>`;
 }

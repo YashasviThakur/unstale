@@ -106,6 +106,23 @@ def register(server: MCPServer, call: Call) -> MCPServer:
         return "\n".join(lines)
 
     @server.tool()
+    async def stale_report() -> str:
+        """How out of date is this team? Stale person-days, the costliest missed changes, the channels changes leak out of, who lags."""
+        r = await call("GET", "/api/report")
+        h = r["headline"]
+        lines = [f"{r['name']}, {r['days']} days: {h['people_affected']} of {r['people']} people and agents worked from an outdated fact, "
+                 f"{h['stale_person_days']} stale person-days. {h['changes_missed']} of {h['changes']} changes were missed by someone; "
+                 f"{h['still_stale_at_end']} outdated beliefs were still held at the end.", "Costliest missed changes:"]
+        for c in r["changes"][:4]:
+            lines.append(f"- {c['subject']} {c['label']}: {c['old']} -> {c['new']} ({c['where']}), {c['stale_person_days']} person-days, "
+                         f"behind: {', '.join(c['people'])}")
+        leak = [c for c in r["channels"] if c["leak_rate"] >= 0.5][:3]
+        if leak:
+            lines.append("Leakiest channels: " + "; ".join(f"{c['where']} ({round(c['leak_rate'] * 100)}% of its changes missed)" for c in leak))
+        lines.append("Most behind: " + ", ".join(f"{x['name']} ({x['stale_person_days']} person-days)" for x in r["people_rows"][:3] if x["beliefs"]))
+        return "\n".join(lines)
+
+    @server.tool()
     async def give_feedback(person: str, slot: str, verdict: str, as_of: str = NOW) -> str:
         """Answer a correction for `person`: verdict 'news' (didn't know), 'knew', or 'neither' (never heard either value).
 

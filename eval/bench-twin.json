@@ -4,6 +4,17 @@
   "orgs": 20,
   "sprints_per_org": 3,
   "threshold": 0.5,
+  "stale_days": {
+   "total": 3718,
+   "removed_share": {
+    "v1": 0.721,
+    "strong": 0.566,
+    "digest": 0.953,
+    "learned-noFB": 0.731,
+    "learned": 0.72,
+    "ceiling": 0.743
+   }
+  },
   "response_rate": 0.7,
   "messages": 5210,
   "people": 229,
@@ -528,6 +539,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 237,
+    "avoided": {
+     "v1": 189,
+     "strong": 155,
+     "digest": 215,
+     "learned-noFB": 206,
+     "learned": 206,
+     "ceiling": 206
+    }
+   },
    "runs": [
     {
      "tp": 90,
@@ -779,6 +801,17 @@
       "briefs": 80
      }
     ]
+   },
+   "stale_days": {
+    "total": 118,
+    "avoided": {
+     "v1": 83,
+     "strong": 69,
+     "digest": 101,
+     "learned-noFB": 83,
+     "learned": 94,
+     "ceiling": 73
+    }
    },
    "runs": [
     {
@@ -1032,6 +1065,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 287,
+    "avoided": {
+     "v1": 212,
+     "strong": 162,
+     "digest": 281,
+     "learned-noFB": 212,
+     "learned": 214,
+     "ceiling": 227
+    }
+   },
    "runs": [
     {
      "tp": 90,
@@ -1283,6 +1327,17 @@
       "briefs": 96
      }
     ]
+   },
+   "stale_days": {
+    "total": 116,
+    "avoided": {
+     "v1": 94,
+     "strong": 89,
+     "digest": 105,
+     "learned-noFB": 96,
+     "learned": 103,
+     "ceiling": 98
+    }
    },
    "runs": [
     {
@@ -1536,6 +1591,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 203,
+    "avoided": {
+     "v1": 141,
+     "strong": 122,
+     "digest": 194,
+     "learned-noFB": 141,
+     "learned": 142,
+     "ceiling": 144
+    }
+   },
    "runs": [
     {
      "tp": 73,
@@ -1787,6 +1853,17 @@
       "briefs": 88
      }
     ]
+   },
+   "stale_days": {
+    "total": 201,
+    "avoided": {
+     "v1": 152,
+     "strong": 130,
+     "digest": 188,
+     "learned-noFB": 152,
+     "learned": 139,
+     "ceiling": 138
+    }
    },
    "runs": [
     {
@@ -2040,6 +2117,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 201,
+    "avoided": {
+     "v1": 158,
+     "strong": 109,
+     "digest": 201,
+     "learned-noFB": 161,
+     "learned": 155,
+     "ceiling": 163
+    }
+   },
    "runs": [
     {
      "tp": 88,
@@ -2287,6 +2375,17 @@
       "briefs": 88
      }
     ]
+   },
+   "stale_days": {
+    "total": 86,
+    "avoided": {
+     "v1": 74,
+     "strong": 50,
+     "digest": 86,
+     "learned-noFB": 74,
+     "learned": 66,
+     "ceiling": 74
+    }
    },
    "runs": [
     {
@@ -2540,6 +2639,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 116,
+    "avoided": {
+     "v1": 72,
+     "strong": 66,
+     "digest": 110,
+     "learned-noFB": 72,
+     "learned": 67,
+     "ceiling": 86
+    }
+   },
    "runs": [
     {
      "tp": 29,
@@ -2787,6 +2897,17 @@
       "briefs": 88
      }
     ]
+   },
+   "stale_days": {
+    "total": 207,
+    "avoided": {
+     "v1": 87,
+     "strong": 106,
+     "digest": 205,
+     "learned-noFB": 87,
+     "learned": 84,
+     "ceiling": 107
+    }
    },
    "runs": [
     {
@@ -3040,6 +3161,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 174,
+    "avoided": {
+     "v1": 116,
+     "strong": 50,
+     "digest": 165,
+     "learned-noFB": 116,
+     "learned": 109,
+     "ceiling": 127
+    }
+   },
    "runs": [
     {
      "tp": 46,
@@ -3291,6 +3423,17 @@
       "briefs": 104
      }
     ]
+   },
+   "stale_days": {
+    "total": 277,
+    "avoided": {
+     "v1": 184,
+     "strong": 159,
+     "digest": 266,
+     "learned-noFB": 184,
+     "learned": 171,
+     "ceiling": 183
+    }
    },
    "runs": [
     {
@@ -3544,6 +3687,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 61,
+    "avoided": {
+     "v1": 40,
+     "strong": 38,
+     "digest": 61,
+     "learned-noFB": 40,
+     "learned": 27,
+     "ceiling": 29
+    }
+   },
    "runs": [
     {
      "tp": 20,
@@ -3791,6 +3945,17 @@
       "briefs": 96
      }
     ]
+   },
+   "stale_days": {
+    "total": 273,
+    "avoided": {
+     "v1": 169,
+     "strong": 122,
+     "digest": 256,
+     "learned-noFB": 179,
+     "learned": 185,
+     "ceiling": 188
+    }
    },
    "runs": [
     {
@@ -4044,6 +4209,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 82,
+    "avoided": {
+     "v1": 32,
+     "strong": 40,
+     "digest": 62,
+     "learned-noFB": 32,
+     "learned": 32,
+     "ceiling": 32
+    }
+   },
    "runs": [
     {
      "tp": 14,
@@ -4295,6 +4471,17 @@
       "briefs": 112
      }
     ]
+   },
+   "stale_days": {
+    "total": 238,
+    "avoided": {
+     "v1": 196,
+     "strong": 106,
+     "digest": 229,
+     "learned-noFB": 196,
+     "learned": 200,
+     "ceiling": 199
+    }
    },
    "runs": [
     {
@@ -4548,6 +4735,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 255,
+    "avoided": {
+     "v1": 207,
+     "strong": 180,
+     "digest": 255,
+     "learned-noFB": 207,
+     "learned": 207,
+     "ceiling": 214
+    }
+   },
    "runs": [
     {
      "tp": 108,
@@ -4791,6 +4989,17 @@
       "briefs": 88
      }
     ]
+   },
+   "stale_days": {
+    "total": 194,
+    "avoided": {
+     "v1": 176,
+     "strong": 101,
+     "digest": 174,
+     "learned-noFB": 176,
+     "learned": 178,
+     "ceiling": 176
+    }
    },
    "runs": [
     {
@@ -5044,6 +5253,17 @@
      }
     ]
    },
+   "stale_days": {
+    "total": 273,
+    "avoided": {
+     "v1": 222,
+     "strong": 166,
+     "digest": 272,
+     "learned-noFB": 222,
+     "learned": 227,
+     "ceiling": 220
+    }
+   },
    "runs": [
     {
      "tp": 87,
@@ -5291,6 +5511,17 @@
       "briefs": 88
      }
     ]
+   },
+   "stale_days": {
+    "total": 119,
+    "avoided": {
+     "v1": 78,
+     "strong": 83,
+     "digest": 119,
+     "learned-noFB": 80,
+     "learned": 72,
+     "ceiling": 77
+    }
    },
    "runs": [
     {

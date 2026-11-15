@@ -38,8 +38,10 @@ Live, on the open-source HydraDB 0.4.0 engine: **https://unstale.onrender.com/ap
    a draft, and the corrections that would be left.
 5. **Check before sending → Try: Maya's slack.** Her real message, one minute before she sent it: both outdated
    facts flagged, and the readers who would pick up the old values.
-6. **Proof** (top bar): every number in this README, read from the result files, with the command that makes it.
-7. Your own agent: `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`, then ask it what
+6. **Report** (top bar): what a RevOps lead gets from reading the team's history. Stale person-days, the changes
+   that were missed, the channels they leak out of, who lags. Download it as Markdown.
+7. **Proof** (top bar): every number in this README, read from the result files, with the command that makes it.
+8. Your own agent: `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`, then ask it what
    Tom still believes. A recorded session with the official MCP client: [docs/MCP_SESSION.md](docs/MCP_SESSION.md).
 
 ## The questions the judges asked, answered
@@ -48,7 +50,7 @@ The organisers' FAQ asks four things of the engineering. Each answer below point
 
 | Judging question | Answer | Evidence |
 |---|---|---|
-| **Right metrics:** did you measure what matters, not a vanity number? | Stale-belief **precision** (is each correction real? that is what decides whether anyone keeps it switched on), **recall** (of the facts people hold in an outdated version, how many we find), **false alarms per 100 briefs** (corrections about things the person already knew), and **LLM tokens per brief** (zero: a brief is a traversal). The ground truth is hidden from the engine. | [eval/results.json](eval/results.json), [eval/BENCH-twin.md](eval/BENCH-twin.md) |
+| **Right metrics:** did you measure what matters, not a vanity number? | Stale-belief **precision** (is each correction real? that is what decides whether anyone keeps it switched on), **recall** (of the facts people hold in an outdated version, how many we find), **false alarms per 100 briefs** (corrections about things the person already knew), and **LLM tokens per brief** (zero: a brief is a traversal). The outcome a manager pays for: **stale person-days removed** against that noise (below). The ground truth is hidden from the engine. | [eval/results.json](eval/results.json), [eval/BENCH-twin.md](eval/BENCH-twin.md) |
 | **Continual learning over a baseline:** real improvement, not a one-off? | Baseline: the same engine with no learned evidence. On **40 orgs it never saw**, the same held-out sprint, scored after 0 to 4 earlier sprints of feedback: false alarms per 100 briefs 22.2 → **15.9** (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved), precision 0.82 → 0.86. **Control:** the same people answering the same corrections with coin-flip verdicts stays at 59.5 → 57.7 (change −1.8, interval −5.3 to +1.3: no real change). The learning comes from what people say, not from having more evidence. | [eval/curve-twin.json](eval/curve-twin.json) |
 | **Impact of HydraDB and the graph:** would it fall apart on a plain store? | **Yes.** Take one piece of the graph away at a time (table below): without the who-saw-which-version edges you are left with a changelog, F1 0.12 and 105 false alarms per 100 briefs; a vector store over the same messages scores F1 0.13. | [below](#would-it-fall-apart-on-a-plain-store) |
 | **Holds up under load?** | 20 concurrent users for 60 s against HydraDB 0.4.0 in Docker on a laptop, with "news to me" feedback written to the graph while it serves: **3,546 requests, 0 errors**, 59 per second, p50 208 ms, p95 1.0 s. | [eval/load.json](eval/load.json), `scripts/loadtest.py` |
@@ -74,6 +76,29 @@ alternative: it holds the same graph in dictionaries so the Cypher can be checke
 identical on 0.4.0). It rebuilds everything in memory on every run, with no persistence, no `as_of` reads and no
 concurrent writers. It proves the traversals are right; it isn't a way to run the product.
 
+## What it removes, and what it costs
+
+The measure a manager buys is **stale person-days**: one person holding one outdated fact for one morning. If a person
+acts on a correction the morning they get it, every later morning of that belief disappears. On the 20 generated orgs
+(3,718 stale person-days), with the same orgs re-run at eight alert thresholds ([eval/frontier-twin.json](eval/frontier-twin.json),
+`python scripts/bench.py --sweep`):
+
+| Method | Stale person-days removed | False alarms per 100 briefs |
+|---|---|---|
+| Unstale, alert at 20% sure (most sensitive) | 84% | 26.9 |
+| Unstale, alert at 30% sure | 78% | 14.4 |
+| **Unstale, alert at 50% sure (default)** | **72%** | **6.8** |
+| Unstale, alert at 90% sure (strictest) | 63% | 2.5 |
+| Unstale v1: everyone in the channel is assumed to have read it | 72% | 21.4 |
+| Daily changelog of changes in your scope | 95% | 105.5 |
+
+Read it plainly. **A changelog reaches the most people, because it tells everyone, and that is exactly what makes it
+useless:** 105 notifications per 100 briefs are about things the person already knew, and people stop reading them.
+Unstale reaches 72% of the stale days with a fifteenth of the noise, and the learned read rates are what keep it there: the
+v1 engine removes the same 72% at three times the false alarms. The rest is the honest ceiling: a belief that comes from a
+channel message nobody can see was opened stays invisible to anything that only reads a Slack export. The assumption behind
+all of it is that people act on a correction the same morning.
+
 ## Results at a glance
 
 | | Result |
@@ -81,6 +106,7 @@ concurrent writers. It proves the traversals are right; it isn't a way to run th
 | Hand-written team (Northwind), LLM extraction | precision **1.00**, recall **0.92**, 0 LLM tokens per brief. The best LLM baseline reaches F1 0.38 at 3,188 tokens per brief |
 | 20 generated orgs, 5,210 messages, reading the engine can't see | F1 **0.75** against 0.67 for the original engine; false alarms down **68%** (6.8 per 100 briefs vs 21.4; a daily changelog sends 105.5) |
 | Learning from feedback | matches a model given the generator's **true hidden read rates** (F1 0.75 vs 0.75), and gets sharper with each sprint of evidence: 11.1 → 9.5 → 8.0 false alarms per 100 briefs on the same held-out sprint. On **40 further orgs it had never seen**, four sprints of evidence cut false alarms 22.2 → 15.9 per 100 briefs (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved). A control fed the same number of answers with coin-flip verdicts doesn't improve (59.5 → 57.7) |
+| Does acting on it remove stale days? | At its default threshold Unstale removes **72%** of stale person-days at **6.8** false alarms per 100 briefs. The version that assumed everyone in a channel read it removes the same 72% at 21.4, three times the noise. The most sensitive setting removes 84% at 27. A daily changelog removes 95%, at 105.5 false alarms per 100 briefs |
 | Under load | 20 concurrent users, 60 s, feedback writes to HydraDB while serving: 3,546 requests, **0 errors**, p50 208 ms |
 | Support agent answering customers | 29% correct from its own knowledge base; **94%** with Unstale's correction block added (+116 tokens), with **0** outdated answers. It fixes all 22 questions the knowledge base got wrong |
 | HydraDB vs the Python twin | 168 of 168 briefs identical in the parity check on 0.3.0, and 308 of 308 on 0.4.0 (one org, seed 1); two full benchmark orgs (516 messages, three sprints each, feedback written to the graph) run on HydraDB reproduce the twin's numbers exactly |
@@ -111,7 +137,13 @@ concurrent writers. It proves the traversals are right; it isn't a way to run th
   suspecting people like you; "worth a check" shows candidates just under the alert threshold. This is how recall improves.
 - **Connect your own agent.** The demo graph is a live MCP server at `/mcp` (streamable HTTP, read-only):
   `claude mcp add --transport http unstale https://unstale.onrender.com/mcp`. Tools: `corrections`, `who_to_notify`,
-  `who_believes`, `check_before_sending`, `give_feedback`.
+  `who_believes`, `check_before_sending`, `stale_report`, `give_feedback`.
+- **Stale-belief report.** Replays every morning of a team's history and counts: stale person-days (one person
+  holding one outdated fact for one day), which changes were missed and by whom, which channels changes leak out of
+  (the share of each channel's changes that someone missed), who lags, and how many outdated beliefs nobody ever
+  corrected. It is the document the audit-first pilot delivers on a team's last quarter of Slack export. In the app
+  (**Report**), as Markdown (`/api/report.md`, a sample for Northwind in [docs/AUDIT_REPORT_NORTHWIND.md](docs/AUDIT_REPORT_NORTHWIND.md)),
+  and as the MCP tool `stale_report`. Computed from the graph, no LLM.
 - **Check before sending.** Paste a draft. Unstale flags any fact in it that has since changed
   ("ship date is Fri 3 Jul, not Mon 29 Jun; changed 26 Jun by Priya in #release; you never saw
   that change") and warns which readers still hold the old value.
@@ -453,6 +485,7 @@ unstale/
   slack_import.py Slack export -> dataset
   api.py          FastAPI + demo UI (web/)
   mcp_server.py   MCP tools for agents
+  report.py       the stale-belief report: stale person-days, missed changes, leaky channels, who lags
 scripts/          ingest, eval, baselines, bench, agent_eval, extraction check
 tests/            rules, exposure model, generator, Slack import round trip
 docs/             go-to-market, demo script, benchmark chart

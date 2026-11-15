@@ -36,6 +36,10 @@ is how recall improves.
 - **Unseen orgs:** on 40 more generated orgs it had never seen, four sprints of evidence cut false alarms from 22.2 to 15.9 per 100 briefs
   (paired change −6.3, 95% interval −8.9 to −3.6; 30 of 40 orgs improved). Control: the same number of answers with
   coin-flip verdicts doesn't improve (59.5 → 57.7, change not significant), so the learning comes from what people say.
+- **Stale days removed vs noise:** acting on Unstale's default briefs removes 72% of stale person-days at 6.8 false alarms per
+  100 briefs (84% at 27 on the most sensitive setting); the v1 engine removes the same 72% at 21.4; a daily changelog removes 95%
+  at 105.5. A **stale-belief report** (stale person-days, missed changes, leaky channels, who lags) is the audit deliverable
+  for the pilot (Report button in the app, `/api/report.md`, MCP tool `stale_report`).
 - **Under load:** 20 concurrent users for 60 s on HydraDB 0.4.0, writing feedback to the graph while serving:
   3,546 requests, 0 errors, p50 208 ms, p95 1.0 s (`scripts/loadtest.py`, `eval/load.json`).
 - **Would it fall apart on a plain store?** Yes: remove the who-saw-which-version edges and what is left is a

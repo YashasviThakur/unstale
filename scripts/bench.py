@@ -198,6 +198,12 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
     calib = defaultdict(lambda: [0, 0])     # decile -> [stale, total], learned model
     test_cache: dict[tuple[str, str], dict] = {}
     briefs_out = []
+    # Outcome metric. A stale person-day is one person holding one outdated fact for one morning. If a person acts on a
+    # correction the morning they get it, every later stale morning of that belief disappears; count those.
+    stale_days_total = 0
+    avoided = {m: 0 for m in METHODS}
+    avoided["digest"] = 0
+    flagged: dict[str, dict[str, set]] = {m: {} for m in avoided}    # method -> person -> slots told about in this episode
     prev = ds["start"]
     for k, (a, b) in enumerate(ds["sprints"]):
         for cp in mornings(a, b):
@@ -211,6 +217,7 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
             for p in ds["people"]:
                 pid = p["id"]
                 want = {x["slot"] for x in gt[pid]}
+                stale_days_total += len(want)
                 exps = await be.exposures(pid, cp)
                 if k == sprints - 1:
                     test_cache[(pid, cp)] = exps
@@ -220,6 +227,8 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
                     got = {s for s, *_ in items}
                     tally(totals[name], want, got)
                     tally(per_sprint[name][k], want, got)
+                    flagged[name][pid] = (flagged[name].get(pid, set()) & want) | (got & want)
+                    avoided[name] += len(flagged[name][pid])
                     if name == "learned":
                         briefs_out.append({"at": cp, "person": pid, "items": [[s, round(pr, 3)] for s, _, _, pr in items]})
                         # Calibration over every candidate the model scored, not only those shown.
@@ -247,6 +256,8 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
                 digest = {s for s in changed if s.split("|", 1)[0] in sc}
                 tally(totals["digest"], want, digest)
                 tally(per_sprint["digest"][k], want, digest)
+                flagged["digest"][pid] = (flagged["digest"].get(pid, set()) & want) | (digest & want)
+                avoided["digest"] += len(flagged["digest"][pid])
             feedback += new_fb
             fb_by_sprint[k] += new_fb
             await be.store_feedback(new_fb, cp)
@@ -288,6 +299,7 @@ async def run_org(seed: int, sprints: int, threshold: float, backend: str, ns_pr
             "messages": len(ds["messages"]), "ingest_s": round(ingest_s, 1),
             "totals": {m: dict(v) for m, v in totals.items()},
             "per_sprint": {m: [dict(x) for x in v] for m, v in per_sprint.items()},
+            "stale_days": {"total": stale_days_total, "avoided": avoided},
             "runs": runs, "runs_control": runs_ctl, "calibration": {str(k): v for k, v in calib.items()},
             "feedback_evidence": len(feedback), "implicit_evidence": len(implicit), "briefs": briefs_out}
 
@@ -325,7 +337,10 @@ def summarise(rows: list[dict], sprints: int, threshold: float, backend: str) ->
             cal[int(k)][1] += n
     calibration = [{"bucket": f"{k / 10:.1f}-{(k + 1) / 10:.1f}", "stale": s, "n": n, "rate": round(s / n, 3)}
                    for k, (s, n) in sorted(cal.items())]
-    return {"backend": backend, "orgs": len(rows), "sprints_per_org": sprints, "threshold": threshold,
+    sd_total = sum(r["stale_days"]["total"] for r in rows)
+    sd = {"total": sd_total, "removed_share": {m: round(sum(r["stale_days"]["avoided"][m] for r in rows) / max(sd_total, 1), 3)
+                                                for m in rows[0]["stale_days"]["avoided"]}}
+    return {"backend": backend, "orgs": len(rows), "sprints_per_org": sprints, "threshold": threshold, "stale_days": sd,
             "response_rate": RESPONSE_RATE,
             "messages": sum(r["messages"] for r in rows), "people": sum(r["people"] for r in rows),
             "briefs_per_method": total["v1"]["briefs"], "total": total, "by_sprint": curve,
@@ -373,11 +388,13 @@ def report(s: dict) -> str:
     lines = [f"# Benchmark: {s['orgs']} generated orgs x {s['sprints_per_org']} sprints ({s['backend']})", "",
              f"{s['messages']:,} messages, {s['people']} people and agents, {s['briefs_per_method']:,} briefs per method, "
              f"threshold {s['threshold']}, {int(s['response_rate'] * 100)}% of corrections answered.", "",
-             "| Method | Precision | Recall | F1 | False alarms per 100 briefs |", "|---|---|---|---|---|"]
+             "| Method | Precision | Recall | F1 | False alarms per 100 briefs | Stale person-days removed |", "|---|---|---|---|---|---|"]
     for m in ["learned", "learned-noFB", "v1", "strong", "digest", "ceiling"]:
         t = s["total"][m]
         lines.append(f"| {names[m]} | {t['precision']:.2f} | {t['recall']:.2f} | {t['f1']:.2f} | "
-                     f"{t['false_alarms_per_100_briefs']} |")
+                     f"{t['false_alarms_per_100_briefs']} | {s['stale_days']['removed_share'][m] * 100:.0f}% |")
+    lines += ["", f"A stale person-day is one person holding one outdated fact for one morning ({s['stale_days']['total']:,} in these orgs). "
+              "\"Removed\" counts the later mornings of a belief once the person has been told about it, assuming they act the same morning."]
     lines += ["", "By sprint (F1):", "", "| Method | " + " | ".join(f"Sprint {i + 1}" for i in range(s["sprints_per_org"])) + " |",
               "|---|" + "---|" * s["sprints_per_org"]]
     for m in ["learned", "v1"]:
@@ -497,7 +514,31 @@ async def parity(seeds: list[int], sprints: int, threshold: float) -> bool:
     return ok
 
 
+async def sweep(a) -> None:
+    """Days removed against notification noise: the same orgs at several alert thresholds (eval/frontier-twin.json)."""
+    pts = []
+    for th in (0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9):
+        rows = [await run_org(seed, a.sprints, th, "twin", "bench") for seed in range(a.first, a.first + a.orgs)]
+        sm = summarise(rows, a.sprints, th, "twin")
+        pt = {"threshold": th, "stale_days": sm["stale_days"]["total"]}
+        for m in ("learned", "v1", "strong", "digest", "ceiling"):
+            t = sm["total"][m]
+            pt[m] = {"precision": t["precision"], "recall": t["recall"], "f1": t["f1"],
+                     "false_alarms_per_100_briefs": t["false_alarms_per_100_briefs"],
+                     "stale_days_removed": sm["stale_days"]["removed_share"][m]}
+        pts.append(pt)
+        print(f"threshold {th}: Unstale removes {pt['learned']['stale_days_removed'] * 100:.0f}% of stale person-days at "
+              f"{pt['learned']['false_alarms_per_100_briefs']} false alarms per 100 briefs (F1 {pt['learned']['f1']}); "
+              f"changelog {pt['digest']['stale_days_removed'] * 100:.0f}% at {pt['digest']['false_alarms_per_100_briefs']}", flush=True)
+    OUT.mkdir(exist_ok=True)
+    (OUT / "frontier-twin.json").write_text(json.dumps({"orgs": a.orgs, "sprints": a.sprints, "points": pts,
+                                                         "command": f"python scripts/bench.py --sweep --orgs {a.orgs} --sprints {a.sprints}"}, indent=1), encoding="utf-8")
+
+
 async def main_async(a) -> None:
+    if a.sweep:
+        await sweep(a)
+        return
     if a.parity:
         ok = await parity(list(range(1, a.parity + 1)), a.sprints, a.threshold)
         print("PARITY OK" if ok else "PARITY FAILED")
@@ -545,6 +586,7 @@ def main() -> None:
     ap.add_argument("--first", type=int, default=1)
     ap.add_argument("--sprints", type=int, default=3)
     ap.add_argument("--threshold", type=float, default=THRESHOLD)
+    ap.add_argument("--sweep", action="store_true", help="write eval/frontier-twin.json: stale days removed vs false alarms by threshold")
     ap.add_argument("--hydradb", action="store_true")
     ap.add_argument("--parity", type=int, default=0, help="check N orgs on HydraDB against the twin")
     ap.add_argument("--curve", action="store_true", help="write eval/curve-twin.json (learning curve with intervals) only")

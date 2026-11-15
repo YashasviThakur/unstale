@@ -2,14 +2,16 @@
 
 5,210 messages, 229 people and agents, 5,496 briefs per method, threshold 0.5, 70% of corrections answered.
 
-| Method | Precision | Recall | F1 | False alarms per 100 briefs |
-|---|---|---|---|---|
-| **Unstale (learned exposure)** | 0.87 | 0.66 | 0.75 | 6.8 |
-| Unstale, learned from echoes only | 0.68 | 0.67 | 0.68 | 21.6 |
-| Unstale v1 (every channel member read every message) | 0.68 | 0.67 | 0.67 | 21.4 |
-| Interactions only | 0.49 | 0.55 | 0.52 | 39.3 |
-| Daily changelog of changes in your scope | 0.10 | 0.16 | 0.12 | 105.5 |
-| Same model with the true hidden read rates | 0.83 | 0.69 | 0.75 | 9.4 |
+| Method | Precision | Recall | F1 | False alarms per 100 briefs | Stale person-days removed |
+|---|---|---|---|---|---|
+| **Unstale (learned exposure)** | 0.87 | 0.66 | 0.75 | 6.8 | 72% |
+| Unstale, learned from echoes only | 0.68 | 0.67 | 0.68 | 21.6 | 73% |
+| Unstale v1 (every channel member read every message) | 0.68 | 0.67 | 0.67 | 21.4 | 72% |
+| Interactions only | 0.49 | 0.55 | 0.52 | 39.3 | 57% |
+| Daily changelog of changes in your scope | 0.10 | 0.16 | 0.12 | 105.5 | 95% |
+| Same model with the true hidden read rates | 0.83 | 0.69 | 0.75 | 9.4 | 74% |
+
+A stale person-day is one person holding one outdated fact for one morning (3,718 in these orgs). "Removed" counts the later mornings of a belief once the person has been told about it, assuming they act the same morning.
 
 By sprint (F1):
 
